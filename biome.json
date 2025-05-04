@@ -28,7 +28,7 @@
     "javascript": {
         "formatter": {
             "semicolons": "always",
-            "quoteStyle": "single",
+            "quoteStyle": "double",
             "trailingCommas": "es5"
         }
     },

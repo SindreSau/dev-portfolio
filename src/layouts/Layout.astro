@@ -3,16 +3,21 @@ import CommonHead from '@/components/layout/common-head.astro';
 import Footer from '@/components/layout/footer.astro';
 import Header from '@/components/layout/header.astro';
 
-// Styles
 import '@/global.css';
+
+const {
+    title = 'Sindre Sauarlia - Full Stack Developer',
+    description = 'Sindre Sauarlia is a software engineer and designer based in Norway. He loves building things with code and sharing his knowledge with others.',
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang='en'>
-    <CommonHead />
+    <CommonHead title={title} description={description} />
+
     <body class='min-h-screen flex flex-col'>
         <header class=''>
-            <div class='container mx-auto py-2 px-4 flex justify-between items-center'>
+            <div class='container mx-auto py-3 px-4 flex justify-between items-center'>
                 <Header />
             </div>
         </header>

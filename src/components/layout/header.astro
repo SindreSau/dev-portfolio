@@ -3,72 +3,73 @@ import headshot from '@/assets/images/headshot.jpg';
 import Image from 'astro/components/Image.astro';
 
 import ROUTES from '@config/routes.ts';
+const currentPath = Astro.url.pathname;
 ---
 
-<!-- Logo/Headshot Section -->
 <a href='/' class='flex items-center gap-1 text-muted-foreground z-10'>
     <Image
         src={headshot}
         alt='Sindre Sauarlia'
         width={70}
         height={70}
-        class='rounded-full md:w-10 w-8 aspect-square'
+        class='rounded-full md:w-12 w-8 aspect-square'
         format={'avif'}
+        loading='eager'
     />
-    <div class='flex flex-col gap-0 md:text-2xl text-lg leading-4 font-megrim'>
+    <div class='flex flex-col gap-0 md:text-3xl text-lg leading-5 font-megrim'>
         <span>Sindre</span>
         <span class='ml-4'>Sauarlia</span>
     </div>
 </a>
 
-<!-- Desktop Navigation -->
 <nav class='hidden md:block'>
     <ul class='flex lg:gap-8 gap-6'>
         {
-            ROUTES.map((route) => (
-                <li>
-                    <a
-                        href={route.path}
-                        class='text-muted-foreground text-xl font-caveat hover:text-foreground transition-colors duration-200'>
-                        {route.name}
-                    </a>
-                </li>
-            ))
+            ROUTES.map((route) => {
+                const isActive = currentPath === route.path;
+                return (
+                    <li>
+                        <a
+                            href={route.path}
+                            class={`text-xl transition-colors duration-200 ${
+                                isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                            }`}>
+                            {route.name}
+                        </a>
+                        {isActive && <div class='w-full bg-primary h-1' transition:name='navlink-active' />}
+                    </li>
+                );
+            })
         }
     </ul>
 </nav>
 
-<!-- Hamburger Menu Button -->
 <button
     id='hamburger-btn'
-    class='z-50 w-10 h-10 relative flex flex-col justify-center items-center md:hidden hover:scale-110 transition-transform duration-200 cursor-pointer'
+    class='z-50 w-6 hover:w-7 hover:translate-x-0.5 h-10 relative flex flex-col justify-center items-center md:hidden transition-all duration-200 cursor-pointer'
     aria-label='Toggle menu'>
+    <span class='w-full h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
     <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
-    <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
-    <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
+    <span class='w-full h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
 </button>
 
-<!-- Mobile Menu Overlay (Background) -->
 <div
     id='menu-overlay'
-    class='fixed inset-0 bg-background/70 z-30 backdrop-blur-[1px] hidden opacity-0 transition-opacity duration-300 delay-50'>
+    class='fixed inset-0 bg-background-darker/80 z-30 hidden opacity-0 transition-opacity duration-300'>
 </div>
 
-<!-- Mobile Menu -->
 <div
     id='mobile-menu'
-    class='fixed top-0 right-0 w-4/5 h-full z-40 transform translate-x-full transition-transform duration-300 shadow-2xl bg-white dark:bg-gray-800 backdrop-blur-sm'
-    style='perspective: 1000px; backface-visibility: hidden;'>
+    class='fixed top-0 right-0 bg-background w-4/5 h-full z-40 transform translate-x-full transition-transform duration-300 shadow-2xl backdrop-blur-sm'
+    style='perspective: 1000px;'>
     <nav class='pt-24 px-8'>
-        <ul class='space-y-8'>
+        <ul class='flex flex-col items-end space-y-8'>
             {
                 ROUTES.map((route, index) => (
-                    <li
-                        class='opacity-0 transform -rotate-y-90 transition-all duration-400 origin-right'
-                        style={`transition-delay: ${(index + 1) * 100}ms;`}>
+                    <li class='nav-item opacity-0' style={`transition-delay: ${(index + 2.5) * 80}ms;`}>
                         <a
                             href={route.path}
-                            class='text-2xl font-megrim block py-3 px-4 hover:text-foreground transition-colors duration-200'>
+                            class='text-2xl block py-3 px-4 hover:text-foreground transition-colors duration-200'>
                             {route.name}
                         </a>
                     </li>
@@ -79,19 +80,6 @@ import ROUTES from '@config/routes.ts';
 </div>
 
 <style>
-    /* Keyframes for 3D rotation */
-    @keyframes rotate-in {
-        from {
-            transform: rotateY(-90deg);
-            opacity: 0;
-        }
-        to {
-            transform: rotateY(0);
-            opacity: 1;
-        }
-    }
-
-    /* Hamburger to X animation */
     :global(.hamburger-active) span:nth-child(1) {
         transform: translateY(6px) rotate(45deg);
     }
@@ -104,84 +92,107 @@ import ROUTES from '@config/routes.ts';
         transform: translateY(-6px) rotate(-45deg);
     }
 
-    /* Menu item animation when active */
-    :global(.mobile-menu-active) li {
+    .nav-item {
+        transform: rotateY(-90deg) translateY(10px);
+        transform-origin: right;
+        transition:
+            opacity 0.1s ease-out,
+            transform 0.25s ease-out;
+    }
+
+    :global(.menu-active) .nav-item {
         opacity: 1;
-        transform: rotateY(0);
+        transform: rotateY(0) translateY(0);
+    }
+
+    #mobile-menu.instant-close {
+        transition: none;
+    }
+
+    #menu-overlay.instant-fade {
+        transition: none;
     }
 </style>
 
 <script is:inline>
-    // Wait for the DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', () => {
-        // Safe element selection with null checking
+    document.addEventListener('astro:page-load', initMenu);
+    document.addEventListener('DOMContentLoaded', initMenu);
+
+    function initMenu() {
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuOverlay = document.getElementById('menu-overlay');
-        const bodyElement = document.body;
 
-        // Only run if all elements exist
         if (!hamburgerBtn || !mobileMenu || !menuOverlay) return;
 
-        // Toggle menu function
-        function toggleMenu() {
-            hamburgerBtn.classList.toggle('hamburger-active');
+        const newBtn = hamburgerBtn.cloneNode(true);
+        hamburgerBtn.parentNode.replaceChild(newBtn, hamburgerBtn);
+
+        const newOverlay = menuOverlay.cloneNode(true);
+        menuOverlay.parentNode.replaceChild(newOverlay, menuOverlay);
+
+        newBtn.addEventListener('click', () => {
+            newBtn.classList.toggle('hamburger-active');
 
             if (mobileMenu.classList.contains('translate-x-full')) {
-                // Open menu
-                mobileMenu.classList.remove('translate-x-full');
-                mobileMenu.classList.add('translate-x-0');
-                menuOverlay.classList.remove('hidden');
-
-                // Trigger overlay fade-in
-                setTimeout(() => {
-                    menuOverlay.classList.add('opacity-100');
-                }, 10);
-
-                // Prevent body scrolling
-                bodyElement.style.overflow = 'hidden';
-
-                // Add active class to show menu items with animation
-                setTimeout(() => {
-                    mobileMenu.classList.add('mobile-menu-active');
-                }, 100);
+                openMenu();
             } else {
-                // Close menu
-                closeMenu();
-            }
-        }
-
-        // Close menu function
-        function closeMenu() {
-            if (!hamburgerBtn || !mobileMenu || !menuOverlay) return;
-
-            mobileMenu.classList.remove('mobile-menu-active');
-            menuOverlay.classList.remove('opacity-100');
-
-            // Wait for the animation to complete before hiding the menu
-            setTimeout(() => {
-                mobileMenu.classList.remove('translate-x-0');
-                mobileMenu.classList.add('translate-x-full');
-                menuOverlay.classList.add('hidden');
-
-                // Re-enable body scrolling
-                bodyElement.style.overflow = '';
-            }, 300);
-
-            hamburgerBtn.classList.remove('hamburger-active');
-        }
-
-        // Event listeners
-        hamburgerBtn.addEventListener('click', toggleMenu);
-        menuOverlay.addEventListener('click', closeMenu);
-
-        // Close menu when pressing escape key
-        document.addEventListener('keydown', (event) => {
-            if (!mobileMenu) return;
-
-            if (event.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
                 closeMenu();
             }
         });
-    });
+
+        newOverlay.addEventListener('click', closeMenu);
+
+        document.querySelectorAll('#mobile-menu a').forEach((link) => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
+                closeMenu();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                closeMenu();
+            }
+        });
+
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full', 'instant-close');
+            mobileMenu.classList.add('translate-x-0');
+
+            newOverlay.classList.remove('hidden', 'instant-fade');
+            setTimeout(() => {
+                newOverlay.classList.add('opacity-100');
+            }, 10);
+
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                mobileMenu.classList.add('menu-active');
+            }, 20);
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.add('instant-close');
+            newOverlay.classList.add('instant-fade');
+
+            mobileMenu.classList.remove('menu-active');
+            mobileMenu.classList.remove('translate-x-0');
+            mobileMenu.classList.add('translate-x-full');
+
+            newOverlay.classList.remove('opacity-100');
+            newOverlay.classList.add('hidden');
+
+            document.body.style.overflow = '';
+
+            setTimeout(() => {
+                newBtn.classList.remove('hamburger-active');
+                mobileMenu.classList.remove('instant-close');
+                newOverlay.classList.remove('instant-fade');
+            }, 100);
+        }
+    }
 </script>

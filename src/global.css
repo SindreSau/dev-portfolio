@@ -10,6 +10,7 @@
 
     /* Colors */
     --color-background: #ffffff;
+    --color-background-darker: #f3f4f6;
     --color-foreground: #0f172a;
     --color-card: #ffffff;
 
@@ -50,7 +51,8 @@
 
 @layer base {
     @variant dark {
-        --color-background: #0f172a;
+        --color-background: #161d2d;
+        --color-background-darker: #0b0e15;
         --color-foreground: #f6f6f6;
         --color-card: #1e293b;
 
@@ -113,20 +115,5 @@
 
     h3 {
         @apply text-lg md:text-xl;
-    }
-}
-
-@layer utilities {
-    @keyframes blink {
-        from,
-        to {
-            background-color: transparent;
-        }
-        50% {
-            background-color: var(--color-terminal-cursor);
-        }
-    }
-    .animate-blink {
-        animation: blink 1s step-end infinite;
     }
 }

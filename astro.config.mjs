@@ -11,4 +11,11 @@ export default defineConfig({
         locales: ['en', 'nb'],
         defaultLocale: 'en',
     },
+    prefetch: {
+        prefetchAll: true,
+        defaultStrategy: 'viewport',
+    },
+    experimental: {
+        clientPrerender: true,
+    },
 });
