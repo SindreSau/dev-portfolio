@@ -4,6 +4,7 @@ import Image from 'astro/components/Image.astro';
 
 import ROUTES from '@config/routes.ts';
 const currentPath = Astro.url.pathname;
+const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\/$/, '');
 ---
 
 <a href='/' class='flex items-center gap-1 text-muted-foreground z-10'>
@@ -26,7 +27,7 @@ const currentPath = Astro.url.pathname;
     <ul class='flex lg:gap-8 gap-6'>
         {
             ROUTES.map((route) => {
-                const isActive = currentPath === route.path;
+                const isActive = normalizedCurrentPath === route.path;
                 return (
                     <li>
                         <a

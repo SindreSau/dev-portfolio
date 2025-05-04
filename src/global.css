@@ -51,7 +51,7 @@
 
 @layer base {
     @variant dark {
-        --color-background: #161d2d;
+        --color-background: #131721;
         --color-background-darker: #0b0e15;
         --color-foreground: #f6f6f6;
         --color-card: #1e293b;
