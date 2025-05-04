@@ -1,0 +1,187 @@
+---
+import headshot from '@/assets/images/headshot.jpg';
+import Image from 'astro/components/Image.astro';
+
+import ROUTES from '@config/routes.ts';
+---
+
+<!-- Logo/Headshot Section -->
+<a href='/' class='flex items-center gap-1 text-muted-foreground z-10'>
+    <Image
+        src={headshot}
+        alt='Sindre Sauarlia'
+        width={70}
+        height={70}
+        class='rounded-full md:w-10 w-8 aspect-square'
+        format={'avif'}
+    />
+    <div class='flex flex-col gap-0 md:text-2xl text-lg leading-4 font-megrim'>
+        <span>Sindre</span>
+        <span class='ml-4'>Sauarlia</span>
+    </div>
+</a>
+
+<!-- Desktop Navigation -->
+<nav class='hidden md:block'>
+    <ul class='flex lg:gap-8 gap-6'>
+        {
+            ROUTES.map((route) => (
+                <li>
+                    <a
+                        href={route.path}
+                        class='text-muted-foreground text-xl font-caveat hover:text-foreground transition-colors duration-200'>
+                        {route.name}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
+
+<!-- Hamburger Menu Button -->
+<button
+    id='hamburger-btn'
+    class='z-50 w-10 h-10 relative flex flex-col justify-center items-center md:hidden hover:scale-110 transition-transform duration-200 cursor-pointer'
+    aria-label='Toggle menu'>
+    <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
+    <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
+    <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
+</button>
+
+<!-- Mobile Menu Overlay (Background) -->
+<div
+    id='menu-overlay'
+    class='fixed inset-0 bg-background/70 z-30 backdrop-blur-[1px] hidden opacity-0 transition-opacity duration-300 delay-50'>
+</div>
+
+<!-- Mobile Menu -->
+<div
+    id='mobile-menu'
+    class='fixed top-0 right-0 w-4/5 h-full z-40 transform translate-x-full transition-transform duration-300 shadow-2xl bg-white dark:bg-gray-800 backdrop-blur-sm'
+    style='perspective: 1000px; backface-visibility: hidden;'>
+    <nav class='pt-24 px-8'>
+        <ul class='space-y-8'>
+            {
+                ROUTES.map((route, index) => (
+                    <li
+                        class='opacity-0 transform -rotate-y-90 transition-all duration-400 origin-right'
+                        style={`transition-delay: ${(index + 1) * 100}ms;`}>
+                        <a
+                            href={route.path}
+                            class='text-2xl font-megrim block py-3 px-4 hover:text-foreground transition-colors duration-200'>
+                            {route.name}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+</div>
+
+<style>
+    /* Keyframes for 3D rotation */
+    @keyframes rotate-in {
+        from {
+            transform: rotateY(-90deg);
+            opacity: 0;
+        }
+        to {
+            transform: rotateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Hamburger to X animation */
+    :global(.hamburger-active) span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+    }
+
+    :global(.hamburger-active) span:nth-child(2) {
+        opacity: 0;
+    }
+
+    :global(.hamburger-active) span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Menu item animation when active */
+    :global(.mobile-menu-active) li {
+        opacity: 1;
+        transform: rotateY(0);
+    }
+</style>
+
+<script is:inline>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        // Safe element selection with null checking
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const bodyElement = document.body;
+
+        // Only run if all elements exist
+        if (!hamburgerBtn || !mobileMenu || !menuOverlay) return;
+
+        // Toggle menu function
+        function toggleMenu() {
+            hamburgerBtn.classList.toggle('hamburger-active');
+
+            if (mobileMenu.classList.contains('translate-x-full')) {
+                // Open menu
+                mobileMenu.classList.remove('translate-x-full');
+                mobileMenu.classList.add('translate-x-0');
+                menuOverlay.classList.remove('hidden');
+
+                // Trigger overlay fade-in
+                setTimeout(() => {
+                    menuOverlay.classList.add('opacity-100');
+                }, 10);
+
+                // Prevent body scrolling
+                bodyElement.style.overflow = 'hidden';
+
+                // Add active class to show menu items with animation
+                setTimeout(() => {
+                    mobileMenu.classList.add('mobile-menu-active');
+                }, 100);
+            } else {
+                // Close menu
+                closeMenu();
+            }
+        }
+
+        // Close menu function
+        function closeMenu() {
+            if (!hamburgerBtn || !mobileMenu || !menuOverlay) return;
+
+            mobileMenu.classList.remove('mobile-menu-active');
+            menuOverlay.classList.remove('opacity-100');
+
+            // Wait for the animation to complete before hiding the menu
+            setTimeout(() => {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('translate-x-full');
+                menuOverlay.classList.add('hidden');
+
+                // Re-enable body scrolling
+                bodyElement.style.overflow = '';
+            }, 300);
+
+            hamburgerBtn.classList.remove('hamburger-active');
+        }
+
+        // Event listeners
+        hamburgerBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+
+        // Close menu when pressing escape key
+        document.addEventListener('keydown', (event) => {
+            if (!mobileMenu) return;
+
+            if (event.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
+                closeMenu();
+            }
+        });
+    });
+</script>

@@ -1,32 +1,60 @@
 ---
-import '../global.css';
+import CommonHead from '@/components/layout/common-head.astro';
+import Footer from '@/components/layout/footer.astro';
+import Header from '@/components/layout/header.astro';
+
+// Styles
+import '@/global.css';
 ---
 
 <!doctype html>
-<html lang='en' class='bg-gray-100 text-gray-900'>
-    <head>
-        <meta charset='UTF-8' />
-        <meta name='viewport' content='width=device-width' />
-        <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-        <meta name='generator' content={Astro.generator} />
-        <title>Sindre Sauarlia</title>
-    </head>
+<html lang='en'>
+    <CommonHead />
     <body class='min-h-screen flex flex-col'>
-        <header class='p-4 bg-blue-600 text-white flex justify-between items-center'>
-            <h1 class='text-2xl font-bold'>Sindre Sauarlia</h1>
-            <nav>
-                <ul class='flex space-x-4'>
-                    <li><a href='/' class='hover:underline p-2'>Home</a></li>
-                    <li><a href='/about' class='hover:underline p-2'>About</a></li>
-                    <li><a href='/blog' class='hover:underline p-2'>Blog</a></li>
-                </ul>
-            </nav>
+        <header class=''>
+            <div class='container mx-auto py-2 px-4 flex justify-between items-center'>
+                <Header />
+            </div>
         </header>
-        <main class='flex-grow p-6'>
+        <main class='flex-grow py-2 px-4 container mx-auto'>
             <slot />
         </main>
-        <footer class='p-4 bg-gray-800 text-white text-center'>
-            <p>&copy; Yo!</p>
+        <footer class='border-t border-border text-center'>
+            <div class='container mx-auto px-4'>
+                <Footer />
+            </div>
         </footer>
     </body>
 </html>
+
+<script is:inline>
+    const applyTheme = () => {
+        const isDark =
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+        document.documentElement.classList.toggle('dark', isDark);
+    };
+
+    applyTheme();
+
+    document.addEventListener('astro:page-load', applyTheme);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', applyTheme);
+
+    window.setLightTheme = () => {
+        localStorage.theme = 'light';
+        applyTheme();
+    };
+
+    window.setDarkTheme = () => {
+        localStorage.theme = 'dark';
+        applyTheme();
+    };
+
+    window.setSystemTheme = () => {
+        localStorage.removeItem('theme');
+        applyTheme();
+    };
+</script>
