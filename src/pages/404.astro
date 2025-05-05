@@ -44,7 +44,7 @@ const pathname = Astro.url.pathname;
 </Layout>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('astro:page-load', function () {
         // Get DOM elements with null checks
         const terminalContentEl = document.getElementById('terminal-content');
         const commandInputEl = document.getElementById('command-input');

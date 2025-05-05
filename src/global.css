@@ -92,7 +92,7 @@
 @layer base {
     html,
     body {
-        @apply bg-background text-foreground font-work;
+        @apply bg-background text-foreground font-work transition-colors duration-300;
     }
 
     main > a {
