@@ -1,0 +1,11 @@
+**/.git
+**/.gitignore
+**/node_modules
+**/dist
+**/node_modules
+**/.astro
+**/.vscode
+**/.prettierrc
+**/.json
+**/.yaml
+**/.env

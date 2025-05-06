@@ -45,6 +45,12 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
+      prettier:
+        specifier: 3.5.3
+        version: 3.5.3
+      prettier-plugin-astro:
+        specifier: 0.14.1
+        version: 0.14.1
 
 packages:
 
@@ -3946,13 +3952,11 @@ snapshots:
       '@astrojs/compiler': 2.12.0
       prettier: 3.5.3
       sass-formatter: 0.7.9
-    optional: true
 
   prettier@2.8.7:
     optional: true
 
-  prettier@3.5.3:
-    optional: true
+  prettier@3.5.3: {}
 
   prismjs@1.30.0: {}
 
@@ -4118,13 +4122,11 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
-  s.color@0.0.15:
-    optional: true
+  s.color@0.0.15: {}
 
   sass-formatter@0.7.9:
     dependencies:
       suf-log: 2.5.3
-    optional: true
 
   sax@1.4.1: {}
 
@@ -4244,7 +4246,6 @@ snapshots:
   suf-log@2.5.3:
     dependencies:
       s.color: 0.0.15
-    optional: true
 
   tailwindcss@4.1.5: {}
 
