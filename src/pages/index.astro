@@ -1,22 +1,155 @@
 ---
-import AvailableBadge from '@/components/home/available-badge.astro';
-import Technologies from '@/components/home/technologies.astro';
-import Layout from '@/layouts/Layout.astro';
+import AvailableBadge from "@/components/home/available-badge.astro";
+import ProgIcon from "@/components/icons/prog-icon.astro";
+import Layout from "@/layouts/Layout.astro";
 
-const AVAILABLE_FOR_WORK = import.meta.env.AVAILABLE_FOR_WORK === 'true';
-console.log('AVAILABLE_FOR_WORK', AVAILABLE_FOR_WORK);
+const AVAILABLE_FOR_WORK = import.meta.env.AVAILABLE_FOR_WORK === "true";
 ---
 
 <Layout>
-    <section id='hero-section' class=''>
-        {AVAILABLE_FOR_WORK && <AvailableBadge />}
+    <section id='hero-section' class='w-full h-screen overflow-hidden'>
+        <div class='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 pointer-events-none'>
+            {/* Added pointer-events-none to text block if it interferes with mousemove on hero-section */}
+            {AVAILABLE_FOR_WORK && <AvailableBadge />}
+            <h1 class='flex flex-col text-7xl'>
+                <span>Hi,</span>
+                <span>I'm Sindre Sauarlia</span>
+            </h1>
+            <p class='mt-4 text-lg'>
+                I'm a full-stack developer dedicated to deeply understand every aspect of the software development
+                process.
+            </p>
+        </div>
 
-        <h1 class='flex flex-col text-7xl'>
-            <span>Hey,</span>
-            <span>I'm Sindre Sauarlia</span>
-        </h1>
-        <p>
-            I'm a full-stack developer dedicated to deeply understand every aspect of the software development process.
-        </p>
+        <div
+            id='planes-wrapper'
+            class='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen overflow-hidden'>
+            <div id='plane-1' class='plane-near w-full h-full absolute'>
+                <div class='codelang-card absolute top-[68%] left-[72%]'><ProgIcon variant='csharp' size={4} /></div>
+                <div class='codelang-card absolute top-[58%] left-[10%]'><ProgIcon variant='ts' size={4} /></div>
+                <div class='codelang-card absolute top-[25%] left-[35%]'><ProgIcon variant="python" size={4} /></div>
+            </div>
+
+            <div id='plane-2' class='plane-mid w-full h-full absolute'>
+                <div class='codelang-card absolute top-[20%] left-[40%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute top-[15%] left-[25%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute bottom-[15%] right-[15%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute top-[70%] left-[20%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute bottom-[5%] left-[70%]'><ProgIcon size={4} /></div>
+            </div>
+
+            <div id='plane-3' class='plane-far w-full h-full absolute'>
+                <div class='codelang-card absolute top-[5%] left-[5%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute top-[45%] left-[50%] -translate-x-1/2'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute bottom-[25%] right-[5%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute top-[15%] right-[40%]'><ProgIcon size={4} /></div>
+                <div class='codelang-card absolute bottom-[30%] left-[25%]'><ProgIcon size={4} /></div>
+            </div>
+        </div>
     </section>
 </Layout>
+
+<script>
+    import { gsap } from 'gsap';
+
+    document.addEventListener('astro:page-load', () => {
+        if (typeof gsap === 'undefined') {
+            console.error('GSAP is not defined. Make sure it is loaded.');
+            return;
+        }
+
+        const heroSection = document.getElementById('hero-section');
+        const plane1 = document.getElementById('plane-1');
+        const plane2 = document.getElementById('plane-2');
+        const plane3 = document.getElementById('plane-3');
+
+        if (!heroSection || !plane1 || !plane2 || !plane3) {
+            console.warn('Required elements for parallax effect not found.');
+            return;
+        }
+
+        let requestAnimationFrameId = null;
+
+        // Target offsets based on mouse position relative to center
+        let targetX = 0;
+        let targetY = 0;
+
+        // Current animated offsets of the planes (plane1)
+        let currentX = 0;
+        let currentY = 0;
+
+        const easing = 0.08; // Smoothness of the follow; lower is smoother/slower
+        const speed = 0.05; // Determines max displacement relative to mouse distance from center. Adjust this value (e.g., 0.02 to 0.1)
+
+        let heroCenterX = window.innerWidth / 2;
+        let heroCenterY = window.innerHeight / 2;
+
+        const updateCenter = () => {
+            heroCenterX = window.innerWidth / 2;
+            heroCenterY = window.innerHeight / 2;
+        };
+
+        window.addEventListener('resize', updateCenter);
+
+        const lerp = (start, target, amount) => start * (1 - amount) + target * amount;
+
+        const animate = () => {
+            // Lerp current plane positions towards the target positions
+            currentX = lerp(currentX, targetX, easing);
+            currentY = lerp(currentY, targetY, easing);
+
+            // Apply absolute transformations based on lerped values
+            gsap.set(plane1, { x: currentX, y: currentY });
+            gsap.set(plane2, { x: currentX * 0.65, y: currentY * 0.65 }); // Adjust multipliers for depth
+            gsap.set(plane3, { x: currentX * 0.3, y: currentY * 0.3 });
+
+            // If current position is very close to target, and target is effectively zero (e.g. mouse centered or out)
+            if (Math.abs(currentX - targetX) < 0.01 && Math.abs(currentY - targetY) < 0.01) {
+                if (Math.abs(targetX) < 0.01 && Math.abs(targetY) < 0.01) {
+                    // Snap to final resting state (0,0) and stop animation
+                    gsap.set(plane1, { x: 0, y: 0 });
+                    gsap.set(plane2, { x: 0, y: 0 });
+                    gsap.set(plane3, { x: 0, y: 0 });
+                    currentX = 0;
+                    currentY = 0; // Reset current animated values
+
+                    if (requestAnimationFrameId) {
+                        cancelAnimationFrame(requestAnimationFrameId);
+                        requestAnimationFrameId = null;
+                    }
+                    return;
+                }
+            }
+            requestAnimationFrameId = requestAnimationFrame(animate);
+        };
+
+        const manageMouseMove = (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // Calculate target displacement based on mouse distance from center
+            // 'speed' here dictates how much the planes react to mouse distance
+            targetX = (mouseX - heroCenterX) * speed;
+            targetY = (mouseY - heroCenterY) * speed;
+
+            if (requestAnimationFrameId === null) {
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            }
+        };
+
+        heroSection.addEventListener('mousemove', manageMouseMove);
+
+        heroSection.addEventListener('mouseleave', () => {
+            // When mouse leaves, set target for planes to return to center (0,0)
+            targetX = 0;
+            targetY = 0;
+            // Ensure animation continues to bring planes back to center if they aren't already there
+            if (requestAnimationFrameId === null && (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01)) {
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            }
+        });
+
+        // Initial call to set up center (in case of no resize)
+        updateCenter();
+    });
+</script>

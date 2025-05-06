@@ -124,3 +124,33 @@
         @apply text-lg md:text-xl;
     }
 }
+
+@layer components {
+    .codelang-card {
+        @apply bg-card w-fit p-3 md:p-4 rounded-lg md:rounded-md shadow-lg border border-border transition-all duration-300 ease-out;
+    }
+
+    #planes-wrapper {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+
+    #plane-1,
+    #plane-2,
+    #plane-3 {
+        @apply w-full h-full;
+        transform-style: preserve-3d;
+    }
+
+    .plane-far {
+        @apply brightness-50 opacity-15 -z-20;
+    }
+
+    .plane-mid {
+        @apply brightness-50 opacity-50 -z-10;
+    }
+
+    .plane-near {
+        @apply brightness-75 z-0 opacity-90;
+    }
+}

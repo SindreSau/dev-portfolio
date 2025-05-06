@@ -41,6 +41,13 @@
                 "rules": {
                     "style": {}
                 }
+            },
+            "javascript": {
+                "formatter": {
+                    "quoteStyle": "double",
+                    "semicolons": "always",
+                    "trailingCommas": "es5"
+                }
             }
         }
     ]
