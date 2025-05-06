@@ -48,6 +48,9 @@
   --color-terminal-button-green: hsl(128.8, 67.9%, 47.1%);
   --color-terminal-cursor: hsl(0, 0%, 20%);
 
+  /* Tech icons */
+  --color-tech-icons: hsl(234, 4%, 44%);
+
   /* utils */
   --container-padding: 1rem;
 }
@@ -79,11 +82,9 @@
 
     /* Dark Terminal Colors */
     --color-terminal-bg: hsl(0, 0%, 11.8%); /* Dark terminal background */
-    --color-terminal-header-bg: hsl(
-      220,
-      12.6%,
-      26.5%
-    ); /* Dark header background */
+    --color-terminal-header-bg: hsl(220, 12.6%, 26.5%);
+
+    /* Dark header background */
     --color-terminal-text: hsl(220, 16.9%, 70.8%); /* Dark text */
     --color-terminal-prompt: hsl(207.2, 81.8%, 65.9%); /* Dark prompt blue */
     --color-terminal-path: hsl(39.5, 69.1%, 69%); /* Dark path yellow */
@@ -95,6 +96,9 @@
     --color-terminal-button-yellow: hsl(42.9, 100%, 58.6%);
     --color-terminal-button-green: hsl(128.8, 67.9%, 47.1%);
     --color-terminal-cursor: hsl(220, 16.9%, 70.8%);
+
+    /* Dark Tech icons */
+    --color-tech-icons: hsl(208, 7%, 35%);
   }
 }
 
@@ -134,7 +138,7 @@
 
 @layer components {
   .codelang-card {
-    @apply dark:bg-primary/10 bg-card w-fit p-3 md:p-4 rounded-sm transition-all duration-300 ease-out text-primary-muted;
+    @apply w-fit p-3 md:p-4 rounded-sm transition-all duration-300 ease-out text-tech-icons;
   }
 
   .plane-far {
