@@ -9,47 +9,50 @@
     --font-work: 'Work Sans Variable', sans-serif;
     --font-expletus: 'Expletus Sans Variable', sans-serif;
 
-    /* Colors */
-    --color-background: hsl(40, 25%, 96%);
-    --color-background-darker: hsl(40, 25%, 90%);
-    --color-background-lighter: hsl(40, 25%, 98%);
-    --color-foreground: hsl(222.4, 47.4%, 11.2%);
-    --color-card: hsl(40, 20%, 92%);
+    /* Colors - Green Theme */
+    --color-background: hsl(120, 12%, 96%);
+    --color-background-darker: hsl(120, 8%, 85%);
+    --color-background-lighter: hsl(120, 12%, 98%);
+    --color-foreground: hsl(174, 47%, 12%);
+    --color-card: hsl(120, 20%, 92%);
 
-    --color-primary: hsl(243.4, 75.2%, 58.2%);
-    --color-primary-muted: hsl(243, 38%, 70%);
+    /* Primary: Modern Green */
+    --color-primary: hsl(142, 79%, 54%);
+    --color-primary-muted: hsl(142, 50%, 60%);
     --color-primary-foreground: hsl(0, 0%, 100%);
 
-    --color-secondary: hsl(153, 97%, 75%);
-    --color-secondary-foreground: hsl(27.1, 73.1%, 25.7%);
+    /* Secondary: Teal */
+    --color-secondary: hsl(188, 86%, 70%);
+    --color-secondary-foreground: hsl(188, 73%, 25%);
 
-    --color-accent: hsl(327.1, 87.2%, 70.2%);
-    --color-accent-foreground: hsl(333.3, 67.8%, 30%);
+    /* Accent: Mint/Aqua */
+    --color-accent: hsl(142, 70%, 66%);
+    --color-accent-foreground: hsl(142, 67%, 25%);
 
-    --color-muted: hsl(0, 0%, 92.2%);
-    --color-muted-foreground: hsl(216.4, 22.6%, 34.5%);
+    --color-muted: hsl(120, 10%, 92%);
+    --color-muted-foreground: hsl(160, 23%, 35%);
 
-    --color-border: hsl(240, 8%, 77%);
-    --color-link: hsl(243.4, 75.2%, 58.2%);
-    --color-link-visited: hsl(283.4, 75.2%, 58.2%);
+    --color-border: hsl(160, 15%, 77%);
+    --color-link: hsl(160, 84%, 39%);
+    --color-link-visited: hsl(200, 75%, 50%);
 
     /* Terminal Colors */
-    --color-terminal-bg: hsl(0, 0%, 97.3%); /* Light terminal background */
-    --color-terminal-header-bg: hsl(0, 0%, 87.8%); /* Light header background */
-    --color-terminal-text: hsl(0, 0%, 20%); /* Light text */
-    --color-terminal-prompt: hsl(204, 100%, 40%); /* Light prompt blue */
-    --color-terminal-path: hsl(29.8, 95.8%, 43.7%); /* Light path orange */
-    --color-terminal-error: hsl(0, 70.1%, 50.6%); /* Light error red */
-    --color-terminal-link-bg: hsl(141.2, 69.7%, 45.3%); /* Light link green */
+    --color-terminal-bg: hsl(120, 10%, 97%);
+    --color-terminal-header-bg: hsl(120, 10%, 88%);
+    --color-terminal-text: hsl(174, 30%, 20%);
+    --color-terminal-prompt: hsl(160, 100%, 30%);
+    --color-terminal-path: hsl(30, 96%, 44%);
+    --color-terminal-error: hsl(0, 70%, 51%);
+    --color-terminal-link-bg: hsl(160, 70%, 45%);
     --color-terminal-link-text: hsl(0, 0%, 100%);
-    --color-terminal-link-hover-bg: hsl(145.1, 75.1%, 36.3%);
-    --color-terminal-button-red: hsl(2.4, 100%, 66.9%);
-    --color-terminal-button-yellow: hsl(42.9, 100%, 58.6%);
-    --color-terminal-button-green: hsl(128.8, 67.9%, 47.1%);
-    --color-terminal-cursor: hsl(0, 0%, 20%);
+    --color-terminal-link-hover-bg: hsl(160, 75%, 36%);
+    --color-terminal-button-red: hsl(2, 100%, 67%);
+    --color-terminal-button-yellow: hsl(43, 100%, 59%);
+    --color-terminal-button-green: hsl(129, 68%, 47%);
+    --color-terminal-cursor: hsl(174, 30%, 20%);
 
     /* Tech icons */
-    --color-tech-icons: hsl(234, 4%, 44%);
+    --color-tech-icons: hsl(160, 30%, 40%);
 
     /* utils */
     --container-padding: 1rem;
@@ -57,52 +60,49 @@
 
 @layer base {
     @variant dark {
-        --color-background: hsl(228, 31%, 6%);
-        --color-background-darker: hsl(228, 31%, 4%);
-        --color-background-lighter: hsl(228, 31%, 8%);
-        --color-foreground: hsl(228, 2%, 95%);
-        --color-card: hsl(217.3, 32.6%, 17.8%);
+        --color-background: hsl(48, 14%, 6%);
+        --color-background-darker: hsl(174, 11%, 1%);
+        --color-background-lighter: hsl(174, 11%, 6%);
+        --color-foreground: hsl(120, 10%, 95%);
+        --color-card: hsl(174, 33%, 18%);
 
-        --color-primary: hsl(239.1, 84.9%, 66.7%);
-        --color-primary-muted: hsl(239, 23%, 59%);
+        /* Primary: Deep Emerald */
+        --color-primary: hsl(150, 85%, 42%);
+        --color-primary-muted: hsl(150, 50%, 55%);
         --color-primary-foreground: hsl(0, 0%, 100%);
 
-        --color-secondary: hsl(160.4, 100%, 69.6%);
+        /* Secondary: Aqua/Teal */
+        --color-secondary: hsl(182, 100%, 65%);
         --color-secondary-foreground: hsl(0, 0%, 100%);
 
-        --color-accent: hsl(291.4, 100%, 72.7%);
+        /* Accent: Mint */
+        --color-accent: hsl(48, 97%, 72%);
         --color-accent-foreground: hsl(0, 0%, 100%);
 
-        --color-muted: hsl(216.4, 22.6%, 34.5%);
-        --color-muted-foreground: hsl(240, 6.9%, 71.2%);
+        --color-muted: hsl(174, 23%, 35%);
+        --color-muted-foreground: hsl(120, 7%, 71%);
 
-        --color-border: hsl(222.9, 11.3%, 22.2%);
-        --color-link: hsl(239.3, 60.4%, 64.1%);
-        --color-link-visited: hsl(282.1, 69.6%, 68.6%);
+        --color-border: hsl(174, 20%, 22%);
+        --color-link: hsl(160, 60%, 60%);
+        --color-link-visited: hsl(200, 70%, 62%);
 
         /* Dark Terminal Colors */
-        --color-terminal-bg: hsl(0, 0%, 11.8%); /* Dark terminal background */
-        --color-terminal-header-bg: hsl(220, 12.6%, 26.5%);
-
-        /* Dark header background */
-        --color-terminal-text: hsl(220, 16.9%, 70.8%); /* Dark text */
-        --color-terminal-prompt: hsl(
-            207.2,
-            81.8%,
-            65.9%
-        ); /* Dark prompt blue */
-        --color-terminal-path: hsl(39.5, 69.1%, 69%); /* Dark path yellow */
-        --color-terminal-error: hsl(354.9, 64.9%, 65.1%); /* Dark error red */
-        --color-terminal-link-bg: hsl(96.2, 38%, 62.2%); /* Dark link green */
-        --color-terminal-link-text: hsl(0, 0%, 11.8%);
-        --color-terminal-link-hover-bg: hsl(96.4, 29.8%, 51.6%);
-        --color-terminal-button-red: hsl(2.4, 100%, 66.9%);
-        --color-terminal-button-yellow: hsl(42.9, 100%, 58.6%);
-        --color-terminal-button-green: hsl(128.8, 67.9%, 47.1%);
-        --color-terminal-cursor: hsl(220, 16.9%, 70.8%);
+        --color-terminal-bg: hsl(174, 30%, 12%);
+        --color-terminal-header-bg: hsl(174, 30%, 20%);
+        --color-terminal-text: hsl(120, 17%, 71%);
+        --color-terminal-prompt: hsl(160, 82%, 55%);
+        --color-terminal-path: hsl(40, 69%, 69%);
+        --color-terminal-error: hsl(355, 65%, 65%);
+        --color-terminal-link-bg: hsl(160, 50%, 55%);
+        --color-terminal-link-text: hsl(174, 30%, 12%);
+        --color-terminal-link-hover-bg: hsl(160, 50%, 45%);
+        --color-terminal-button-red: hsl(2, 100%, 67%);
+        --color-terminal-button-yellow: hsl(43, 100%, 59%);
+        --color-terminal-button-green: hsl(129, 68%, 47%);
+        --color-terminal-cursor: hsl(120, 17%, 71%);
 
         /* Dark Tech icons */
-        --color-tech-icons: hsl(208, 7%, 35%);
+        --color-tech-icons: hsl(160, 40%, 60%);
     }
 }
 
@@ -142,19 +142,19 @@
 
 @layer components {
     .codelang-card {
-        @apply w-fit p-3 md:p-4 rounded-sm transition-all duration-300 ease-out text-tech-icons saturate-[0.6];
+        @apply w-fit p-3 md:p-4 rounded-sm transition-all duration-300 ease-out text-tech-icons saturate-[0.7];
     }
 
     .plane-far {
-        @apply dark:brightness-50 brightness-150 opacity-15 -z-20;
+        @apply dark:brightness-50 brightness-125 opacity-15 -z-20;
     }
 
     .plane-mid {
-        @apply dark:brightness-50 brightness-125 opacity-50 -z-10;
+        @apply dark:brightness-50 brightness-110 opacity-50 -z-10;
     }
 
     .plane-near {
-        @apply dark:brightness-75 brightness-110 z-0 opacity-90;
+        @apply dark:brightness-75 z-0 opacity-90;
     }
 
     @media (pointer: coarse) {

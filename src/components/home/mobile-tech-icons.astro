@@ -1,0 +1,91 @@
+---
+import { Icon } from "astro-icon/components";
+import { techData } from "./tech-data";
+
+const iconsPerRow = 3;
+const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 random tech icons
+---
+
+<div
+    class="absolute bottom-0 left-0 w-full h-full pointer-events-none"
+    id="mobile-tech-icons-container"
+>
+    <div
+        class="flex flex-wrap justify-center items-center w-full h-full transition-transform duration-1000"
+        id="mobile-tech-icons-wrapper"
+    >
+        {
+            items.map((tech, index) => (
+                <div
+                    class="m-4 transform-gpu"
+                    style={{
+                        "--delay": `${index * 0.15}s`,
+                        "--scale-start": "0.8",
+                        "--opacity-start": "0",
+                    }.toString()}
+                >
+                    <Icon
+                        name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
+                        class="text-primary-muted transition-all duration-1000"
+                        style={`width: ${tech.size === "lg" ? "48px" : "32px"}; height: ${tech.size === "lg" ? "48px" : "32px"}`}
+                    />
+                </div>
+            ))
+        }
+    </div>
+</div>
+
+<script>
+    import { gsap, Power3 } from "gsap";
+
+    document.addEventListener("astro:page-load", () => {
+        const container = document.getElementById(
+            "mobile-tech-icons-container"
+        );
+        const icons = document.querySelectorAll(
+            "#mobile-tech-icons-wrapper > div"
+        );
+
+        if (!container || !icons.length) return;
+
+        gsap.fromTo(
+            icons,
+            {
+                opacity: 0,
+                scale: 0.8,
+                y: 100,
+                ease: Power3.easeOut,
+            },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                stagger: 0.15,
+                duration: 1.2,
+                scrollTrigger: {
+                    trigger: container,
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    scrub: true,
+                    toggleActions: "play none none reverse",
+                },
+            }
+        );
+
+        // Add bounce effect on scroll
+        gsap.to("#mobile-tech-icons-wrapper", {
+            y: -20,
+            ease: "power2.out",
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            paused: true,
+            scrollTrigger: {
+                trigger: container,
+                start: "top 60%",
+                end: "bottom 40%",
+                scrub: 0.5,
+            },
+        });
+    });
+</script>
