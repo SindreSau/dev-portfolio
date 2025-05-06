@@ -9,41 +9,42 @@
     --font-work: 'Work Sans Variable', sans-serif;
 
     /* Colors */
-    --color-background: #f8f6f2;
-    --color-background-darker: #f0eee9;
-    --color-foreground: #0f172a;
-    --color-card: #ffffff;
+    --color-background: hsl(40, 25%, 96%);
+    --color-background-darker: hsl(40, 25%, 92%);
+    --color-background-lighter: hsl(40, 25%, 98%);
+    --color-foreground: hsl(222.4, 47.4%, 11.2%);
+    --color-card: hsl(0, 0%, 100%);
 
-    --color-primary: #4e46e5;
-    --color-primary-foreground: #ffffff;
+    --color-primary: hsl(243.4, 75.2%, 58.2%);
+    --color-primary-foreground: hsl(0, 0%, 100%);
 
-    --color-secondary: #fbbf24;
-    --color-secondary-foreground: #713f12;
+    --color-secondary: hsl(44.9, 96.8%, 56.3%);
+    --color-secondary-foreground: hsl(27.1, 73.1%, 25.7%);
 
-    --color-accent: #f472b6;
-    --color-accent-foreground: #831843;
+    --color-accent: hsl(327.1, 87.2%, 70.2%);
+    --color-accent-foreground: hsl(333.3, 67.8%, 30%);
 
-    --color-muted: #ebebeb;
-    --color-muted-foreground: #475569;
+    --color-muted: hsl(0, 0%, 92.2%);
+    --color-muted-foreground: hsl(216.4, 22.6%, 34.5%);
 
-    --color-border: #e4e4e7;
-    --color-link: #4e46e5;
-    --color-link-visited: #b546e5;
+    --color-border: hsl(240, 7.7%, 89.6%);
+    --color-link: hsl(243.4, 75.2%, 58.2%);
+    --color-link-visited: hsl(283.4, 75.2%, 58.2%);
 
     /* Terminal Colors */
-    --color-terminal-bg: #f8f8f8; /* Light terminal background */
-    --color-terminal-header-bg: #e0e0e0; /* Light header background */
-    --color-terminal-text: #333333; /* Light text */
-    --color-terminal-prompt: #007acc; /* Light prompt blue */
-    --color-terminal-path: #d97706; /* Light path orange */
-    --color-terminal-error: #dc2626; /* Light error red */
-    --color-terminal-link-bg: #22c55e; /* Light link green */
-    --color-terminal-link-text: #ffffff;
-    --color-terminal-link-hover-bg: #16a34a;
-    --color-terminal-button-red: #ff5f56;
-    --color-terminal-button-yellow: #ffbd2e;
-    --color-terminal-button-green: #27c93f;
-    --color-terminal-cursor: #333333;
+    --color-terminal-bg: hsl(0, 0%, 97.3%); /* Light terminal background */
+    --color-terminal-header-bg: hsl(0, 0%, 87.8%); /* Light header background */
+    --color-terminal-text: hsl(0, 0%, 20%); /* Light text */
+    --color-terminal-prompt: hsl(204, 100%, 40%); /* Light prompt blue */
+    --color-terminal-path: hsl(29.8, 95.8%, 43.7%); /* Light path orange */
+    --color-terminal-error: hsl(0, 70.1%, 50.6%); /* Light error red */
+    --color-terminal-link-bg: hsl(141.2, 69.7%, 45.3%); /* Light link green */
+    --color-terminal-link-text: hsl(0, 0%, 100%);
+    --color-terminal-link-hover-bg: hsl(145.1, 75.1%, 36.3%);
+    --color-terminal-button-red: hsl(2.4, 100%, 66.9%);
+    --color-terminal-button-yellow: hsl(42.9, 100%, 58.6%);
+    --color-terminal-button-green: hsl(128.8, 67.9%, 47.1%);
+    --color-terminal-cursor: hsl(0, 0%, 20%);
 
     /* utils */
     --container-padding: 1rem;
@@ -51,41 +52,42 @@
 
 @layer base {
     @variant dark {
-        --color-background: #131721;
-        --color-background-darker: #0b0e15;
-        --color-foreground: #f6f6f6;
-        --color-card: #1e293b;
+        --color-background: hsl(228, 31%, 6%);
+        --color-background-darker: hsl(228, 31%, 4%);
+        --color-background-lighter: hsl(228, 31%, 8%);
+        --color-foreground: hsl(228, 2%, 95%);
+        --color-card: hsl(217.3, 32.6%, 17.8%);
 
-        --color-primary: #6366f1;
-        --color-primary-foreground: #ffffff;
+        --color-primary: hsl(239.1, 84.9%, 66.7%);
+        --color-primary-foreground: hsl(0, 0%, 100%);
 
-        --color-secondary: #63ffc3;
-        --color-secondary-foreground: #ffffff;
+        --color-secondary: hsl(160.4, 100%, 69.6%);
+        --color-secondary-foreground: hsl(0, 0%, 100%);
 
-        --color-accent: #ea74ff;
-        --color-accent-foreground: #ffffff;
+        --color-accent: hsl(291.4, 100%, 72.7%);
+        --color-accent-foreground: hsl(0, 0%, 100%);
 
-        --color-muted: #475569;
-        --color-muted-foreground: #b2b2bb;
+        --color-muted: hsl(216.4, 22.6%, 34.5%);
+        --color-muted-foreground: hsl(240, 6.9%, 71.2%);
 
-        --color-border: #32373f;
-        --color-link: #6d6edc;
-        --color-link-visited: #c87ae4;
+        --color-border: hsl(222.9, 11.3%, 22.2%);
+        --color-link: hsl(239.3, 60.4%, 64.1%);
+        --color-link-visited: hsl(282.1, 69.6%, 68.6%);
 
         /* Dark Terminal Colors */
-        --color-terminal-bg: #1e1e1e; /* Dark terminal background */
-        --color-terminal-header-bg: #3a3f4b; /* Dark header background */
-        --color-terminal-text: #abb2bf; /* Dark text */
-        --color-terminal-prompt: #61afef; /* Dark prompt blue */
-        --color-terminal-path: #e5c07b; /* Dark path yellow */
-        --color-terminal-error: #e06c75; /* Dark error red */
-        --color-terminal-link-bg: #98c379; /* Dark link green */
-        --color-terminal-link-text: #1e1e1e;
-        --color-terminal-link-hover-bg: #7da861;
-        --color-terminal-button-red: #ff5f56;
-        --color-terminal-button-yellow: #ffbd2e;
-        --color-terminal-button-green: #27c93f;
-        --color-terminal-cursor: #abb2bf;
+        --color-terminal-bg: hsl(0, 0%, 11.8%); /* Dark terminal background */
+        --color-terminal-header-bg: hsl(220, 12.6%, 26.5%); /* Dark header background */
+        --color-terminal-text: hsl(220, 16.9%, 70.8%); /* Dark text */
+        --color-terminal-prompt: hsl(207.2, 81.8%, 65.9%); /* Dark prompt blue */
+        --color-terminal-path: hsl(39.5, 69.1%, 69%); /* Dark path yellow */
+        --color-terminal-error: hsl(354.9, 64.9%, 65.1%); /* Dark error red */
+        --color-terminal-link-bg: hsl(96.2, 38%, 62.2%); /* Dark link green */
+        --color-terminal-link-text: hsl(0, 0%, 11.8%);
+        --color-terminal-link-hover-bg: hsl(96.4, 29.8%, 51.6%);
+        --color-terminal-button-red: hsl(2.4, 100%, 66.9%);
+        --color-terminal-button-yellow: hsl(42.9, 100%, 58.6%);
+        --color-terminal-button-green: hsl(128.8, 67.9%, 47.1%);
+        --color-terminal-cursor: hsl(220, 16.9%, 70.8%);
     }
 }
 
@@ -94,6 +96,10 @@
     body {
         @apply bg-background text-foreground font-work transition-colors duration-300;
         scrollbar-gutter: stable;
+    }
+
+    :root {
+        @apply bg-background;
     }
 
     main > a {
