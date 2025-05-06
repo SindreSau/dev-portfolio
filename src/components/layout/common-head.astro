@@ -1,4 +1,5 @@
 ---
+import { SEO } from 'astro-seo';
 import ClientRouter from 'astro/components/ClientRouter.astro';
 
 import '@fontsource/megrim';
@@ -16,13 +17,21 @@ const { title, description } = Astro.props;
 <meta charset='UTF-8' />
 <meta name='viewport' content='width=device-width' />
 <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+
+<link rel='sitemap' href='/sitemap-index.xml' type='application/xml' />
 <meta name='generator' content={Astro.generator} />
-<meta name='description' content={description} />
-<title>{title}</title>
 
 <!-- Preload fonts -->
 <link rel='preload' as='font' type='font/woff2' href={megrimWoff2} crossorigin='anonymous' />
 <link rel='preload' as='font' type='font/woff2' href={workSansWoff2} crossorigin='anonymous' />
 <link rel='preload' as='font' type='font/woff2' href={caveatWoff2} crossorigin='anonymous' />
+
+<!-- SEO -->
+<SEO
+    title={title}
+    description={description}
+    titleTemplate='%s | Sindre Sauarlia Fullstack Developer'
+    titleDefault='Sindre Sauarlia Fullstack Developer'
+/>
 
 <ClientRouter />

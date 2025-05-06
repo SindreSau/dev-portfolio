@@ -1,0 +1,138 @@
+<div class='relative inline-flex items-center justify-center hover:rotate-45 transition-transform duration-200 ease-in'>
+    <input type='checkbox' id='theme-toggle' class='sr-only' aria-label='Toggle dark/light theme' />
+    <label for='theme-toggle' class='cursor-pointer flex items-center justify-center w-10 h-10 rounded-full'>
+        <span class='sr-only'>Toggle dark/light theme</span>
+        <svg
+            id='theme-icon-svg'
+            class='theme-icon absolute w-6 h-6 opacity-0'
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='1.5'
+            stroke-linecap='round'
+            stroke-linejoin='round'>
+            <!-- Sun path -->
+            <path
+                id='sun-path'
+                d='M12 2v1m0 18v1m10-10h-1M3 12H2m17.07-7.07l-.392.393M5.322 18.678l-.393.393m14.141-.001l-.392-.393M5.322 5.322l-.393-.393M6.341 10A6 6 0 1 0 10 6.341'
+            ></path>
+
+            <!-- Moon path (shape reference for morphing, kept invisible) -->
+            <path
+                id='moon-path'
+                style='opacity: 0;'
+                d='M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10
+                   M12 22c3.314 0 6-4.477 6-10S15.314 2 12 2m-1 5h.009
+                   M10 14.5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0'
+            ></path>
+        </svg>
+    </label>
+</div>
+
+<script>
+    import { gsap } from 'gsap';
+    import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
+
+    gsap.registerPlugin(MorphSVGPlugin);
+
+    let sunToMoonAnim: gsap.core.Tween | null = null; // GSAP Animation instance
+
+    // Initializes or re-initializes the GSAP animation
+    function initializeAnimation() {
+        const sunPath = document.getElementById('sun-path') as SVGPathElement | null;
+        const moonPath = document.getElementById('moon-path') as SVGPathElement | null;
+
+        if (!sunPath || !moonPath) {
+            sunToMoonAnim = null;
+            return;
+        }
+
+        if (sunToMoonAnim) {
+            sunToMoonAnim.kill();
+            sunToMoonAnim = null;
+        }
+
+        // IMPORTANT: Reset sunPath to its original "sun" d-attribute.
+        // This counteracts potential state persistence by Astro's View Transitions,
+        // ensuring GSAP initializes the morph from the correct base "sun" shape.
+        const originalSunPathDAttribute =
+            'M12 2v1m0 18v1m10-10h-1M3 12H2m17.07-7.07l-.392.393M5.322 18.678l-.393.393m14.141-.001l-.392-.393M5.322 5.322l-.393-.393M6.341 10A6 6 0 1 0 10 6.341';
+        sunPath.setAttribute('d', originalSunPathDAttribute);
+
+        sunToMoonAnim = gsap.to(sunPath, {
+            morphSVG: moonPath, // Morph #sun-path TO #moon-path shape
+            duration: 0.4,
+            paused: true,
+            ease: 'power1.inOut',
+        });
+    }
+
+    // Applies the correct theme and icon state, then reveals the icon.
+    function applyThemeState(isInitialRender = false) {
+        const themeIconSvg = document.getElementById('theme-icon-svg');
+
+        if (!sunToMoonAnim) {
+            if (themeIconSvg) themeIconSvg.style.opacity = '1'; // Reveal icon even if animation isn't ready
+            return;
+        }
+
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const currentTheme = localStorage.getItem('theme');
+        const isDarkModeActive = currentTheme === 'dark' || (!currentTheme && prefersDarkScheme);
+        const themeToggleCheckbox = document.getElementById('theme-toggle') as HTMLInputElement | null;
+
+        if (isDarkModeActive) {
+            document.documentElement.classList.add('dark');
+            if (themeToggleCheckbox) themeToggleCheckbox.checked = true;
+            if (isInitialRender) {
+                sunToMoonAnim.progress(0).pause();
+            } else {
+                sunToMoonAnim.reverse();
+            }
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (themeToggleCheckbox) themeToggleCheckbox.checked = false;
+            if (isInitialRender) {
+                sunToMoonAnim.progress(1).pause();
+            } else {
+                sunToMoonAnim.play();
+            }
+        }
+
+        if (themeIconSvg) {
+            themeIconSvg.style.opacity = '1'; // Reveal the icon now that its state is set
+        }
+    }
+
+    // Astro event: Fired on initial page load and subsequent client-side navigations.
+    document.addEventListener('astro:page-load', () => {
+        initializeAnimation();
+        applyThemeState(true);
+
+        const themeToggle = document.getElementById('theme-toggle') as HTMLInputElement | null;
+        if (themeToggle) {
+            themeToggle.addEventListener('change', () => {
+                if (!sunToMoonAnim) return;
+
+                if (themeToggle.checked) {
+                    localStorage.setItem('theme', 'dark');
+                    document.documentElement.classList.add('dark');
+                    sunToMoonAnim.reverse();
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    document.documentElement.classList.remove('dark');
+                    sunToMoonAnim.play();
+                }
+            });
+        }
+    });
+
+    // Astro event: Fired after a view transition completes.
+    document.addEventListener('astro:after-swap', () => {
+        initializeAnimation();
+        applyThemeState(true);
+    });
+</script>

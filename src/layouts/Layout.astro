@@ -7,8 +7,8 @@ import Analytics from '@vercel/analytics/astro';
 import '@/global.css';
 
 const {
-    title = 'Sindre Sauarlia - Full Stack Developer',
-    description = 'Sindre Sauarlia is a software engineer and designer based in Norway. He loves building things with code and sharing his knowledge with others.',
+    title,
+    description = 'Sindre Sauarlia is a full-stack developer based in Oslo, Norway. He is dedicated to deeply understand every aspect of the software development process and never stop learning.',
 } = Astro.props;
 ---
 
@@ -22,8 +22,10 @@ const {
                 <Header />
             </div>
         </header>
-        <main class='flex-grow py-2 px-4 container mx-auto'>
-            <slot />
+        <main class='flex-grow py-3 px-4 container mx-auto min-h-screen h-[3000px]'>
+            <div class='max-w-5xl mx-auto'>
+                <slot />
+            </div>
         </main>
         <footer class='border-t border-border text-center'>
             <div class='container mx-auto px-4'>

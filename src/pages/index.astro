@@ -1,15 +1,25 @@
 ---
+import AvailableBadge from '@/components/home/available-badge.astro';
+import Technologies from '@/components/home/technologies.astro';
 import Layout from '@/layouts/Layout.astro';
+
+const AVAILABLE_FOR_WORK = import.meta.env.AVAILABLE_FOR_WORK === 'true';
+console.log('AVAILABLE_FOR_WORK', AVAILABLE_FOR_WORK);
 ---
 
 <Layout>
     <section id='hero-section' class=''>
+        {AVAILABLE_FOR_WORK && <AvailableBadge />}
+
         <h1 class='flex flex-col text-7xl'>
-            <span>Hello, my name is</span>
+            <span>Hello, I'm</span>
             <span> Sindre Sauarlia</span>
         </h1>
         <p>
             I'm a full-stack developer dedicated to deeply understand every aspect of the software development process.
         </p>
     </section>
+    <!-- <section title='Technologies' class=''>
+        <Technologies />
+    </section> -->
 </Layout>
