@@ -64,9 +64,11 @@ const {
             });
 
             const isOpenToWork =
-                import.meta.env.VITE_AVAILABLE_FOR_WORK === "true";
+                import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
             if (isOpenToWork) {
                 console.log("I am open to work!", isOpenToWork);
+            } else {
+                console.log("I am not open to work!", isOpenToWork);
             }
         </script>
     </body>

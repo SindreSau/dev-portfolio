@@ -18,7 +18,7 @@ const { variant = "default" }: Props = Astro.props;
     <div class="rounded-[calc(1.5rem-1px)] bg-background">
         <div class="bg-accent/5 rounded-3xl">
             <a
-                href={`mailto:${import.meta.env.VITE_EMAIL || "sindre.sauarlia@gmail.com"}`}
+                href={`mailto:${import.meta.env.PUBLIC_EMAIL || "sindre.sauarlia@gmail.com"}`}
                 class="px-3 py-0.5 text-xs md:text-sm cursor-pointer font-semibold inline-block"
             >
                 Available for hire

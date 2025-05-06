@@ -9,7 +9,7 @@ const currentPath = Astro.url.pathname;
 const normalizedCurrentPath =
     currentPath === "/" ? "/" : currentPath.replace(/\/$/, "");
 const isHomePage = normalizedCurrentPath === "/";
-const isAvailableForWork = import.meta.env.VITE_AVAILABLE_FOR_WORK === "true";
+const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
 ---
 
 <div class="z-10 relative w-full">
