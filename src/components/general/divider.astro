@@ -1,0 +1,20 @@
+---
+import { cn } from "@/utils/cn";
+
+type Props = {
+    class?: string;
+    scrollFadeIn?: boolean;
+};
+
+const { class: className, scrollFadeIn, ...props }: Props = Astro.props;
+---
+
+<div
+    class={cn(
+        "border-t border-border",
+        className,
+        scrollFadeIn && "scroll-fadein"
+    )}
+    {...props}
+>
+</div>

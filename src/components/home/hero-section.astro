@@ -1,0 +1,477 @@
+---
+import AvailableBadge from "@/components/home/available-badge.astro";
+import ProgIcon from "@/components/icons/prog-icon.astro";
+
+const AVAILABLE_FOR_WORK = import.meta.env.AVAILABLE_FOR_WORK === "true";
+
+// Tech data structure for reuse across animations
+const techData = [
+    // Plane 1 (Near)
+    { plane: 1, variant: "csharp", size: "4", top: "68%", left: "72%" },
+    { plane: 1, variant: "ts", size: "4", top: "58%", left: "10%" },
+    { plane: 1, variant: "python", size: "4", top: "25%", left: "35%" },
+
+    // Plane 2 (Mid)
+    { plane: 2, variant: "aspnet", size: "3", top: "75%", left: "63%" },
+    { plane: 2, variant: "react", size: "3", top: "50%", left: "17%" },
+    { plane: 2, variant: "next", size: "3", top: "63%", left: "20%" },
+    { plane: 2, variant: "astro", size: "3", top: "40%", left: "80%" },
+    { plane: 2, variant: "nodejs", size: "3", top: "20%", left: "50%" },
+    { plane: 2, variant: "vue", size: "3", top: "10%", left: "30%" },
+    { plane: 2, variant: "hono", size: "3", top: "20%", left: "80%" },
+
+    // Plane 3 (Far)
+    { plane: 3, variant: "git", size: "2.5", top: "42%", left: "85%" },
+];
+
+// Filter tech by plane
+const plane1Tech = techData.filter(tech => tech.plane === 1);
+const plane2Tech = techData.filter(tech => tech.plane === 2);
+const plane3Tech = techData.filter(tech => tech.plane === 3);
+---
+
+<section
+    id="hero-section"
+    class="w-full h-[calc(100vh-4rem)] overflow-hidden pointer-events-none"
+>
+    <div
+        class="absolute md:top-1/2 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-left z-10 md:w-2/3 lg:w-1/2 w-10/12 max-w-4xl pointer-events-none"
+    >
+        <div class="-translate-x-5 translate-y-1">
+            {AVAILABLE_FOR_WORK && <AvailableBadge />}
+        </div>
+
+        <h1 class="flex flex-col md:text-5xl text-3xl">
+            <span class="">Hi, I'm </span>
+            <span
+                id="animated-heading"
+                class="xl:text-7xl text-nowrap md:text-5xl bg-gradient-to-r text-primary-muted dark:brightness-125 brightness-75 bg-clip-text uppercase md:tracking-wider font-expletus pointer-events-auto"
+                >Sindre Sauarlia</span
+            >
+        </h1>
+        <p class="mt-4 text-lg pointer-events-auto text-justify">
+            I'm a full-stack developer dedicated to deeply understand every
+            aspect of the software development process.
+
+            <span class="text-primary/80 flex gap-2 items-center mt-1">
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    ><path
+                        fill="currentColor"
+                        d="M0 21V10l7.5-5l7.5 5v11h-5v-7H5v7zM24 2v19h-7V8.93l-1-.66V6h-2v.93l-4-2.66V2zm-3 12h-2v2h2zm0-4h-2v2h2zm0-4h-2v2h2z"
+                    ></path></svg
+                >
+                Oslo, Norway
+            </span>
+        </p>
+    </div>
+
+    <!-- Desktop parallax effect following mouse -->
+    <div
+        id="planes-wrapper"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen overflow-hidden hide-on-touchscreen hidden md:block max-w-[1440px] text-primary-muted"
+    >
+        <div id="plane-1" class="plane-near w-full h-full absolute">
+            {
+                plane1Tech.map(tech => (
+                    <div
+                        class="codelang-card absolute"
+                        style={`top: ${tech.top}; left: ${tech.left};`}
+                    >
+                        <ProgIcon variant={tech.variant} size={tech.size} />
+                    </div>
+                ))
+            }
+        </div>
+
+        <div id="plane-2" class="plane-mid w-full h-full absolute">
+            {
+                plane2Tech.map(tech => (
+                    <div
+                        class="codelang-card absolute"
+                        style={`top: ${tech.top}; left: ${tech.left};`}
+                    >
+                        <ProgIcon variant={tech.variant} size={tech.size} />
+                    </div>
+                ))
+            }
+        </div>
+
+        <div id="plane-3" class="plane-far w-full h-full absolute">
+            {
+                plane3Tech.map(tech => (
+                    <div
+                        class="codelang-card absolute"
+                        style={`top: ${tech.top}; left: ${tech.left};`}
+                    >
+                        <ProgIcon variant={tech.variant} size={tech.size} />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+
+    <!-- Mobile tech carousel -->
+    <div
+        id="tech-carousel"
+        class="hide-on-mouse absolute bottom-10 left-0 w-full overflow-hidden pointer-events-none"
+    >
+        <div class="carousel-track flex gap-6 px-4 py-2">
+            <!-- Carousel items will be duplicated via JavaScript for endless loop -->
+            {
+                techData.map(tech => (
+                    <div
+                        class={`carousel-item flex-shrink-0 transition-all duration-300 tech-plane-${tech.plane}`}
+                    >
+                        <div class="codelang-card">
+                            <ProgIcon
+                                variant={tech.variant}
+                                size={
+                                    tech.plane === 1
+                                        ? 3.5
+                                        : tech.plane === 2
+                                          ? 2.8
+                                          : 2.2
+                                }
+                            />
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    import { gsap } from "gsap";
+    import { SplitText } from "gsap/SplitText";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    document.addEventListener("astro:page-load", () => {
+        if (typeof gsap === "undefined") {
+            console.error("GSAP is not defined. Make sure it is loaded.");
+            return;
+        }
+
+        // Register GSAP plugins
+        gsap.registerPlugin(SplitText, ScrollTrigger);
+
+        const heroSection = document.getElementById("hero-section");
+        const plane1 = document.getElementById("plane-1");
+        const plane2 = document.getElementById("plane-2");
+        const plane3 = document.getElementById("plane-3");
+        const animatedHeading = document.getElementById("animated-heading");
+        const techCarousel = document.getElementById("tech-carousel");
+        const carouselTrack = techCarousel?.querySelector(".carousel-track");
+
+        // Simple fade in animation with gsap for each plane when the page loads
+        gsap.fromTo(
+            plane1,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1 }
+        );
+        gsap.fromTo(
+            plane2,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1, delay: 0.1 }
+        );
+        gsap.fromTo(
+            plane3,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1, delay: 0.2 }
+        );
+        gsap.fromTo(
+            heroSection,
+            { opacity: 0 },
+            { opacity: 1, duration: 1, delay: 0.4 }
+        );
+
+        if (!heroSection || !plane1 || !plane2 || !plane3) {
+            return;
+        }
+
+        // Add hover animation for the heading
+        if (animatedHeading) {
+            // Create split text instance
+            const splitText = new SplitText(animatedHeading, {
+                type: "chars",
+                position: "relative",
+            });
+
+            // Store the timeline for later use
+            let hoverTimeline = gsap.timeline();
+
+            // Animate each character
+            hoverTimeline.to(splitText.chars, {
+                y: 8,
+                scale: 1.2,
+                color: "var(--color-primary, #4f46e5)",
+                stagger: 0.025,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                delay: 0.5,
+            });
+        }
+
+        // Set up the tech carousel for mobile/touch devices
+        if (carouselTrack) {
+            // Create infinite carousel by cloning items
+            const originalItems =
+                carouselTrack.querySelectorAll(".carousel-item");
+            const itemsWidth = Array.from(originalItems).reduce(
+                (width, item) => width + item.offsetWidth + 24, // Including gap
+                0
+            );
+
+            // Clone items to create an infinite loop
+            const clonedItems = Array.from(originalItems).map(item =>
+                item.cloneNode(true)
+            );
+            clonedItems.forEach(item => carouselTrack.appendChild(item));
+
+            // Set up auto-scrolling animation
+            const carouselTimeline = gsap.timeline({
+                repeat: -1,
+                defaults: { ease: "none" },
+            });
+
+            carouselTimeline.to(carouselTrack, {
+                x: -itemsWidth,
+                duration: 20,
+                ease: "linear",
+            });
+
+            // Add scroll interaction with the carousel
+            ScrollTrigger.create({
+                trigger: techCarousel,
+                start: "top bottom",
+                end: "bottom top",
+                onUpdate: self => {
+                    // Speed up or slow down carousel based on scroll position
+                    const scrollFactor =
+                        1 - Math.abs(self.progress - 0.5) * 0.8;
+                    carouselTimeline.timeScale(scrollFactor);
+
+                    // Apply scale effect based on scroll position
+                    gsap.set(".tech-plane-1", {
+                        scale: 1 + self.progress * 0.2,
+                    });
+                    gsap.set(".tech-plane-2", {
+                        scale: 1 + self.progress * 0.1,
+                    });
+                    gsap.set(".tech-plane-3", {
+                        scale: 1 - self.progress * 0.1,
+                    });
+                },
+            });
+
+            // Animate carousel items on initial load
+            gsap.from(".carousel-item", {
+                y: 50,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                delay: 0.8,
+            });
+        }
+
+        // Variables for scroll-based parallax
+        let scrollY1 = 0;
+        let scrollY2 = 0;
+        let scrollY3 = 0;
+
+        // Add ScrollTrigger for parallax effect
+        ScrollTrigger.create({
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+            onUpdate: self => {
+                const progress = self.progress;
+
+                // Store scroll-based Y positions
+                scrollY1 = progress * -800;
+                scrollY2 = progress * -500;
+                scrollY3 = progress * -300;
+
+                // Apply scroll effect alongside mouse movement
+                updatePlanePositions();
+            },
+        });
+
+        // Function to update plane positions with both mouse and scroll effects
+        const updatePlanePositions = () => {
+            gsap.set(plane1, { x: currentX, y: currentY + scrollY1 });
+            gsap.set(plane2, {
+                x: currentX * 0.65,
+                y: currentY * 0.65 + scrollY2,
+            });
+            gsap.set(plane3, {
+                x: currentX * 0.3,
+                y: currentY * 0.3 + scrollY3,
+            });
+        };
+
+        let requestAnimationFrameId: number | null = null;
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        const easing = 0.08;
+        const speed = 0.05;
+        let heroCenterX = window.innerWidth / 2;
+        let heroCenterY = window.innerHeight / 2;
+
+        const updateCenter = () => {
+            heroCenterX = window.innerWidth / 2;
+            heroCenterY = window.innerHeight / 2;
+        };
+
+        window.addEventListener("resize", updateCenter);
+
+        const lerp = (start: number, target: number, amount: number) =>
+            start * (1 - amount) + target * amount;
+
+        const animate = () => {
+            currentX = lerp(currentX, targetX, easing);
+            currentY = lerp(currentY, targetY, easing);
+
+            // Use the combined function to update positions
+            updatePlanePositions();
+
+            if (
+                Math.abs(currentX - targetX) < 0.01 &&
+                Math.abs(currentY - targetY) < 0.01
+            ) {
+                if (Math.abs(targetX) < 0.01 && Math.abs(targetY) < 0.01) {
+                    currentX = 0;
+                    currentY = 0;
+
+                    // Reset only X positions, keep scroll-based Y offsets
+                    gsap.set(plane1, { x: 0, y: scrollY1 });
+                    gsap.set(plane2, { x: 0, y: scrollY2 });
+                    gsap.set(plane3, { x: 0, y: scrollY3 });
+
+                    if (requestAnimationFrameId) {
+                        cancelAnimationFrame(requestAnimationFrameId);
+                        requestAnimationFrameId = null;
+                    }
+                    return;
+                }
+            }
+            requestAnimationFrameId = requestAnimationFrame(animate);
+        };
+
+        const manageMouseMove = (e: MouseEvent) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            targetX = (mouseX - heroCenterX) * speed;
+            targetY = (mouseY - heroCenterY) * speed;
+
+            if (requestAnimationFrameId === null) {
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            }
+        };
+
+        const handleMouseLeave = () => {
+            targetX = 0;
+            targetY = 0;
+            if (
+                requestAnimationFrameId === null &&
+                (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01)
+            ) {
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            }
+        };
+
+        const startAnimation = () => {
+            document.documentElement.addEventListener(
+                "mousemove",
+                manageMouseMove
+            );
+            document.documentElement.addEventListener(
+                "mouseleave",
+                handleMouseLeave
+            );
+            updateCenter();
+        };
+
+        const stopAnimation = () => {
+            document.documentElement.removeEventListener(
+                "mousemove",
+                manageMouseMove
+            );
+            document.documentElement.removeEventListener(
+                "mouseleave",
+                handleMouseLeave
+            );
+            if (requestAnimationFrameId) {
+                cancelAnimationFrame(requestAnimationFrameId);
+                requestAnimationFrameId = null;
+            }
+            targetX = 0;
+            targetY = 0;
+
+            // When stopping mouse animation, keep scroll-based positions
+            gsap.set(plane1, { x: 0, y: scrollY1 });
+            gsap.set(plane2, { x: 0, y: scrollY2 });
+            gsap.set(plane3, { x: 0, y: scrollY3 });
+
+            currentX = 0;
+            currentY = 0;
+        };
+
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startAnimation();
+                    } else {
+                        stopAnimation();
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(heroSection);
+
+        updateCenter();
+    });
+</script>
+
+<style>
+    /* Carousel styling */
+    #tech-carousel {
+        height: 80px;
+    }
+
+    .carousel-track {
+        will-change: transform;
+    }
+
+    .tech-plane-1 {
+        z-index: 30;
+    }
+
+    .tech-plane-2 {
+        z-index: 20;
+        opacity: 0.8;
+    }
+
+    .tech-plane-3 {
+        z-index: 10;
+        opacity: 0.6;
+    }
+
+    /* Smooth animation for carousel items */
+    .carousel-item {
+        transition:
+            transform 0.3s ease-out,
+            opacity 0.3s ease-out;
+    }
+</style>

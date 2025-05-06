@@ -1,8 +1,28 @@
 ---
-import Layout from '@/layouts/Layout.astro';
+import Divider from "@/components/general/divider.astro";
+import HeroSection from "@/components/home/hero-section.astro";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-    <h1>Hi! I am Sindre Sauarlia</h1>
-    <a href='/hello'>See more</a>
+    <HeroSection />
+
+    <section>
+        <Divider scrollFadeIn />
+        <section class="scroll-fadein"></section>
+    </section>
 </Layout>
+
+<script>
+    import Lenis from "lenis";
+
+    // Initialize Lenis
+    const lenis = new Lenis({
+        autoRaf: true,
+    });
+
+    // Listen for the scroll event and log the event data
+    lenis.on("scroll", e => {
+        console.log(e);
+    });
+</script>

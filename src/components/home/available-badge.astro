@@ -1,0 +1,28 @@
+---
+import { cn } from "@/utils/cn";
+
+type Props = {
+    variant?: "default" | "header";
+};
+
+const { variant = "default" }: Props = Astro.props;
+---
+
+<div
+    class={cn(
+        "rounded-3xl p-px w-fit bg-gradient-to-br from-primary/70 to-accent/70 relative z-0 pointer-events-auto -rotate-6 opacity-80",
+        variant === "header" &&
+            "absolute bottom-0 left-0 right-0 -rotate-2 -translate-x-6 translate-y-4 scale-75 opacity-60 z-10"
+    )}
+>
+    <div class="rounded-[calc(1.5rem-1px)] bg-background">
+        <div class="bg-accent/5 rounded-3xl">
+            <a
+                href={`mailto:${import.meta.env.EMAIL || "sindre.sauarlia@gmail.com"}`}
+                class="px-3 py-0.5 text-xs md:text-sm cursor-pointer font-semibold inline-block"
+            >
+                Available for hire
+            </a>
+        </div>
+    </div>
+</div>

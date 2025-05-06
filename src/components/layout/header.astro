@@ -1,80 +1,110 @@
 ---
-import headshot from '@/assets/images/headshot.jpg';
-import Image from 'astro/components/Image.astro';
+import headshot from "@/assets/images/headshot.jpg";
+import Image from "astro/components/Image.astro";
 
-import ROUTES from '@config/routes.ts';
+import ROUTES from "@config/routes.ts";
+import AvailableBadge from "../home/available-badge.astro";
+import ThemeToggle from "./theme-toggle.astro";
 const currentPath = Astro.url.pathname;
-const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\/$/, '');
+const normalizedCurrentPath =
+    currentPath === "/" ? "/" : currentPath.replace(/\/$/, "");
+const isHomePage = normalizedCurrentPath === "/";
 ---
 
-<a href='/' class='flex items-center gap-1 text-muted-foreground z-10'>
-    <Image
-        src={headshot}
-        alt='Sindre Sauarlia'
-        width={70}
-        height={70}
-        class='rounded-full md:w-12 w-8 aspect-square'
-        format={'avif'}
-        loading='eager'
-    />
-    <div class='flex flex-col gap-0 md:text-3xl text-lg leading-5 font-megrim'>
-        <span>Sindre</span>
-        <span class='ml-4'>Sauarlia</span>
-    </div>
-</a>
+<div class="z-10 relative w-full">
+    <a href="/" class="flex items-center gap-1 text-muted-foreground">
+        <Image
+            src={headshot}
+            alt="Sindre Sauarlia"
+            width={100}
+            height={100}
+            class="rounded-full md:w-14 w-10 aspect-square"
+            format={"avif"}
+            loading="eager"
+        />
+        {!isHomePage && <AvailableBadge variant="header" />}
+    </a>
+</div>
 
-<nav class='hidden md:block'>
-    <ul class='flex lg:gap-8 gap-6'>
-        {
-            ROUTES.map((route) => {
-                const isActive = normalizedCurrentPath === route.path;
-                return (
-                    <li>
-                        <a
-                            href={route.path}
-                            class={`text-xl transition-colors duration-200 ${
-                                isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
-                            }`}>
-                            {route.name}
-                        </a>
-                        {isActive && <div class='w-full bg-primary h-1' transition:name='navlink-active' />}
-                    </li>
-                );
-            })
-        }
-    </ul>
-</nav>
+<div class="flex items-center gap-3 mr-2 w-full justify-end">
+    <nav class="hidden md:block">
+        <ul class="flex lg:gap-8 gap-6">
+            {
+                ROUTES.map(route => {
+                    const isActive = normalizedCurrentPath === route.path;
+                    return (
+                        <li class="relative group">
+                            <a
+                                href={route.path}
+                                class={`text-xl transition-colors duration-200 ${
+                                    isActive
+                                        ? "text-foreground"
+                                        : "text-muted-foreground hover:text-foreground"
+                                }`}
+                            >
+                                {route.name}
+                            </a>
+                            {isActive && (
+                                <div
+                                    class="absolute rounded-md scale-110 left-0 -bottom-0.5 w-full bg-primary/70 h-1 pointer-events-none"
+                                    transition:name="navlink-active"
+                                />
+                            )}
+                        </li>
+                    );
+                })
+            }
+        </ul>
+    </nav>
 
-<button
-    id='hamburger-btn'
-    class='z-50 w-6 hover:w-7 hover:translate-x-0.5 h-10 relative flex flex-col justify-center items-center md:hidden transition-all duration-200 cursor-pointer'
-    aria-label='Toggle menu'>
-    <span class='w-full h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
-    <span class='w-6 h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
-    <span class='w-full h-0.5 bg-current rounded-full my-0.5 transition-all duration-300 origin-center'></span>
-</button>
+    <ThemeToggle />
 
-<div
-    id='menu-overlay'
-    class='fixed inset-0 bg-background-darker/80 z-30 hidden opacity-0 transition-opacity duration-300'>
+    <button
+        id="hamburger-btn"
+        class="z-50 w-6 hover:w-7 hover:translate-x-0.5 h-10 gap-0.5 relative flex flex-col justify-center items-center md:hidden cursor-pointer transition-width duration-200"
+        aria-label="Toggle menu"
+    >
+        <span
+            class="w-full h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
+        ></span>
+        <span
+            class="w-6 h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
+        ></span>
+        <span
+            class="w-full h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
+        ></span>
+    </button>
 </div>
 
 <div
-    id='mobile-menu'
-    class='fixed top-0 right-0 bg-background w-4/5 h-full z-40 transform translate-x-full transition-transform duration-300 shadow-2xl backdrop-blur-sm'
-    style='perspective: 1000px;'>
-    <nav class='pt-24 px-8'>
-        <ul class='flex flex-col items-end space-y-8'>
+    id="menu-overlay"
+    class="fixed inset-0 bg-background-darker/80 z-30 hidden opacity-0 transition-opacity duration-300"
+>
+</div>
+
+<div
+    id="mobile-menu"
+    class="fixed top-0 right-0 bg-background-lighter w-4/5 h-full z-40 transform translate-x-full transition-transform duration-300 shadow-2xl"
+>
+    <nav class="pt-24 px-8">
+        <ul class="flex flex-col items-end space-y-8">
             {
-                ROUTES.map((route, index) => (
-                    <li class='nav-item opacity-0' style={`transition-delay: ${(index + 2.5) * 80}ms;`}>
-                        <a
-                            href={route.path}
-                            class='text-2xl block py-3 px-4 hover:text-foreground transition-colors duration-200'>
-                            {route.name}
-                        </a>
-                    </li>
-                ))
+                ROUTES.map((route, index) => {
+                    const isActive = normalizedCurrentPath === route.path;
+                    return (
+                        <li
+                            class={`nav-item opacity-0 ${isActive ? "text-foreground font-bold" : "text-muted-foreground"}`}
+                            style={`transition-delay: ${(index + 2.5) * 80}ms;`}
+                        >
+                            <a
+                                href={route.path}
+                                class="text-2xl block py-3 px-4 hover:text-foreground transition-colors duration-200"
+                            >
+                                {route.name}
+                            </a>
+                        </li>
+                    );
+                })
             }
         </ul>
     </nav>
@@ -82,7 +112,7 @@ const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\
 
 <style>
     :global(.hamburger-active) span:nth-child(1) {
-        transform: translateY(6px) rotate(45deg);
+        transform: translateY(8px) rotate(45deg);
     }
 
     :global(.hamburger-active) span:nth-child(2) {
@@ -90,7 +120,7 @@ const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\
     }
 
     :global(.hamburger-active) span:nth-child(3) {
-        transform: translateY(-6px) rotate(-45deg);
+        transform: translateY(-8px) rotate(-45deg);
     }
 
     .nav-item {
@@ -98,7 +128,7 @@ const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\
         transform-origin: right;
         transition:
             opacity 0.1s ease-out,
-            transform 0.25s ease-out;
+            transform 0.3s ease-out;
     }
 
     :global(.menu-active) .nav-item {
@@ -116,13 +146,12 @@ const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\
 </style>
 
 <script is:inline>
-    document.addEventListener('astro:page-load', initMenu);
-    document.addEventListener('DOMContentLoaded', initMenu);
+    document.addEventListener("astro:page-load", initMenu);
 
     function initMenu() {
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuOverlay = document.getElementById('menu-overlay');
+        const hamburgerBtn = document.getElementById("hamburger-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuOverlay = document.getElementById("menu-overlay");
 
         if (!hamburgerBtn || !mobileMenu || !menuOverlay) return;
 
@@ -132,67 +161,76 @@ const normalizedCurrentPath = currentPath === '/' ? '/' : currentPath.replace(/\
         const newOverlay = menuOverlay.cloneNode(true);
         menuOverlay.parentNode.replaceChild(newOverlay, menuOverlay);
 
-        newBtn.addEventListener('click', () => {
-            newBtn.classList.toggle('hamburger-active');
+        newBtn.addEventListener("click", () => {
+            newBtn.classList.toggle("hamburger-active");
 
-            if (mobileMenu.classList.contains('translate-x-full')) {
+            if (mobileMenu.classList.contains("translate-x-full")) {
                 openMenu();
             } else {
                 closeMenu();
             }
         });
 
-        newOverlay.addEventListener('click', closeMenu);
+        newOverlay.addEventListener("click", closeMenu);
 
-        document.querySelectorAll('#mobile-menu a').forEach((link) => {
-            link.addEventListener('click', closeMenu);
+        document.querySelectorAll("#mobile-menu a").forEach(link => {
+            link.addEventListener("click", closeMenu);
         });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
+        document.addEventListener("keydown", e => {
+            if (
+                e.key === "Escape" &&
+                !mobileMenu.classList.contains("translate-x-full")
+            ) {
                 closeMenu();
             }
         });
 
-        window.addEventListener('resize', () => {
+        window.addEventListener("resize", () => {
             if (window.innerWidth >= 768) {
                 closeMenu();
             }
         });
 
         function openMenu() {
-            mobileMenu.classList.remove('translate-x-full', 'instant-close');
-            mobileMenu.classList.add('translate-x-0');
+            mobileMenu.classList.remove("translate-x-full", "instant-close");
+            mobileMenu.classList.add("translate-x-0");
 
-            newOverlay.classList.remove('hidden', 'instant-fade');
+            document.documentElement.style.background =
+                "var(--color-background-lighter)";
+
+            newOverlay.classList.remove("hidden", "instant-fade");
             setTimeout(() => {
-                newOverlay.classList.add('opacity-100');
+                newOverlay.classList.add("opacity-100");
             }, 10);
 
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = "hidden";
 
             setTimeout(() => {
-                mobileMenu.classList.add('menu-active');
+                mobileMenu.classList.add("menu-active");
             }, 20);
         }
 
         function closeMenu() {
-            mobileMenu.classList.add('instant-close');
-            newOverlay.classList.add('instant-fade');
+            mobileMenu.classList.add("instant-close");
+            newOverlay.classList.add("instant-fade");
 
-            mobileMenu.classList.remove('menu-active');
-            mobileMenu.classList.remove('translate-x-0');
-            mobileMenu.classList.add('translate-x-full');
+            document.documentElement.style.background =
+                "var(--color-background)";
 
-            newOverlay.classList.remove('opacity-100');
-            newOverlay.classList.add('hidden');
+            mobileMenu.classList.remove("menu-active");
+            mobileMenu.classList.remove("translate-x-0");
+            mobileMenu.classList.add("translate-x-full");
 
-            document.body.style.overflow = '';
+            newOverlay.classList.remove("opacity-100");
+            newOverlay.classList.add("hidden");
+
+            document.body.style.overflow = "";
 
             setTimeout(() => {
-                newBtn.classList.remove('hamburger-active');
-                mobileMenu.classList.remove('instant-close');
-                newOverlay.classList.remove('instant-fade');
+                newBtn.classList.remove("hamburger-active");
+                mobileMenu.classList.remove("instant-close");
+                newOverlay.classList.remove("instant-fade");
             }, 100);
         }
     }

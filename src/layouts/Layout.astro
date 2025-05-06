@@ -1,67 +1,100 @@
 ---
-import CommonHead from '@/components/layout/common-head.astro';
-import Footer from '@/components/layout/footer.astro';
-import Header from '@/components/layout/header.astro';
-import Analytics from '@vercel/analytics/astro';
+import CommonHead from "@/components/layout/common-head.astro";
+import Footer from "@/components/layout/footer.astro";
+import Header from "@/components/layout/header.astro";
+import Analytics from "@vercel/analytics/astro";
 
-import '@/global.css';
+import "@/global.css";
 
 const {
-    title = 'Sindre Sauarlia - Full Stack Developer',
-    description = 'Sindre Sauarlia is a software engineer and designer based in Norway. He loves building things with code and sharing his knowledge with others.',
+    title,
+    description = "Sindre Sauarlia is a full-stack developer based in Oslo, Norway. He is dedicated to deeply understand every aspect of the software development process and never stop learning.",
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang="en">
     <CommonHead title={title} description={description} />
 
-    <body class='min-h-screen flex flex-col'>
-        <header class=''>
-            <div class='container mx-auto py-3 px-4 flex justify-between items-center'>
+    <body class="smooth-wrapper min-h-screen flex flex-col">
+        <header class="z-20">
+            <div
+                class="container mx-auto py-3 px-4 flex justify-between items-center"
+            >
                 <Header />
             </div>
         </header>
-        <main class='flex-grow py-2 px-4 container mx-auto'>
-            <slot />
+        <main
+            class="flex-grow py-3 px-4 container mx-auto min-h-screen h-[3000px] z-10"
+        >
+            <div class="max-w-5xl mx-auto">
+                <slot />
+            </div>
         </main>
-        <footer class='border-t border-border text-center'>
-            <div class='container mx-auto px-4'>
+        <footer class="border-t border-border text-center">
+            <div class="container mx-auto px-4">
                 <Footer />
             </div>
         </footer>
+
         <Analytics />
+
+        <script>
+            import gsap from "gsap";
+            import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.to(".scroll-fadein", {
+                scrollTrigger: {
+                    trigger: ".scroll-fadein",
+                    start: "0 98%",
+                    end: "0 75%",
+                    scrub: true,
+                    // markers: true,
+                },
+                opacity: 1,
+                duration: 5,
+                y: -40,
+                ease: "power1.inOut",
+                stagger: {
+                    amount: 0.1,
+                    from: "end",
+                },
+            });
+        </script>
     </body>
 </html>
 
 <script is:inline>
     const applyTheme = () => {
         const isDark =
-            localStorage.theme === 'dark' ||
-            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-        document.documentElement.classList.toggle('dark', isDark);
+        document.documentElement.classList.toggle("dark", isDark);
     };
 
     applyTheme();
 
-    document.addEventListener('astro:page-load', applyTheme);
+    document.addEventListener("astro:page-load", applyTheme);
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', applyTheme);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", applyTheme);
 
     window.setLightTheme = () => {
-        localStorage.theme = 'light';
+        localStorage.theme = "light";
         applyTheme();
     };
 
     window.setDarkTheme = () => {
-        localStorage.theme = 'dark';
+        localStorage.theme = "dark";
         applyTheme();
     };
 
     window.setSystemTheme = () => {
-        localStorage.removeItem('theme');
+        localStorage.removeItem("theme");
         applyTheme();
     };
 </script>

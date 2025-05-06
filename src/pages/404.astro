@@ -1,38 +1,230 @@
 ---
-import Layout from '@/layouts/Layout.astro';
+import Layout from "@/layouts/Layout.astro";
 const pathname = Astro.url.pathname;
 ---
 
-<Layout title='404: Not Found'>
-    <div class='flex justify-center items-center min-h-[80vh] p-8 bg-background'>
-        <div class='w-full max-w-xl bg-terminal-bg rounded-lg shadow-lg overflow-hidden font-mono text-terminal-text'>
-            <div class='bg-terminal-header-bg px-3 py-2 flex items-center'>
-                <div class='flex gap-1.5'>
-                    <span class='block w-3 h-3 rounded-full bg-terminal-button-red'></span>
-                    <span class='block w-3 h-3 rounded-full bg-terminal-button-yellow'></span>
-                    <span class='block w-3 h-3 rounded-full bg-terminal-button-green'></span>
+<Layout title="404" description="Page not found">
+    <div class="flex justify-center items-center min-h-[80vh] p-8">
+        <div
+            class="w-full max-w-xl bg-terminal-bg rounded-lg shadow-lg overflow-hidden font-mono text-terminal-text"
+        >
+            <div class="bg-terminal-header-bg px-3 py-2 flex items-center">
+                <div class="flex gap-1.5">
+                    <span
+                        class="block w-3 h-3 rounded-full bg-terminal-button-red"
+                    ></span>
+                    <span
+                        class="block w-3 h-3 rounded-full bg-terminal-button-yellow"
+                    ></span>
+                    <span
+                        class="block w-3 h-3 rounded-full bg-terminal-button-green"
+                    ></span>
                 </div>
-                <div class='ml-auto text-sm text-terminal-text'>bash</div>
+                <div class="ml-auto text-sm text-terminal-text">bash</div>
             </div>
-            <div class='p-6 text-base leading-relaxed'>
-                <p class='my-2'>
-                    <span class='text-terminal-prompt mr-2'>$</span> navigate <span class='text-terminal-path'
-                        >{pathname}</span
+            <div class="p-6 text-base leading-relaxed">
+                <!-- Static content that appears immediately -->
+                <p class="my-2">
+                    <span class="text-terminal-prompt mr-2">$</span> navigate <span
+                        class="text-terminal-path">{pathname}</span
                     >
                 </p>
-                <p class='my-2'><span class='text-terminal-error font-bold mr-2'>[ERROR]</span> Route not found.</p>
-                <p class='my-2'>
-                    <span class='text-terminal-prompt mr-2'>$</span> echo "Looks like you're lost..."<span
-                        class='inline-block ml-0.5 w-2.5 h-[1em] align-baseline animate-blink bg-terminal-cursor'
-                    ></span>
+                <p class="my-2">
+                    <span class="text-terminal-error font-bold mr-2"
+                        >[ERROR]</span
+                    > Route not found.
                 </p>
-                <p class='my-2'><span class='text-terminal-prompt mr-2'>$</span> cd /</p>
-                <a
-                    href='/'
-                    class='inline-block mt-4 px-4 py-2 bg-terminal-link-bg text-terminal-link-text no-underline rounded font-bold transition-colors duration-300 ease-in-out hover:bg-terminal-link-hover-bg'
-                    >Return to Home</a
-                >
+
+                <!-- Content that will be typed -->
+                <div id="terminal-content">
+                    <!-- Additional terminal content will be typed here -->
+                </div>
+
+                <!-- Input area for y/n -->
+                <div id="command-input" class="hidden mt-4">
+                    <span class="text-terminal-prompt mr-2">$</span>
+                    <span>Return home? [y/n]: </span>
+                    <span id="user-input"></span>
+                    <span
+                        class="inline-block ml-0.5 w-2.5 h-[1em] align-baseline animate-blink bg-terminal-cursor"
+                    ></span>
+                </div>
             </div>
         </div>
     </div>
 </Layout>
+
+<script>
+    document.addEventListener("astro:page-load", function () {
+        // Get DOM elements with null checks
+        const terminalContentEl = document.getElementById("terminal-content");
+        const commandInputEl = document.getElementById("command-input");
+        const userInputEl = document.getElementById("user-input");
+
+        // Exit early if any required element is missing
+        if (!terminalContentEl || !commandInputEl || !userInputEl) {
+            console.error("Required DOM elements not found");
+            return;
+        }
+
+        // Lines to type with timing delays
+        const linesToType = [
+            {
+                text: '<span class="text-terminal-prompt mr-2">$</span> echo "Looks like you\'re lost..."',
+                delay: 400,
+            },
+            {
+                text: '<span class="text-terminal-prompt mr-2">$</span> find / -name "home"',
+                delay: 500,
+            },
+            {
+                text: '<span class="text-terminal-prompt mr-2">$</span> Would you like to return home?',
+                delay: 500,
+            },
+        ];
+
+        let currentLineIndex = 0;
+        let currentCharIndex = 0;
+        let currentLineElement: HTMLParagraphElement | null = null;
+
+        // Function to type text character by character
+        function typeNextCharacter() {
+            // Safety check
+            if (!terminalContentEl) return;
+
+            // If we're at the start of a new line
+            if (currentCharIndex === 0) {
+                currentLineElement = document.createElement("p");
+                currentLineElement.className = "my-2";
+                terminalContentEl.appendChild(currentLineElement);
+            }
+
+            // Make sure currentLineElement exists
+            if (!currentLineElement) return;
+
+            const currentLine = linesToType[currentLineIndex];
+
+            // If we're not done typing the current line
+            if (currentCharIndex < currentLine.text.length) {
+                // Handle HTML tags
+                if (currentLine.text[currentCharIndex] === "<") {
+                    const closingBracket = currentLine.text.indexOf(
+                        ">",
+                        currentCharIndex
+                    );
+                    if (closingBracket !== -1) {
+                        const tag = currentLine.text.substring(
+                            currentCharIndex,
+                            closingBracket + 1
+                        );
+                        currentLineElement.innerHTML += tag;
+                        currentCharIndex = closingBracket + 1;
+                    } else {
+                        currentLineElement.innerHTML +=
+                            currentLine.text[currentCharIndex];
+                        currentCharIndex++;
+                    }
+                } else {
+                    currentLineElement.innerHTML +=
+                        currentLine.text[currentCharIndex];
+                    currentCharIndex++;
+                }
+
+                // Continue typing this line
+                setTimeout(typeNextCharacter, 20);
+            } else {
+                // Move to the next line
+                currentCharIndex = 0;
+                currentLineIndex++;
+
+                // If there are more lines to type
+                if (currentLineIndex < linesToType.length) {
+                    setTimeout(typeNextCharacter, currentLine.delay);
+                } else {
+                    // Show the command input when typing is done
+                    if (commandInputEl) {
+                        commandInputEl.classList.remove("hidden");
+                        setupKeyboardListener();
+                    }
+                }
+            }
+        }
+
+        // Function to set up keyboard event listener
+        function setupKeyboardListener() {
+            document.addEventListener("keydown", handleKeyPress);
+        }
+
+        // Function to handle keyboard input
+        function handleKeyPress(event: KeyboardEvent) {
+            if (!userInputEl || !terminalContentEl) return;
+
+            if (event.key === "y" || event.key === "Y") {
+                userInputEl.textContent = "y";
+                setTimeout(() => {
+                    const newLine = document.createElement("p");
+                    newLine.className = "my-2";
+                    newLine.innerHTML =
+                        '<span class="text-terminal-prompt mr-2">$</span> cd /home';
+                    terminalContentEl.appendChild(newLine);
+
+                    setTimeout(() => {
+                        window.location.href = "/";
+                    }, 500);
+                }, 300);
+
+                // Remove event listener to prevent multiple triggers
+                document.removeEventListener("keydown", handleKeyPress);
+            } else if (event.key === "n" || event.key === "N") {
+                userInputEl.textContent = "n";
+
+                setTimeout(() => {
+                    const newLine = document.createElement("p");
+                    newLine.className = "my-2";
+                    newLine.innerHTML =
+                        '<span class="text-terminal-prompt mr-2">$</span> Still lost in the void...';
+                    terminalContentEl.appendChild(newLine);
+
+                    // Remove event listener to prevent multiple triggers
+                    document.removeEventListener("keydown", handleKeyPress);
+
+                    // Reset for another try
+                    setTimeout(() => {
+                        userInputEl.textContent = "";
+                        setupKeyboardListener();
+                    }, 1000);
+                }, 300);
+            } else if (event.key === "Enter") {
+                // If they press enter without y/n, prompt again
+                if (userInputEl.textContent === "") {
+                    const newLine = document.createElement("p");
+                    newLine.className = "my-2";
+                    newLine.innerHTML =
+                        '<span class="text-terminal-prompt mr-2">$</span> Please type y or n';
+                    terminalContentEl.appendChild(newLine);
+                }
+            }
+        }
+
+        // Start the typing animation with a slight delay
+        setTimeout(typeNextCharacter, 400);
+    });
+</script>
+
+<style>
+    .animate-blink {
+        animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+</style>
