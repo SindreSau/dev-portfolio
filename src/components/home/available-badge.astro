@@ -10,7 +10,7 @@ const { variant = "default" }: Props = Astro.props;
 
 <div
     class={cn(
-        "rounded-3xl p-px w-fit bg-gradient-to-br from-primary/70 to-accent/70 relative z-0 pointer-events-auto md:-rotate-6 opacity-80",
+        "rounded-3xl p-px w-fit bg-gradient-to-br from-primary/70 to-accent/70 relative z-0 pointer-events-auto md:-rotate-6 rotate-6 opacity-80",
         variant === "header" &&
             "absolute bottom-0 left-0 right-0 -rotate-2 -translate-x-6 translate-y-4 scale-75 opacity-60 z-10"
     )}
