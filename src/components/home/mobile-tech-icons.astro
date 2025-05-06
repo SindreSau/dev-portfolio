@@ -3,15 +3,15 @@ import { Icon } from "astro-icon/components";
 import { techData } from "./tech-data";
 
 const iconsPerRow = 3;
-const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 random tech icons
+const items = techData.sort(() => Math.random() - 0.5); // Show all tech icons in random order
 ---
 
 <div
-    class="absolute bottom-0 left-0 w-full h-full pointer-events-none"
+    class="absolute bottom-0 bg-red left-0 w-full h-5/6 pointer-events-none"
     id="mobile-tech-icons-container"
 >
     <div
-        class="flex flex-wrap justify-center items-center w-full h-full transition-transform duration-1000"
+        class="flex flex-nowrap justify-center items-center w-full h-full transition-transform duration-1000"
         id="mobile-tech-icons-wrapper"
     >
         {
@@ -19,7 +19,7 @@ const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 ra
                 <div
                     class="m-4 transform-gpu"
                     style={{
-                        "--delay": `${index * 0.15}s`,
+                        "--delay": `${index * 0.2}s`,
                         "--scale-start": "0.8",
                         "--opacity-start": "0",
                     }.toString()}
@@ -37,23 +37,54 @@ const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 ra
 
 <script>
     import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("astro:page-load", () => {
         const container = document.getElementById(
             "mobile-tech-icons-container"
         );
+        const wrapper = document.getElementById("mobile-tech-icons-wrapper");
         const icons = document.querySelectorAll<HTMLDivElement>(
             "#mobile-tech-icons-wrapper > div"
         );
 
-        if (!container || !icons.length) return;
+        if (!container || !icons.length || !wrapper) return;
 
+        // Create a looping carousel effect
+        gsap.to(wrapper, {
+            xPercent: -100,
+            ease: "none",
+            duration: 20,
+            repeat: -1,
+            modifiers: {
+                xPercent: gsap.utils.wrap(-100, 0),
+            },
+        });
+
+        // Add bounce effect on scroll
+        gsap.to(wrapper, {
+            y: -20,
+            ease: "power2.out",
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            paused: true,
+            scrollTrigger: {
+                trigger: container,
+                start: "top 60%",
+                end: "bottom 40%",
+                scrub: 0.5,
+            },
+        });
+
+        // Animate icons on initial load
         gsap.fromTo(
             icons,
             {
                 opacity: 0,
                 scale: 0.8,
-                y: 100,
+                y: 200,
                 ease: "power3.out",
             },
             {
@@ -71,21 +102,5 @@ const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 ra
                 },
             }
         );
-
-        // Add bounce effect on scroll
-        gsap.to("#mobile-tech-icons-wrapper", {
-            y: -20,
-            ease: "power2.out",
-            duration: 1.5,
-            repeat: -1,
-            yoyo: true,
-            paused: true,
-            scrollTrigger: {
-                trigger: container,
-                start: "top 60%",
-                end: "bottom 40%",
-                scrub: 0.5,
-            },
-        });
     });
 </script>
