@@ -14,14 +14,18 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.3.1",
     "@fontsource-variable/caveat": "^5.2.5",
+    "@fontsource-variable/expletus-sans": "^5.2.5",
     "@fontsource-variable/work-sans": "^5.2.5",
     "@fontsource/megrim": "^5.2.5",
     "@tailwindcss/vite": "^4.1.5",
     "@vercel/analytics": "^1.5.0",
     "astro": "^5.7.10",
     "astro-seo": "^0.8.4",
+    "clsx": "^2.1.1",
     "gsap": "^3.13.0",
+    "lenis": "^1.3.1",
     "sharp": "^0.34.1",
+    "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.5"
   },
   "packageManager": "pnpm@10.10.0+sha256.fa0f513aa8191764d2b6b432420788c270f07b4f999099b65bb2010eec702a30",

@@ -16,7 +16,7 @@ const {
 <html lang="en">
     <CommonHead title={title} description={description} />
 
-    <body class="min-h-screen flex flex-col">
+    <body class="smooth-wrapper min-h-screen flex flex-col">
         <header class="z-20">
             <div
                 class="container mx-auto py-3 px-4 flex justify-between items-center"
@@ -36,7 +36,33 @@ const {
                 <Footer />
             </div>
         </footer>
+
         <Analytics />
+
+        <script>
+            import gsap from "gsap";
+            import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.to(".scroll-fadein", {
+                scrollTrigger: {
+                    trigger: ".scroll-fadein",
+                    start: "0 98%",
+                    end: "0 75%",
+                    scrub: true,
+                    // markers: true,
+                },
+                opacity: 1,
+                duration: 5,
+                y: -40,
+                ease: "power1.inOut",
+                stagger: {
+                    amount: 0.1,
+                    from: "end",
+                },
+            });
+        </script>
     </body>
 </html>
 

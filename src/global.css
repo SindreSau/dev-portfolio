@@ -7,18 +7,20 @@
   --font-megrim: 'Megrim', system-ui;
   --font-caveat: 'Caveat Variable', sans-serif;
   --font-work: 'Work Sans Variable', sans-serif;
+  --font-expletus: 'Expletus Sans Variable', sans-serif;
 
   /* Colors */
   --color-background: hsl(40, 25%, 96%);
-  --color-background-darker: hsl(40, 25%, 92%);
+  --color-background-darker: hsl(40, 25%, 90%);
   --color-background-lighter: hsl(40, 25%, 98%);
   --color-foreground: hsl(222.4, 47.4%, 11.2%);
-  --color-card: hsl(0, 0%, 100%);
+  --color-card: hsl(40, 20%, 92%);
 
   --color-primary: hsl(243.4, 75.2%, 58.2%);
+  --color-primary-muted: hsl(243, 38%, 70%);
   --color-primary-foreground: hsl(0, 0%, 100%);
 
-  --color-secondary: hsl(44.9, 96.8%, 56.3%);
+  --color-secondary: hsl(153, 97%, 75%);
   --color-secondary-foreground: hsl(27.1, 73.1%, 25.7%);
 
   --color-accent: hsl(327.1, 87.2%, 70.2%);
@@ -27,7 +29,7 @@
   --color-muted: hsl(0, 0%, 92.2%);
   --color-muted-foreground: hsl(216.4, 22.6%, 34.5%);
 
-  --color-border: hsl(240, 7.7%, 89.6%);
+  --color-border: hsl(240, 8%, 77%);
   --color-link: hsl(243.4, 75.2%, 58.2%);
   --color-link-visited: hsl(283.4, 75.2%, 58.2%);
 
@@ -59,6 +61,7 @@
     --color-card: hsl(217.3, 32.6%, 17.8%);
 
     --color-primary: hsl(239.1, 84.9%, 66.7%);
+    --color-primary-muted: hsl(239, 23%, 59%);
     --color-primary-foreground: hsl(0, 0%, 100%);
 
     --color-secondary: hsl(160.4, 100%, 69.6%);
@@ -131,30 +134,33 @@
 
 @layer components {
   .codelang-card {
-    @apply bg-card w-fit p-3 md:p-4 rounded-lg md:rounded-md shadow-lg border border-border transition-all duration-300 ease-out;
-  }
-
-  #planes-wrapper {
-    perspective: 1000px;
-    transform-style: preserve-3d;
-  }
-
-  #plane-1,
-  #plane-2,
-  #plane-3 {
-    @apply w-full h-full;
-    transform-style: preserve-3d;
+    @apply dark:bg-primary/10 bg-card w-fit p-3 md:p-4 rounded-sm transition-all duration-300 ease-out text-primary-muted;
   }
 
   .plane-far {
-    @apply brightness-50 opacity-15 -z-20;
+    @apply dark:brightness-50 brightness-150 opacity-15 -z-20;
   }
 
   .plane-mid {
-    @apply brightness-50 opacity-50 -z-10;
+    @apply dark:brightness-50 brightness-125 opacity-50 -z-10;
   }
 
   .plane-near {
-    @apply brightness-75 z-0 opacity-90;
+    @apply dark:brightness-75 brightness-110 z-0 opacity-90;
+  }
+
+  @media (pointer: coarse) {
+    .hide-on-touchscreen {
+      @apply hidden;
+    }
+  }
+
+  @media (pointer: fine) {
+    .hide-on-mouse {
+      @apply hidden;
+    }
+  }
+  .scroll-fadein {
+    @apply opacity-0 translate-y-10;
   }
 }

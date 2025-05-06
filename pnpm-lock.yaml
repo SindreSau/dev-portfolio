@@ -14,6 +14,9 @@ importers:
       '@fontsource-variable/caveat':
         specifier: ^5.2.5
         version: 5.2.5
+      '@fontsource-variable/expletus-sans':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource-variable/work-sans':
         specifier: ^5.2.5
         version: 5.2.5
@@ -32,12 +35,21 @@ importers:
       astro-seo:
         specifier: ^0.8.4
         version: 0.8.4(prettier-plugin-astro@0.14.1)(prettier@3.5.3)(typescript@5.8.3)
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       gsap:
         specifier: ^3.13.0
         version: 3.13.0
+      lenis:
+        specifier: ^1.3.1
+        version: 1.3.1
       sharp:
         specifier: ^0.34.1
         version: 0.34.1
+      tailwind-merge:
+        specifier: ^3.2.0
+        version: 3.2.0
       tailwindcss:
         specifier: ^4.1.5
         version: 4.1.5
@@ -344,6 +356,9 @@ packages:
 
   '@fontsource-variable/caveat@5.2.5':
     resolution: {integrity: sha512-z/ToKJwh6c1XPcqkV0X3G+pJD89qFoSCuA+2TFYBVXESh/MpRyRrshlu87wCsvzY+6D8wQsAO3ynP6fjNhjusw==}
+
+  '@fontsource-variable/expletus-sans@5.2.5':
+    resolution: {integrity: sha512-w76O4gvGUbzL996Ah2lLvuYgztDsEqOhShvWxNguNwq2Sns4JdRxFFUdHKsgkyL8mRYsaXccTwXrA5tbTPYg/g==}
 
   '@fontsource-variable/work-sans@5.2.5':
     resolution: {integrity: sha512-zvoUtTMsk0c0Iygz8DAWrSdVgQvcIMxRtLS7a1H3tFuUHIOAN0NHRrwONyeebDuzXrgAUmSrDOAxOz5D+pn6nw==}
@@ -1329,6 +1344,20 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
 
+  lenis@1.3.1:
+    resolution: {integrity: sha512-OGRlQk7EkGUtjDdnH+U49Mp26G/wGJFHuyYJ8ZwATllwHQZOKYbeuVaPWYQ4lK0gHfAnk2m0u8qN8Y4dtrHaHw==}
+    peerDependencies:
+      '@nuxt/kit': '>=3.0.0'
+      react: '>=17.0.0'
+      vue: '>=3.0.0'
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      react:
+        optional: true
+      vue:
+        optional: true
+
   lightningcss-darwin-arm64@1.29.2:
     resolution: {integrity: sha512-cK/eMabSViKn/PG8U/a7aCorpeKLMlK0bQeNHmdb7qUnBkNPnL+oV5DjJUo0kqWsJUapZsM4jCfYItbqBDvlcA==}
     engines: {node: '>= 12.0.0'}
@@ -1831,6 +1860,9 @@ packages:
 
   suf-log@2.5.3:
     resolution: {integrity: sha512-KvC8OPjzdNOe+xQ4XWJV2whQA0aM1kGVczMQ8+dStAO6KfEB140JEVQ9dE76ONZ0/Ylf67ni4tILPJB41U0eow==}
+
+  tailwind-merge@3.2.0:
+    resolution: {integrity: sha512-FQT/OVqCD+7edmmJpsgCsY820RTD5AkBryuG5IUqR5YQZSdj5xlH5nLgH7YPths7WsLPSpSBNneJdM8aS8aeFA==}
 
   tailwindcss@4.1.5:
     resolution: {integrity: sha512-nYtSPfWGDiWgCkwQG/m+aX83XCwf62sBgg3bIlNiiOcggnS1x3uVRDAuyelBFL+vJdOPPCGElxv9DjHJjRHiVA==}
@@ -2498,6 +2530,8 @@ snapshots:
     optional: true
 
   '@fontsource-variable/caveat@5.2.5': {}
+
+  '@fontsource-variable/expletus-sans@5.2.5': {}
 
   '@fontsource-variable/work-sans@5.2.5': {}
 
@@ -3482,6 +3516,8 @@ snapshots:
 
   kleur@4.1.5: {}
 
+  lenis@1.3.1: {}
+
   lightningcss-darwin-arm64@1.29.2:
     optional: true
 
@@ -4246,6 +4282,8 @@ snapshots:
   suf-log@2.5.3:
     dependencies:
       s.color: 0.0.15
+
+  tailwind-merge@3.2.0: {}
 
   tailwindcss@4.1.5: {}
 

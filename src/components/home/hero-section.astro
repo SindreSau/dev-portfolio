@@ -1,0 +1,357 @@
+---
+import AvailableBadge from "@/components/home/available-badge.astro";
+import ProgIcon from "@/components/icons/prog-icon.astro";
+
+const AVAILABLE_FOR_WORK = import.meta.env.AVAILABLE_FOR_WORK === "true";
+---
+
+<section
+    id="hero-section"
+    class="w-full h-[calc(100vh-4rem)] overflow-hidden pointer-events-none"
+>
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-left z-10 md:w-2/3 lg:w-1/2 w-10/12 max-w-4xl pointer-events-none"
+    >
+        <div class="-translate-x-5 translate-y-1">
+            {AVAILABLE_FOR_WORK && <AvailableBadge />}
+        </div>
+
+        <h1 class="flex flex-col md:text-5xl text-3xl">
+            <span class="">Hi, I'm </span>
+            <span
+                id="animated-heading"
+                class="xl:text-7xl text-nowrap md:text-5xl bg-gradient-to-r text-primary-muted dark:brightness-125 brightness-75 bg-clip-text uppercase md:tracking-wider font-expletus pointer-events-auto"
+                >Sindre Sauarlia</span
+            >
+        </h1>
+        <p class="mt-4 text-lg pointer-events-auto text-justify">
+            I'm a full-stack developer dedicated to deeply understand every
+            aspect of the software development process.
+
+            <span class="text-primary/80 flex gap-2 items-center mt-1">
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    ><path
+                        fill="currentColor"
+                        d="M0 21V10l7.5-5l7.5 5v11h-5v-7H5v7zM24 2v19h-7V8.93l-1-.66V6h-2v.93l-4-2.66V2zm-3 12h-2v2h2zm0-4h-2v2h2zm0-4h-2v2h2z"
+                    ></path></svg
+                >
+                Oslo, Norway
+            </span>
+        </p>
+    </div>
+
+    <!-- Desktop parallax effect following mouse -->
+    <div
+        id="planes-wrapper"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen overflow-hidden hide-on-touchscreen hidden md:block max-w-[1440px] text-primary-muted"
+    >
+        <div id="plane-1" class="plane-near w-full h-full absolute">
+            <div class="codelang-card absolute top-[68%] left-[72%]">
+                <ProgIcon variant="csharp" size="4" />
+            </div>
+            <div class="codelang-card absolute top-[58%] left-[10%]">
+                <ProgIcon variant="ts" size="4" />
+            </div>
+            <div class="codelang-card absolute top-[25%] left-[35%]">
+                <ProgIcon variant="python" size="4" />
+            </div>
+        </div>
+
+        <div id="plane-2" class="plane-mid w-full h-full absolute">
+            <div class="codelang-card absolute top-[20%] left-[40%]">
+                <ProgIcon size="3" />
+            </div>
+            <div class="codelang-card absolute top-[15%] left-[25%]">
+                <ProgIcon size="3" />
+            </div>
+            <div class="codelang-card absolute bottom-[15%] right-[15%]">
+                <ProgIcon size="3" />
+            </div>
+            <div class="codelang-card absolute top-[70%] left-[20%]">
+                <ProgIcon size="3" />
+            </div>
+            <div class="codelang-card absolute top-[75%] left-[63%]">
+                <ProgIcon variant="aspnet" size="3" />
+            </div>
+        </div>
+
+        <div id="plane-3" class="plane-far w-full h-full absolute">
+            <div class="codelang-card absolute top-[42%] right-[15%]">
+                <ProgIcon size="2.5" />
+            </div>
+            <div
+                class="codelang-card absolute top-[25%] left-[23%] -translate-x-1/2"
+            >
+                <ProgIcon size="2.5" />
+            </div>
+            <div class="codelang-card absolute bottom-[25%] left-[45%]">
+                <ProgIcon size="2.5" />
+            </div>
+            <div class="codelang-card absolute top-[15%] right-[40%]">
+                <ProgIcon size="2.5" />
+            </div>
+            <div class="codelang-card absolute bottom-[30%] left-[25%]">
+                <ProgIcon size="2.5" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile parallax effect only following scroll (commented out for now) -->
+    <!-- <div id="planes-wrapper" class="hide-on-mouse">
+            <div
+                id="plane-1"
+                class="plane-near w-full h-screen absolute top-0 left-0"
+            >
+                <div class="codelang-card absolute top-[68%] left-[72%]">
+                    <ProgIcon variant="csharp" size="4" />
+                </div>
+                <div class="codelang-card absolute top-[58%] left-[10%]">
+                    <ProgIcon variant="ts" size="4" />
+                </div>
+                <div class="codelang-card absolute top-[25%] left-[35%]">
+                    <ProgIcon variant="python" size="4" />
+                </div>
+            </div>
+        </div> -->
+</section>
+
+<script>
+    import { gsap } from "gsap";
+    import { SplitText } from "gsap/SplitText";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    document.addEventListener("astro:page-load", () => {
+        if (typeof gsap === "undefined") {
+            console.error("GSAP is not defined. Make sure it is loaded.");
+            return;
+        }
+
+        // Register SplitText plugin
+        gsap.registerPlugin(SplitText, ScrollTrigger);
+
+        const heroSection = document.getElementById("hero-section");
+        const plane1 = document.getElementById("plane-1");
+        const plane2 = document.getElementById("plane-2");
+        const plane3 = document.getElementById("plane-3");
+        const animatedHeading = document.getElementById("animated-heading");
+
+        // Simple fade in animation with gsap for each plane when the page loads
+        gsap.fromTo(
+            plane1,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1 }
+        );
+        gsap.fromTo(
+            plane2,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1, delay: 0.1 }
+        );
+        gsap.fromTo(
+            plane3,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1, delay: 0.2 }
+        );
+        gsap.fromTo(
+            heroSection,
+            { opacity: 0 },
+            { opacity: 1, duration: 1, delay: 0.4 }
+        );
+
+        if (!heroSection || !plane1 || !plane2 || !plane3) {
+            return;
+        }
+
+        // Add hover animation for the heading
+        if (animatedHeading) {
+            // Create split text instance
+            const splitText = new SplitText(animatedHeading, {
+                type: "chars",
+                position: "relative",
+            });
+
+            // Store the timeline for later use
+            let hoverTimeline: gsap.core.Timeline | null = null;
+
+            // Create new timeline
+            hoverTimeline = gsap.timeline();
+
+            // Animate each character
+            hoverTimeline.to(splitText.chars, {
+                y: 8,
+                scale: 1.2,
+                color: "var(--color-primary, #4f46e5)",
+                stagger: 0.025,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                delay: 0.5,
+            });
+        }
+
+        // Variables for scroll-based parallax
+        let scrollY1 = 0;
+        let scrollY2 = 0;
+        let scrollY3 = 0;
+
+        // Add ScrollTrigger for parallax effect
+        ScrollTrigger.create({
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+            onUpdate: self => {
+                const progress = self.progress;
+
+                // Store scroll-based Y positions
+                scrollY1 = progress * -800;
+                scrollY2 = progress * -500;
+                scrollY3 = progress * -300;
+
+                // Apply scroll effect alongside mouse movement
+                updatePlanePositions();
+            },
+        });
+
+        // Function to update plane positions with both mouse and scroll effects
+        const updatePlanePositions = () => {
+            gsap.set(plane1, { x: currentX, y: currentY + scrollY1 });
+            gsap.set(plane2, {
+                x: currentX * 0.65,
+                y: currentY * 0.65 + scrollY2,
+            });
+            gsap.set(plane3, {
+                x: currentX * 0.3,
+                y: currentY * 0.3 + scrollY3,
+            });
+        };
+
+        let requestAnimationFrameId: number | null = null;
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        const easing = 0.08;
+        const speed = 0.05;
+        let heroCenterX = window.innerWidth / 2;
+        let heroCenterY = window.innerHeight / 2;
+
+        const updateCenter = () => {
+            heroCenterX = window.innerWidth / 2;
+            heroCenterY = window.innerHeight / 2;
+        };
+
+        window.addEventListener("resize", updateCenter);
+
+        const lerp = (start: number, target: number, amount: number) =>
+            start * (1 - amount) + target * amount;
+
+        const animate = () => {
+            currentX = lerp(currentX, targetX, easing);
+            currentY = lerp(currentY, targetY, easing);
+
+            // Use the combined function to update positions
+            updatePlanePositions();
+
+            if (
+                Math.abs(currentX - targetX) < 0.01 &&
+                Math.abs(currentY - targetY) < 0.01
+            ) {
+                if (Math.abs(targetX) < 0.01 && Math.abs(targetY) < 0.01) {
+                    currentX = 0;
+                    currentY = 0;
+
+                    // Reset only X positions, keep scroll-based Y offsets
+                    gsap.set(plane1, { x: 0, y: scrollY1 });
+                    gsap.set(plane2, { x: 0, y: scrollY2 });
+                    gsap.set(plane3, { x: 0, y: scrollY3 });
+
+                    if (requestAnimationFrameId) {
+                        cancelAnimationFrame(requestAnimationFrameId);
+                        requestAnimationFrameId = null;
+                    }
+                    return;
+                }
+            }
+            requestAnimationFrameId = requestAnimationFrame(animate);
+        };
+
+        const manageMouseMove = (e: MouseEvent) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            targetX = (mouseX - heroCenterX) * speed;
+            targetY = (mouseY - heroCenterY) * speed;
+
+            if (requestAnimationFrameId === null) {
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            }
+        };
+
+        const handleMouseLeave = () => {
+            targetX = 0;
+            targetY = 0;
+            if (
+                requestAnimationFrameId === null &&
+                (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01)
+            ) {
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            }
+        };
+
+        const startAnimation = () => {
+            document.documentElement.addEventListener(
+                "mousemove",
+                manageMouseMove
+            );
+            document.documentElement.addEventListener(
+                "mouseleave",
+                handleMouseLeave
+            );
+            updateCenter();
+        };
+
+        const stopAnimation = () => {
+            document.documentElement.removeEventListener(
+                "mousemove",
+                manageMouseMove
+            );
+            document.documentElement.removeEventListener(
+                "mouseleave",
+                handleMouseLeave
+            );
+            if (requestAnimationFrameId) {
+                cancelAnimationFrame(requestAnimationFrameId);
+                requestAnimationFrameId = null;
+            }
+            targetX = 0;
+            targetY = 0;
+
+            // When stopping mouse animation, keep scroll-based positions
+            gsap.set(plane1, { x: 0, y: scrollY1 });
+            gsap.set(plane2, { x: 0, y: scrollY2 });
+            gsap.set(plane3, { x: 0, y: scrollY3 });
+
+            currentX = 0;
+            currentY = 0;
+        };
+
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startAnimation();
+                    } else {
+                        stopAnimation();
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(heroSection);
+
+        updateCenter();
+    });
+</script>
