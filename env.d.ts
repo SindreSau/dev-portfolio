@@ -1,6 +1,6 @@
 interface ImportMetaEnv {
-  readonly AVAILABLE_FOR_WORK: string;
-  readonly EMAIL: string;
+  readonly VITE_AVAILABLE_FOR_WORK: string;
+  readonly VITE_EMAIL: string;
 }
 
 interface ImportMeta {
