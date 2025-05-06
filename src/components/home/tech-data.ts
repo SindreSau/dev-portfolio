@@ -29,7 +29,7 @@ export const techData: TechData[] = [
     {
         plane: 1,
         name: 'Python',
-        iconifyPkg: 'devicon',
+        iconifyPkg: 'simple-icons',
         iconifyIcon: 'python',
         size: '4',
         top: '68%',
@@ -62,8 +62,8 @@ export const techData: TechData[] = [
     {
         plane: 2,
         name: 'Next.js',
-        iconifyPkg: 'devicon',
-        iconifyIcon: 'nextjs',
+        iconifyPkg: 'ri',
+        iconifyIcon: 'nextjs-line',
         size: '3',
         top: '33%',
         left: '45%',
