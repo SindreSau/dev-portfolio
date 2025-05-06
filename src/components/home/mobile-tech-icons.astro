@@ -36,13 +36,13 @@ const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 ra
 </div>
 
 <script>
-    import { gsap, Power3 } from "gsap";
+    import { gsap } from "gsap";
 
     document.addEventListener("astro:page-load", () => {
         const container = document.getElementById(
             "mobile-tech-icons-container"
         );
-        const icons = document.querySelectorAll(
+        const icons = document.querySelectorAll<HTMLDivElement>(
             "#mobile-tech-icons-wrapper > div"
         );
 
@@ -54,7 +54,7 @@ const items = techData.sort(() => Math.random() - 0.5).slice(0, 6); // Show 6 ra
                 opacity: 0,
                 scale: 0.8,
                 y: 100,
-                ease: Power3.easeOut,
+                ease: "power3.out",
             },
             {
                 opacity: 1,
