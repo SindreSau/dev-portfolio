@@ -66,14 +66,14 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
 
     <button
         id="hamburger-btn"
-        class="z-50 w-6 hover:w-7 hover:translate-x-0.5 h-10 gap-0.5 relative flex flex-col justify-center items-center md:hidden cursor-pointer transition-width duration-200"
+        class="z-50 w-7 hover:w-8 hover:translate-x-0.5 h-10 gap-1 relative flex flex-col justify-center items-center md:hidden cursor-pointer transition-width duration-200"
         aria-label="Toggle menu"
     >
         <span
             class="w-full h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
         ></span>
         <span
-            class="w-6 h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
+            class="w-7 h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
         ></span>
         <span
             class="w-full h-0.5 bg-current rounded-full my-0.5 transition-transform duration-300 origin-center"
@@ -117,7 +117,7 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
 
 <style>
     :global(.hamburger-active) span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
+        transform: translateY(10px) rotate(45deg);
     }
 
     :global(.hamburger-active) span:nth-child(2) {
@@ -125,7 +125,7 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
     }
 
     :global(.hamburger-active) span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
+        transform: translateY(-10px) rotate(-45deg);
     }
 
     .nav-item {
