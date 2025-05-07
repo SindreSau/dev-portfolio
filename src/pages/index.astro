@@ -2,27 +2,86 @@
 import Divider from "@/components/general/divider.astro";
 import HeroSection from "@/components/home/hero-section.astro";
 import Layout from "@/layouts/Layout.astro";
+
+import techbbqImage from "@/assets/images/tech-bbq.jpeg";
+import Picture from "astro/components/Picture.astro";
 ---
 
 <Layout>
     <HeroSection />
 
-    <section>
-        <Divider scrollFadeIn />
-        <section class="scroll-fadein"></section>
+    <section
+        id="hero-short-info"
+        class="flex flex-col gap-6 w-full short-info-scroll-in-y-mobile md:short-info-scroll-in-y-desktop"
+    >
+        <Divider scrollFadeIn class="mb-4" />
+        <article class="flex flex-col md:flex-row gap-4">
+            <div class="flex flex-col gap-2 scroll-fadein">
+                <h2 class="text-muted-foreground">I'm passionate</h2>
+                <p class="text-lg">
+                    I'm a full-stack developer with a passion for creating
+                    innovative solutions. I have experience in various
+                    technologies and frameworks, and I'm always eager to learn
+                    more.
+                </p>
+            </div>
+            <Picture
+                src={techbbqImage}
+                alt="Sindre at TechBBQ 2024"
+                title={"Sindre at TechBBQ 2024"}
+                class="w-full h-auto object-cover rounded-image scroll-fadein"
+                format="avif"
+                loading="lazy"
+                width={1877}
+                height={3336}
+                quality={40}
+                widths={[256, 540, 768, 1024]}
+            />
+        </article>
     </section>
 </Layout>
 
 <script>
-    import Lenis from "lenis";
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    // Initialize Lenis
-    const lenis = new Lenis({
-        autoRaf: true,
+    document.addEventListener("astro:page-load", () => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero-short-info",
+                start: "top 90%",
+                end: "top 20%",
+                scrub: true,
+                // markers: true,
+            },
+        });
+
+        const tl2 = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero-short-info",
+                start: "top 90%", // Adjusted to make the animation appear earlier
+                end: "top 80%",
+                scrub: true,
+                // markers: true,
+            },
+        });
+
+        tl.to(".short-info-scroll-in-y-mobile", {
+            y: -60,
+            duration: 0.5,
+            ease: "power4.inOut",
+        });
+
+        tl2.to(".short-info-scroll-in-y-desktop", {
+            translateY: -250,
+            duration: 1,
+            ease: "power1.inOut",
+            stagger: {
+                amount: 0.5,
+                from: "end",
+            },
+        });
     });
-
-    // Listen for the scroll event and log the event data
-    // lenis.on("scroll", e => {
-    //     console.log(e);
-    // });
 </script>

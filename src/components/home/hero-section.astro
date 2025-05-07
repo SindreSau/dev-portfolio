@@ -63,7 +63,7 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
         import { SplitText } from "gsap/SplitText";
         import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-        document.addEventListener("astro:page-load", () => {
+        function initializeHeroAnimations() {
             if (typeof gsap === "undefined") {
                 console.warn("GSAP is not defined. Make sure it is loaded.");
                 return;
@@ -75,6 +75,11 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
             const heroSection = document.getElementById("hero-section");
             const animatedHeading = document.getElementById("animated-heading");
 
+            if (!heroSection || !animatedHeading) {
+                console.warn("Hero section elements not found");
+                return;
+            }
+
             // Fade in the hero section
             gsap.fromTo(
                 heroSection,
@@ -82,35 +87,53 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                 { opacity: 1, duration: 1.25, delay: 0.4 }
             );
 
-            gsap.fromTo(
-                "#hero-avilable-badge-mobile",
-
-                { opacity: 0, translateY: 40 },
-                { opacity: 1, translateY: 60, duration: 0.6, delay: 1.8 }
+            const badgeMobile = document.getElementById(
+                "hero-avilable-badge-mobile"
             );
-
-            // Add hover animation for the heading
-            if (animatedHeading) {
-                // Create split text instance
-                const splitText = new SplitText(animatedHeading, {
-                    type: "chars",
-                    position: "relative",
-                });
-
-                // Store the timeline for later use
-                let hoverTimeline = gsap.timeline();
-
-                // Animate each character
-                hoverTimeline.to(splitText.chars, {
-                    y: 9,
-                    scale: 1.2,
-                    color: "var(--color-primary, #4f46e5)",
-                    stagger: 0.025,
-                    duration: 0.5,
-                    ease: "power3.inOut",
-                    delay: 1,
-                });
+            if (badgeMobile) {
+                gsap.fromTo(
+                    badgeMobile,
+                    { opacity: 0, translateY: 40 },
+                    { opacity: 1, translateY: 60, duration: 0.6, delay: 1.8 }
+                );
             }
-        });
+
+            // Ensure fonts are loaded before using SplitText
+            document.fonts.ready.then(() => {
+                // Create split text instance only if the element exists
+                if (animatedHeading) {
+                    try {
+                        const splitText = new SplitText(animatedHeading, {
+                            type: "chars",
+                            position: "relative",
+                        });
+
+                        // Store the timeline for later use
+                        let hoverTimeline = gsap.timeline();
+
+                        // Animate each character
+                        hoverTimeline.to(splitText.chars, {
+                            y: 9,
+                            scale: 1.2,
+                            color: "var(--color-primary, #4f46e5)",
+                            stagger: 0.025,
+                            duration: 0.5,
+                            ease: "power3.inOut",
+                            delay: 1,
+                        });
+                    } catch (error) {
+                        console.warn("Error with SplitText animation:", error);
+                    }
+                }
+            });
+        }
+
+        // Run on initial load and when navigating pages
+        document.addEventListener("astro:page-load", initializeHeroAnimations);
+
+        // Also initialize if page is already loaded (for view transitions)
+        if (document.readyState === "complete") {
+            initializeHeroAnimations();
+        }
     </script>
 </section>

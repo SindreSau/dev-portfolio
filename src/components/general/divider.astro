@@ -9,12 +9,11 @@ type Props = {
 const { class: className, scrollFadeIn, ...props }: Props = Astro.props;
 ---
 
-<div
+<hr
     class={cn(
-        "border-t border-border",
+        "border-t border-border h-0.5 w-full ",
         className,
-        scrollFadeIn && "scroll-fadein"
+        scrollFadeIn ? "scroll-fadein opacity-0" : ""
     )}
     {...props}
->
-</div>
+/>

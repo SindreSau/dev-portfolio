@@ -8,6 +8,8 @@ export type TechData = {
     size: string;
     top: string;
     left: string;
+    mobileTop: string;
+    mobileLeft: string;
 };
 
 // Tech data structure for reuse across animations
@@ -23,6 +25,8 @@ export const techData: TechData[] = [
         size: '4',
         top: '15%',
         left: '40%',
+        mobileTop: '50%',
+        mobileLeft: '22%',
     },
 
     // Python (Bottom Left)
@@ -34,6 +38,8 @@ export const techData: TechData[] = [
         size: '4',
         top: '68%',
         left: '18%',
+        mobileTop: '55%',
+        mobileLeft: '52%',
     },
 
     // C# (Bottom Right)
@@ -45,6 +51,8 @@ export const techData: TechData[] = [
         size: '4',
         top: '68%',
         left: '72%',
+        mobileTop: '10%',
+        mobileLeft: '80%',
     },
 
     // ===== FRAMEWORKS BY LANGUAGE (PLANE 2 - MID) =====
@@ -58,6 +66,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '27%',
         left: '32%',
+        mobileTop: '40%',
+        mobileLeft: '35%',
     },
     {
         plane: 2,
@@ -67,6 +77,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '33%',
         left: '45%',
+        mobileTop: '15%',
+        mobileLeft: '30%',
     },
     {
         plane: 2,
@@ -76,6 +88,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '28%',
         left: '58%',
+        mobileTop: '28%',
+        mobileLeft: '58%',
     },
     {
         plane: 2,
@@ -85,6 +99,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '19%',
         left: '80%',
+        mobileTop: '79%',
+        mobileLeft: '80%',
     },
     {
         plane: 2,
@@ -94,6 +110,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '41%',
         left: '78%',
+        mobileTop: '41%',
+        mobileLeft: '78%',
     },
     {
         plane: 2,
@@ -103,6 +121,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '28%',
         left: '9%',
+        mobileTop: '28%',
+        mobileLeft: '0%',
     },
     {
         plane: 2,
@@ -112,6 +132,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '17%',
         left: '13%',
+        mobileTop: '17%',
+        mobileLeft: '13%',
     },
     {
         plane: 2,
@@ -121,6 +143,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '22%',
         left: '70%',
+        mobileTop: '22%',
+        mobileLeft: '70%',
     },
     {
         plane: 2,
@@ -130,6 +154,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '8%',
         left: '55%',
+        mobileTop: '0%',
+        mobileLeft: '55%',
     },
 
     // Python Ecosystem (Bottom Left)
@@ -141,6 +167,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '62%',
         left: '10%',
+        mobileTop: '62%',
+        mobileLeft: '2%',
     },
     {
         plane: 2,
@@ -150,6 +178,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '78%',
         left: '30%',
+        mobileTop: '80%',
+        mobileLeft: '30%',
     },
     {
         plane: 2,
@@ -159,6 +189,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '70%',
         left: '35%',
+        mobileTop: '60%',
+        mobileLeft: '35%',
     },
 
     // C# Ecosystem (Bottom Right)
@@ -170,6 +202,8 @@ export const techData: TechData[] = [
         size: '3',
         top: '68%',
         left: '58%',
+        mobileTop: '72%',
+        mobileLeft: '62%',
     },
 
     // ===== TOOLS & LIBRARIES (PLANE 3 - FAR) =====
@@ -183,6 +217,8 @@ export const techData: TechData[] = [
         size: '2.5',
         top: '15%',
         left: '25%',
+        mobileTop: '20%',
+        mobileLeft: '25%',
     },
 
     // Bottom Right (C# ecosystem tools)
@@ -194,6 +230,8 @@ export const techData: TechData[] = [
         size: '2.5',
         top: '65%',
         left: '80%',
+        mobileTop: '50%',
+        mobileLeft: '70%',
     },
     {
         plane: 3,
@@ -203,6 +241,8 @@ export const techData: TechData[] = [
         size: '2.5',
         top: '75%',
         left: '75%',
+        mobileTop: '85%',
+        mobileLeft: '45%',
     },
     {
         plane: 3,
@@ -212,6 +252,8 @@ export const techData: TechData[] = [
         size: '2.5',
         top: '63%',
         left: '52%',
+        mobileTop: '35%',
+        mobileLeft: '60%',
     },
     {
         plane: 3,
@@ -221,6 +263,8 @@ export const techData: TechData[] = [
         size: '2.5',
         top: '60%',
         left: '85%',
+        mobileTop: '25%',
+        mobileLeft: '85%',
     },
     {
         plane: 3,
@@ -230,6 +274,8 @@ export const techData: TechData[] = [
         size: '2.5',
         top: '70%',
         left: '90%',
+        mobileTop: '70%',
+        mobileLeft: '15%',
     },
 ];
 
