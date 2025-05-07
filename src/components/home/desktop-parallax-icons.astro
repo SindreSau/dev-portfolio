@@ -69,6 +69,11 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+    // Initialize context variable with proper typing
+    let ctx: gsap.Context | null = null;
+    // Store animation frame ID for cleanup
+    let requestAnimationFrameId: number | null = null;
+
     document.addEventListener("astro:page-load", () => {
         if (typeof gsap === "undefined") {
             console.error("GSAP is not defined. Make sure it is loaded.");
@@ -78,212 +83,237 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
         // Register GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
 
-        const plane1 = document.getElementById("plane-1");
-        const plane2 = document.getElementById("plane-2");
-        const plane3 = document.getElementById("plane-3");
+        // Clean up previous animations
+        ScrollTrigger.disable(false);
+        ScrollTrigger.enable();
+        ctx && ctx.revert();
 
-        if (!plane1 || !plane2 || !plane3) {
-            return;
+        // Clean up any running animation frames
+        if (requestAnimationFrameId) {
+            cancelAnimationFrame(requestAnimationFrameId);
+            requestAnimationFrameId = null;
         }
 
-        // Simple fade in animation with gsap when the page loads
-        gsap.fromTo(
-            plane1,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 0.8, scale: 1, duration: 1.25 }
-        );
-        gsap.fromTo(
-            plane2,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 0.6, scale: 1, duration: 1.25, delay: 0.1 }
-        );
-        gsap.fromTo(
-            plane3,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 0.4, scale: 1, duration: 1.25, delay: 0.2 }
-        );
+        // Create new GSAP context
+        ctx = gsap.context(() => {
+            const plane1 = document.getElementById("plane-1");
+            const plane2 = document.getElementById("plane-2");
+            const plane3 = document.getElementById("plane-3");
 
-        // Variables for scroll-based parallax
-        let scrollY1 = 0;
-        let scrollY2 = 0;
-        let scrollY3 = 0;
+            if (!plane1 || !plane2 || !plane3) {
+                return;
+            }
 
-        // Add ScrollTrigger for parallax effect
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true,
-            },
-        });
+            // Simple fade in animation with gsap when the page loads
+            gsap.fromTo(
+                plane1,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 0.8, scale: 1, duration: 1.25 }
+            );
+            gsap.fromTo(
+                plane2,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 0.6, scale: 1, duration: 1.25, delay: 0.1 }
+            );
+            gsap.fromTo(
+                plane3,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 0.4, scale: 1, duration: 1.25, delay: 0.2 }
+            );
 
-        tl.to(
-            {},
-            {
-                duration: 1,
-                onUpdate: () => {
-                    const progress = tl.progress();
+            // Variables for scroll-based parallax
+            let scrollY1 = 0;
+            let scrollY2 = 0;
+            let scrollY3 = 0;
 
-                    // Update scroll-based Y positions
-                    scrollY1 = progress * -800;
-                    scrollY2 = progress * -500;
-                    scrollY3 = progress * -300;
-
-                    // Tween opacity alongside scroll progress
-                    gsap.set(plane1, { opacity: 0.95 - progress * 2.6 });
-                    gsap.set(plane2, { opacity: 0.6 - progress * 2.3 });
-                    gsap.set(plane3, { opacity: 0.5 - progress * 1.8 });
-
-                    // Apply scroll effect along with mouse movement
-                    updatePlanePositions();
+            // Add ScrollTrigger for parallax effect
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: true,
                 },
-            }
-        );
-
-        // Function to update plane positions with both mouse and scroll effects
-        const updatePlanePositions = () => {
-            gsap.set(plane1, {
-                x: currentX,
-                y: currentY + scrollY1,
             });
-            gsap.set(plane2, {
-                x: currentX * 0.65,
-                y: currentY * 0.65 + scrollY2,
-            });
-            gsap.set(plane3, {
-                x: currentX * 0.3,
-                y: currentY * 0.3 + scrollY3,
-            });
-        };
 
-        let requestAnimationFrameId: number | null = null;
-        let targetX = 0;
-        let targetY = 0;
-        let currentX = 0;
-        let currentY = 0;
-        const easing = 0.08;
-        const speed = 0.05;
-        let heroCenterX = window.innerWidth / 2;
-        let heroCenterY = window.innerHeight / 2;
+            tl.to(
+                {},
+                {
+                    duration: 1,
+                    onUpdate: () => {
+                        const progress = tl.progress();
 
-        const updateCenter = () => {
-            heroCenterX = window.innerWidth / 2;
-            heroCenterY = window.innerHeight / 2;
-        };
+                        // Update scroll-based Y positions
+                        scrollY1 = progress * -800;
+                        scrollY2 = progress * -500;
+                        scrollY3 = progress * -300;
 
-        window.addEventListener("resize", updateCenter);
+                        // Tween opacity alongside scroll progress
+                        gsap.set(plane1, { opacity: 0.95 - progress * 2.6 });
+                        gsap.set(plane2, { opacity: 0.6 - progress * 2.3 });
+                        gsap.set(plane3, { opacity: 0.5 - progress * 1.8 });
 
-        const lerp = (start: number, target: number, amount: number) =>
-            start * (1 - amount) + target * amount;
-
-        const animate = () => {
-            currentX = lerp(currentX, targetX, easing);
-            currentY = lerp(currentY, targetY, easing);
-
-            // Use the combined function to update positions
-            updatePlanePositions();
-
-            if (
-                Math.abs(currentX - targetX) < 0.01 &&
-                Math.abs(currentY - targetY) < 0.01
-            ) {
-                if (Math.abs(targetX) < 0.01 && Math.abs(targetY) < 0.01) {
-                    currentX = 0;
-                    currentY = 0;
-
-                    // Reset only X positions, keep scroll-based Y offsets
-                    gsap.set(plane1, { x: 0, y: scrollY1 });
-                    gsap.set(plane2, { x: 0, y: scrollY2 });
-                    gsap.set(plane3, { x: 0, y: scrollY3 });
-
-                    if (requestAnimationFrameId) {
-                        cancelAnimationFrame(requestAnimationFrameId);
-                        requestAnimationFrameId = null;
-                    }
-                    return;
+                        // Apply scroll effect along with mouse movement
+                        updatePlanePositions();
+                    },
                 }
-            }
-            requestAnimationFrameId = requestAnimationFrame(animate);
-        };
-
-        const manageMouseMove = (e: MouseEvent) => {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            targetX = (mouseX - heroCenterX) * speed;
-            targetY = (mouseY - heroCenterY) * speed;
-
-            if (requestAnimationFrameId === null) {
-                requestAnimationFrameId = requestAnimationFrame(animate);
-            }
-        };
-
-        const handleMouseLeave = () => {
-            targetX = 0;
-            targetY = 0;
-            if (
-                requestAnimationFrameId === null &&
-                (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01)
-            ) {
-                requestAnimationFrameId = requestAnimationFrame(animate);
-            }
-        };
-
-        const startAnimation = () => {
-            document.documentElement.addEventListener(
-                "mousemove",
-                manageMouseMove
             );
-            document.documentElement.addEventListener(
-                "mouseleave",
-                handleMouseLeave
-            );
-            updateCenter();
-        };
 
-        const stopAnimation = () => {
-            document.documentElement.removeEventListener(
-                "mousemove",
-                manageMouseMove
-            );
-            document.documentElement.removeEventListener(
-                "mouseleave",
-                handleMouseLeave
-            );
-            if (requestAnimationFrameId) {
-                cancelAnimationFrame(requestAnimationFrameId);
-                requestAnimationFrameId = null;
-            }
-            targetX = 0;
-            targetY = 0;
-
-            // When stopping mouse animation, keep scroll-based positions
-            gsap.set(plane1, { x: 0, y: scrollY1 });
-            gsap.set(plane2, { x: 0, y: scrollY2 });
-            gsap.set(plane3, { x: 0, y: scrollY3 });
-
-            currentX = 0;
-            currentY = 0;
-        };
-
-        const observer = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        startAnimation();
-                    } else {
-                        stopAnimation();
-                    }
+            // Function to update plane positions with both mouse and scroll effects
+            const updatePlanePositions = () => {
+                gsap.set(plane1, {
+                    x: currentX,
+                    y: currentY + scrollY1,
                 });
-            },
-            { threshold: 0.1 }
-        );
+                gsap.set(plane2, {
+                    x: currentX * 0.65,
+                    y: currentY * 0.65 + scrollY2,
+                });
+                gsap.set(plane3, {
+                    x: currentX * 0.3,
+                    y: currentY * 0.3 + scrollY3,
+                });
+            };
 
-        const planesWrapper = document.getElementById("planes-wrapper");
-        if (planesWrapper) {
-            observer.observe(planesWrapper);
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            const easing = 0.08;
+            const speed = 0.05;
+            let heroCenterX = window.innerWidth / 2;
+            let heroCenterY = window.innerHeight / 2;
+
+            const updateCenter = () => {
+                heroCenterX = window.innerWidth / 2;
+                heroCenterY = window.innerHeight / 2;
+            };
+
+            window.addEventListener("resize", updateCenter);
+
+            const lerp = (start: number, target: number, amount: number) =>
+                start * (1 - amount) + target * amount;
+
+            const animate = () => {
+                currentX = lerp(currentX, targetX, easing);
+                currentY = lerp(currentY, targetY, easing);
+
+                // Use the combined function to update positions
+                updatePlanePositions();
+
+                if (
+                    Math.abs(currentX - targetX) < 0.01 &&
+                    Math.abs(currentY - targetY) < 0.01
+                ) {
+                    if (Math.abs(targetX) < 0.01 && Math.abs(targetY) < 0.01) {
+                        currentX = 0;
+                        currentY = 0;
+
+                        // Reset only X positions, keep scroll-based Y offsets
+                        gsap.set(plane1, { x: 0, y: scrollY1 });
+                        gsap.set(plane2, { x: 0, y: scrollY2 });
+                        gsap.set(plane3, { x: 0, y: scrollY3 });
+
+                        if (requestAnimationFrameId) {
+                            cancelAnimationFrame(requestAnimationFrameId);
+                            requestAnimationFrameId = null;
+                        }
+                        return;
+                    }
+                }
+                requestAnimationFrameId = requestAnimationFrame(animate);
+            };
+
+            const manageMouseMove = (e: MouseEvent) => {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                targetX = (mouseX - heroCenterX) * speed;
+                targetY = (mouseY - heroCenterY) * speed;
+
+                if (requestAnimationFrameId === null) {
+                    requestAnimationFrameId = requestAnimationFrame(animate);
+                }
+            };
+
+            const handleMouseLeave = () => {
+                targetX = 0;
+                targetY = 0;
+                if (
+                    requestAnimationFrameId === null &&
+                    (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01)
+                ) {
+                    requestAnimationFrameId = requestAnimationFrame(animate);
+                }
+            };
+
+            const startAnimation = () => {
+                document.documentElement.addEventListener(
+                    "mousemove",
+                    manageMouseMove
+                );
+                document.documentElement.addEventListener(
+                    "mouseleave",
+                    handleMouseLeave
+                );
+                updateCenter();
+            };
+
+            const stopAnimation = () => {
+                document.documentElement.removeEventListener(
+                    "mousemove",
+                    manageMouseMove
+                );
+                document.documentElement.removeEventListener(
+                    "mouseleave",
+                    handleMouseLeave
+                );
+                if (requestAnimationFrameId) {
+                    cancelAnimationFrame(requestAnimationFrameId);
+                    requestAnimationFrameId = null;
+                }
+                targetX = 0;
+                targetY = 0;
+
+                // When stopping mouse animation, keep scroll-based positions
+                gsap.set(plane1, { x: 0, y: scrollY1 });
+                gsap.set(plane2, { x: 0, y: scrollY2 });
+                gsap.set(plane3, { x: 0, y: scrollY3 });
+
+                currentX = 0;
+                currentY = 0;
+            };
+
+            const observer = new IntersectionObserver(
+                entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            startAnimation();
+                        } else {
+                            stopAnimation();
+                        }
+                    });
+                },
+                { threshold: 0.1 }
+            );
+
+            const planesWrapper = document.getElementById("planes-wrapper");
+            if (planesWrapper) {
+                observer.observe(planesWrapper);
+            }
+
+            updateCenter();
+        });
+    });
+
+    // Clean up on page leave
+    document.addEventListener("astro:before-swap", () => {
+        // Cancel any running animation frames
+        if (requestAnimationFrameId) {
+            cancelAnimationFrame(requestAnimationFrameId);
+            requestAnimationFrameId = null;
         }
 
-        updateCenter();
+        // Revert GSAP context
+        ctx && ctx.revert();
     });
 </script>

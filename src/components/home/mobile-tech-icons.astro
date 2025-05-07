@@ -73,6 +73,9 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+    // Initialize context variable with proper typing
+    let ctx: gsap.Context | null = null;
+
     document.addEventListener("astro:page-load", () => {
         if (typeof gsap === "undefined") {
             console.error("GSAP is not defined. Make sure it is loaded.");
@@ -82,103 +85,116 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
         // Register GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
 
-        const mobilePlane1 = document.getElementById("mobile-plane-1");
-        const mobilePlane2 = document.getElementById("mobile-plane-2");
-        const mobilePlane3 = document.getElementById("mobile-plane-3");
-        const mobilePlanesWrapper = document.getElementById(
-            "mobile-planes-wrapper"
-        );
+        // Clean up previous animations
+        ScrollTrigger.disable(false);
+        ScrollTrigger.enable();
+        ctx && ctx.revert();
 
-        if (
-            !mobilePlane1 ||
-            !mobilePlane2 ||
-            !mobilePlane3 ||
-            !mobilePlanesWrapper
-        ) {
-            return;
-        }
+        // Create new GSAP context
+        ctx = gsap.context(() => {
+            const mobilePlane1 = document.getElementById("mobile-plane-1");
+            const mobilePlane2 = document.getElementById("mobile-plane-2");
+            const mobilePlane3 = document.getElementById("mobile-plane-3");
+            const mobilePlanesWrapper = document.getElementById(
+                "mobile-planes-wrapper"
+            );
 
-        // Initial fade-in animation for each plane
-        gsap.fromTo(
-            mobilePlane1,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 0.9, scale: 1, duration: 1.25, delay: 0.2 }
-        );
-        gsap.fromTo(
-            mobilePlane2,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 0.65, scale: 1, duration: 1.25, delay: 0.4 }
-        );
-        gsap.fromTo(
-            mobilePlane3,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 0.45, scale: 1, duration: 1.25, delay: 0.6 }
-        );
+            if (
+                !mobilePlane1 ||
+                !mobilePlane2 ||
+                !mobilePlane3 ||
+                !mobilePlanesWrapper
+            ) {
+                return;
+            }
 
-        // Get all mobile icons for small movement animations
-        const mobileIcons = document.querySelectorAll(".mobile-icon");
+            // Initial fade-in animation for each plane
+            gsap.fromTo(
+                mobilePlane1,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 0.9, scale: 1, duration: 1.25, delay: 0.2 }
+            );
+            gsap.fromTo(
+                mobilePlane2,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 0.65, scale: 1, duration: 1.25, delay: 0.4 }
+            );
+            gsap.fromTo(
+                mobilePlane3,
+                { opacity: 0, scale: 0.8 },
+                { opacity: 0.45, scale: 1, duration: 1.25, delay: 0.6 }
+            );
 
-        // Create small float animations for each icon
-        mobileIcons.forEach(icon => {
-            // Create random values for each icon's animation
-            const randomDuration = 2 + Math.random() * 2; // Between 2-4 seconds
-            const randomXAmplitude = Math.random() * 4; // Between 0-4px
-            const randomYAmplitude = Math.random() * 2; // Between 0-2px
-            const randomDelay = Math.random() * 1; // Between 0-1 seconds
+            // Get all mobile icons for small movement animations
+            const mobileIcons = document.querySelectorAll(".mobile-icon");
 
-            // Apply floating animation
-            gsap.to(icon, {
-                x: randomXAmplitude,
-                y: randomYAmplitude,
-                duration: randomDuration,
-                repeat: -1, // Infinite repeat
-                yoyo: true, // Animate back and forth
-                ease: "sine.inOut",
-                delay: randomDelay,
-            });
+            // Create small float animations for each icon
+            mobileIcons.forEach(icon => {
+                // Create random values for each icon's animation
+                const randomDuration = 2 + Math.random() * 2; // Between 2-4 seconds
+                const randomXAmplitude = Math.random() * 4; // Between 0-4px
+                const randomYAmplitude = Math.random() * 2; // Between 0-2px
+                const randomDelay = Math.random() * 1; // Between 0-1 seconds
 
-            // Add a small rotation for some icons
-            if (Math.random() > 0.5) {
+                // Apply floating animation
                 gsap.to(icon, {
-                    rotation: Math.random() * 10 - 5, // Between -5 and 5 degrees
-                    duration: randomDuration * 1.5,
-                    repeat: -1,
-                    yoyo: true,
+                    x: randomXAmplitude,
+                    y: randomYAmplitude,
+                    duration: randomDuration,
+                    repeat: -1, // Infinite repeat
+                    yoyo: true, // Animate back and forth
                     ease: "sine.inOut",
                     delay: randomDelay,
                 });
-            }
-        });
 
-        // Scroll effect to fade out and move icons when scrolling down
-        ScrollTrigger.create({
-            trigger: "body",
-            start: "top top",
-            end: "20% top",
-            scrub: true,
-            onUpdate: self => {
-                const progress = self.progress;
+                // Add a small rotation for some icons
+                if (Math.random() > 0.5) {
+                    gsap.to(icon, {
+                        rotation: Math.random() * 10 - 5, // Between -5 and 5 degrees
+                        duration: randomDuration * 1.5,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut",
+                        delay: randomDelay,
+                    });
+                }
+            });
 
-                // Fade out all planes
-                gsap.to(mobilePlane1, {
-                    opacity: 1 - progress * 1.2, // Fade out faster
-                    y: progress * -30, // Move down as we scroll
-                    duration: 0.2,
-                    ease: "power1.out",
-                });
-                gsap.to(mobilePlane2, {
-                    opacity: 1 - progress * 1.1, // Fade out faster
-                    y: progress * -90, // Move down as we scroll
-                    duration: 0.2,
-                    ease: "power1.out",
-                });
-                gsap.to(mobilePlane3, {
-                    opacity: 1 - progress * 1.05, // Fade out faster
-                    y: progress * -180, // Move down as we scroll
-                    duration: 0.2,
-                    ease: "power1.out",
-                });
-            },
+            // Scroll effect to fade out and move icons when scrolling down
+            ScrollTrigger.create({
+                trigger: "body",
+                start: "top top",
+                end: "20% top",
+                scrub: true,
+                onUpdate: self => {
+                    const progress = self.progress;
+
+                    // Fade out all planes
+                    gsap.to(mobilePlane1, {
+                        opacity: 1 - progress * 1.2, // Fade out faster
+                        y: progress * -30, // Move down as we scroll
+                        duration: 0.2,
+                        ease: "power1.out",
+                    });
+                    gsap.to(mobilePlane2, {
+                        opacity: 1 - progress * 1.1, // Fade out faster
+                        y: progress * -90, // Move down as we scroll
+                        duration: 0.2,
+                        ease: "power1.out",
+                    });
+                    gsap.to(mobilePlane3, {
+                        opacity: 1 - progress * 1.05, // Fade out faster
+                        y: progress * -180, // Move down as we scroll
+                        duration: 0.2,
+                        ease: "power1.out",
+                    });
+                },
+            });
         });
+    });
+
+    // Clean up on page leave
+    document.addEventListener("astro:before-swap", () => {
+        ctx && ctx.revert();
     });
 </script>

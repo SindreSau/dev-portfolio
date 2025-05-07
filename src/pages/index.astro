@@ -45,43 +45,78 @@ import Picture from "astro/components/Picture.astro";
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+    // Initialize context variable with proper typing
+    let ctx: gsap.Context | null = null;
+
     document.addEventListener("astro:page-load", () => {
         gsap.registerPlugin(ScrollTrigger);
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#hero-short-info",
-                start: "top 90%",
-                end: "top 20%",
-                scrub: true,
-                // markers: true,
-            },
-        });
+        // Clean up previous animations
+        ScrollTrigger.disable(false);
+        ScrollTrigger.enable();
+        ctx && ctx.revert();
 
-        const tl2 = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#hero-short-info",
-                start: "top 90%", // Adjusted to make the animation appear earlier
-                end: "top 80%",
-                scrub: true,
-                // markers: true,
-            },
-        });
+        // Create new GSAP context for all animations
+        ctx = gsap.context(() => {
+            // Short info section animations
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#hero-short-info",
+                    start: "top 90%",
+                    end: "top 20%",
+                    scrub: true,
+                    // markers: true,
+                },
+            });
 
-        tl.to(".short-info-scroll-in-y-mobile", {
-            y: -60,
-            duration: 0.5,
-            ease: "power4.inOut",
-        });
+            const tl2 = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#hero-short-info",
+                    start: "top 90%", // Adjusted to make the animation appear earlier
+                    end: "top 80%",
+                    scrub: true,
+                    // markers: true,
+                },
+            });
 
-        tl2.to(".short-info-scroll-in-y-desktop", {
-            translateY: -250,
-            duration: 1,
-            ease: "power1.inOut",
-            stagger: {
-                amount: 0.5,
-                from: "end",
-            },
+            tl.to(".short-info-scroll-in-y-mobile", {
+                y: -60,
+                duration: 0.5,
+                ease: "power4.inOut",
+            });
+
+            tl2.to(".short-info-scroll-in-y-desktop", {
+                translateY: -250,
+                duration: 1,
+                ease: "power1.inOut",
+                stagger: {
+                    amount: 0.5,
+                    from: "end",
+                },
+            });
+
+            // Initialize scroll fade-in animations
+            gsap.to(".scroll-fadein", {
+                scrollTrigger: {
+                    trigger: ".scroll-fadein",
+                    start: "0 98%",
+                    end: "0 75%",
+                    scrub: true,
+                },
+                opacity: 1,
+                duration: 5,
+                translateY: 0,
+                ease: "power1.inOut",
+                stagger: {
+                    amount: 0.5,
+                    from: "end",
+                },
+            });
         });
+    });
+
+    // Clean up on page leave
+    document.addEventListener("astro:before-swap", () => {
+        ctx && ctx.revert();
     });
 </script>

@@ -28,4 +28,8 @@ export default defineConfig({
     integrations: [sitemap(), icon()],
 
     site: 'https://www.sindresau.me',
+
+    devToolbar: {
+        enabled: false,
+    },
 });

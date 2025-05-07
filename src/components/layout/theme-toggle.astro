@@ -49,39 +49,47 @@
 
     gsap.registerPlugin(MorphSVGPlugin);
 
+    // Initialize context variable with proper typing
+    let ctx: gsap.Context | null = null;
     let sunToMoonAnim: gsap.core.Tween | null = null; // GSAP Animation instance
 
     // Initializes or re-initializes the GSAP animation
     function initializeAnimation() {
-        const sunPath = document.getElementById(
-            "sun-path"
-        ) as SVGPathElement | null;
-        const moonPath = document.getElementById(
-            "moon-path"
-        ) as SVGPathElement | null;
+        // Clean up previous context if it exists
+        ctx && ctx.revert();
+        
+        // Create new context
+        ctx = gsap.context(() => {
+            const sunPath = document.getElementById(
+                "sun-path"
+            ) as SVGPathElement | null;
+            const moonPath = document.getElementById(
+                "moon-path"
+            ) as SVGPathElement | null;
 
-        if (!sunPath || !moonPath) {
-            sunToMoonAnim = null;
-            return;
-        }
+            if (!sunPath || !moonPath) {
+                sunToMoonAnim = null;
+                return;
+            }
 
-        if (sunToMoonAnim) {
-            sunToMoonAnim.kill();
-            sunToMoonAnim = null;
-        }
+            if (sunToMoonAnim) {
+                sunToMoonAnim.kill();
+                sunToMoonAnim = null;
+            }
 
-        // IMPORTANT: Reset sunPath to its original "sun" d-attribute.
-        // This counteracts potential state persistence by Astro's View Transitions,
-        // ensuring GSAP initializes the morph from the correct base "sun" shape.
-        const originalSunPathDAttribute =
-            "M12 2v1m0 18v1m10-10h-1M3 12H2m17.07-7.07l-.392.393M5.322 18.678l-.393.393m14.141-.001l-.392-.393M5.322 5.322l-.393-.393M6.341 10A6 6 0 1 0 10 6.341";
-        sunPath.setAttribute("d", originalSunPathDAttribute);
+            // IMPORTANT: Reset sunPath to its original "sun" d-attribute.
+            // This counteracts potential state persistence by Astro's View Transitions,
+            // ensuring GSAP initializes the morph from the correct base "sun" shape.
+            const originalSunPathDAttribute =
+                "M12 2v1m0 18v1m10-10h-1M3 12H2m17.07-7.07l-.392.393M5.322 18.678l-.393.393m14.141-.001l-.392-.393M5.322 5.322l-.393-.393M6.341 10A6 6 0 1 0 10 6.341";
+            sunPath.setAttribute("d", originalSunPathDAttribute);
 
-        sunToMoonAnim = gsap.to(sunPath, {
-            morphSVG: moonPath, // Morph #sun-path TO #moon-path shape
-            duration: 0.4,
-            paused: true,
-            ease: "power1.inOut",
+            sunToMoonAnim = gsap.to(sunPath, {
+                morphSVG: moonPath, // Morph #sun-path TO #moon-path shape
+                duration: 0.4,
+                paused: true,
+                ease: "power1.inOut",
+            });
         });
     }
 
@@ -156,5 +164,10 @@
     document.addEventListener("astro:after-swap", () => {
         initializeAnimation();
         applyThemeState(true);
+    });
+    
+    // Clean up on page leave
+    document.addEventListener("astro:before-swap", () => {
+        ctx && ctx.revert();
     });
 </script>

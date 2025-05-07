@@ -63,6 +63,9 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
         import { SplitText } from "gsap/SplitText";
         import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+        // Initialize context variable with proper typing
+        let ctx: gsap.Context | null = null;
+
         document.addEventListener("astro:page-load", () => {
             if (typeof gsap === "undefined") {
                 console.warn("GSAP is not defined. Make sure it is loaded.");
@@ -72,45 +75,58 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
             // Register GSAP plugins
             gsap.registerPlugin(SplitText, ScrollTrigger);
 
-            const heroSection = document.getElementById("hero-section");
-            const animatedHeading = document.getElementById("animated-heading");
+            // Clean up previous animations
+            ScrollTrigger.disable(false);
+            ScrollTrigger.enable();
+            ctx && ctx.revert();
 
-            // Fade in the hero section
-            gsap.fromTo(
-                heroSection,
-                { opacity: 0 },
-                { opacity: 1, duration: 1.25, delay: 0.4 }
-            );
+            // Create new GSAP context
+            ctx = gsap.context(() => {
+                const heroSection = document.getElementById("hero-section");
+                const animatedHeading =
+                    document.getElementById("animated-heading");
 
-            gsap.fromTo(
-                "#hero-avilable-badge-mobile",
+                // Fade in the hero section
+                gsap.fromTo(
+                    heroSection,
+                    { opacity: 0 },
+                    { opacity: 1, duration: 1.25, delay: 0.4 }
+                );
 
-                { opacity: 0, translateY: 40 },
-                { opacity: 1, translateY: 60, duration: 0.6, delay: 1.8 }
-            );
+                gsap.fromTo(
+                    "#hero-avilable-badge-mobile",
+                    { opacity: 0, translateY: 40 },
+                    { opacity: 1, translateY: 60, duration: 0.6, delay: 1.8 }
+                );
 
-            // Add hover animation for the heading
-            if (animatedHeading) {
-                // Create split text instance
-                const splitText = new SplitText(animatedHeading, {
-                    type: "chars",
-                    position: "relative",
-                });
+                // Add hover animation for the heading
+                if (animatedHeading) {
+                    // Create split text instance
+                    const splitText = new SplitText(animatedHeading, {
+                        type: "chars",
+                        position: "relative",
+                    });
 
-                // Store the timeline for later use
-                let hoverTimeline = gsap.timeline();
+                    // Store the timeline for later use
+                    let hoverTimeline = gsap.timeline();
 
-                // Animate each character
-                hoverTimeline.to(splitText.chars, {
-                    y: 9,
-                    scale: 1.2,
-                    color: "var(--color-primary, #4f46e5)",
-                    stagger: 0.025,
-                    duration: 0.5,
-                    ease: "power3.inOut",
-                    delay: 1,
-                });
-            }
+                    // Animate each character
+                    hoverTimeline.to(splitText.chars, {
+                        y: 9,
+                        scale: 1.2,
+                        color: "var(--color-primary, #4f46e5)",
+                        stagger: 0.025,
+                        duration: 0.5,
+                        ease: "power3.inOut",
+                        delay: 1,
+                    });
+                }
+            });
+        });
+
+        // Clean up on page leave
+        document.addEventListener("astro:before-swap", () => {
+            ctx && ctx.revert();
         });
     </script>
 </section>

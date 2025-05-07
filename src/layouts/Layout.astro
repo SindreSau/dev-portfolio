@@ -42,29 +42,47 @@ const {
             import { ScrollTrigger } from "gsap/ScrollTrigger";
             import Lenis from "lenis";
 
-            // Initialize Lenis
-            const lenis = new Lenis({
-                autoRaf: true,
+            // Initialize context variable with proper typing
+            let ctx: gsap.Context | null = null;
+
+            document.addEventListener("astro:page-load", () => {
+                // Initialize Lenis
+                const lenis = new Lenis({
+                    autoRaf: true,
+                });
+
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Clean up previous animations
+                ScrollTrigger.disable(false);
+                ScrollTrigger.enable();
+                ctx && ctx.revert();
+                
+                // Create new GSAP context
+                ctx = gsap.context(() => {
+                    gsap.to(".scroll-fadein", {
+                        scrollTrigger: {
+                            trigger: ".scroll-fadein",
+                            start: "0 98%",
+                            end: "0 75%",
+                            scrub: true,
+                            // markers: true,
+                        },
+                        opacity: 1,
+                        duration: 5,
+                        translateY: 0,
+                        ease: "power1.inOut",
+                        stagger: {
+                            amount: 0.5,
+                            from: "end",
+                        },
+                    });
+                });
             });
-
-            gsap.registerPlugin(ScrollTrigger);
-
-            gsap.to(".scroll-fadein", {
-                scrollTrigger: {
-                    trigger: ".scroll-fadein",
-                    start: "0 98%",
-                    end: "0 75%",
-                    scrub: true,
-                    // markers: true,
-                },
-                opacity: 1,
-                duration: 5,
-                translateY: 0,
-                ease: "power1.inOut",
-                stagger: {
-                    amount: 0.5,
-                    from: "end",
-                },
+            
+            // Clean up on page leave
+            document.addEventListener("astro:before-swap", () => {
+                ctx && ctx.revert();
             });
         </script>
     </body>
