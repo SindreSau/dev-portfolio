@@ -109,27 +109,45 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
         let scrollY3 = 0;
 
         // Add ScrollTrigger for parallax effect
-        ScrollTrigger.create({
-            trigger: "body",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            onUpdate: self => {
-                const progress = self.progress;
-
-                // Store scroll-based Y positions
-                scrollY1 = progress * -800;
-                scrollY2 = progress * -500;
-                scrollY3 = progress * -300;
-
-                // Apply scroll effect alongside mouse movement
-                updatePlanePositions();
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true,
             },
         });
 
+        tl.to(
+            {},
+            {
+                duration: 1,
+                onUpdate: () => {
+                    const progress = tl.progress();
+                    console.log("Scroll progress:", progress);
+
+                    // Update scroll-based Y positions
+                    scrollY1 = progress * -800;
+                    scrollY2 = progress * -500;
+                    scrollY3 = progress * -300;
+
+                    // Tween opacity alongside scroll progress
+                    gsap.set(plane1, { opacity: 0.95 - progress * 2.6 });
+                    gsap.set(plane2, { opacity: 0.6 - progress * 2.3 });
+                    gsap.set(plane3, { opacity: 0.5 - progress * 1.8 });
+
+                    // Apply scroll effect along with mouse movement
+                    updatePlanePositions();
+                },
+            }
+        );
+
         // Function to update plane positions with both mouse and scroll effects
         const updatePlanePositions = () => {
-            gsap.set(plane1, { x: currentX, y: currentY + scrollY1 });
+            gsap.set(plane1, {
+                x: currentX,
+                y: currentY + scrollY1,
+            });
             gsap.set(plane2, {
                 x: currentX * 0.65,
                 y: currentY * 0.65 + scrollY2,
