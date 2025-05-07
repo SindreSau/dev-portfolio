@@ -43,8 +43,8 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
             >
         </h1>
         <p class="mt-6 text-lg pointer-events-auto md:text-justify">
-            I'm a full-stack developer dedicated to deeply understand every
-            aspect of the software development process.
+            Am I your next full-stack developer, teammate, fishing buddy — or
+            maybe even the pianist at your Christmas party?
 
             <span class="text-primary-muted flex gap-2 items-center mt-1">
                 <IconCity class="size-5" />
@@ -88,6 +88,19 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                     document.getElementById("hero-text-section");
                 const animatedHeading =
                     document.getElementById("animated-heading");
+                if (!heroSection || !heroTextSection) {
+                    console.warn(
+                        "Hero section or text section not found. Animation will not run."
+                    );
+                    return;
+                }
+                const introText = heroTextSection.querySelector(
+                    "h1 span:first-child"
+                );
+                const paragraphText = heroTextSection.querySelector("p");
+                const locationText = heroTextSection.querySelector(
+                    "p .text-primary-muted"
+                );
 
                 // Fade in the hero section
                 gsap.fromTo(
@@ -96,10 +109,24 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                     { opacity: 1, duration: 1.25, delay: 0.4 }
                 );
 
+                // Initial state for intro text and paragraph
+                gsap.set([introText, paragraphText, locationText], {
+                    opacity: 0,
+                    y: 20,
+                });
+
+                // Animate the available badge (mobile)
                 gsap.fromTo(
                     "#hero-avilable-badge-mobile",
                     { opacity: 0, translateY: 40 },
                     { opacity: 1, translateY: 60, duration: 0.6, delay: 1.8 }
+                );
+
+                // Animate the available badge (desktop)
+                gsap.fromTo(
+                    "#hero-avilable-badge-desktop",
+                    { opacity: 0, y: -20 },
+                    { opacity: 1, y: 0, duration: 0.6, delay: 1.8 }
                 );
 
                 let mm = gsap.matchMedia();
@@ -141,7 +168,6 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                                 start: "top 40%",
                                 end: "top 10%",
                                 scrub: true,
-                                // markers: true,
                             },
                         }
                     );
@@ -156,60 +182,118 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                     });
 
                     // Store the timeline for later use
-                    let hoverTimeline = gsap.timeline();
+                    let mainTimeline = gsap.timeline();
 
                     let mm = gsap.matchMedia();
 
                     // Animate each character
                     mm.add("(max-width: 768px)", () => {
-                        hoverTimeline.fromTo(
-                            splitText.chars,
-                            {
-                                opacity: 0,
-                                scale: 0.4,
-
-                                color: "var(--color-primary, #4f46e5)",
-                                stagger: 0.025,
-                                duration: 0.5,
-                                ease: "power3.inOut",
-                                delay: 1,
-                            },
-                            {
-                                opacity: 1,
-                                scale: 1,
-
-                                color: "var(--color-primary, #4f46e5)",
-                                stagger: 0.025,
-                                duration: 0.5,
-                                ease: "power3.inOut",
-                                delay: 1,
-                            }
-                        );
+                        // Name animation
+                        mainTimeline
+                            .fromTo(
+                                splitText.chars,
+                                {
+                                    opacity: 0,
+                                    scale: 0.4,
+                                    color: "var(--color-primary, #4f46e5)",
+                                },
+                                {
+                                    opacity: 1,
+                                    scale: 1,
+                                    color: "var(--color-primary, #4f46e5)",
+                                    stagger: 0.025,
+                                    duration: 0.5,
+                                    ease: "power3.inOut",
+                                    delay: 1,
+                                }
+                            )
+                            // Animate intro text ("Hi, I'm")
+                            .to(
+                                introText,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.5,
+                                    ease: "power2.out",
+                                },
+                                "-=0.2"
+                            ) // Start slightly before name animation completes
+                            // Animate paragraph text
+                            .to(
+                                paragraphText,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.6,
+                                    ease: "power2.out",
+                                },
+                                "+=0.1"
+                            )
+                            // Animate location text with slight bounce
+                            .to(
+                                locationText,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.5,
+                                    ease: "back.out(1.2)",
+                                },
+                                "-=0.3"
+                            );
                     });
                     mm.add("(min-width: 769px)", () => {
-                        hoverTimeline.fromTo(
-                            splitText.chars,
-                            {
-                                opacity: 0.1,
-                                scale: 0.5,
-
-                                color: "var(--color-primary, #4f46e5)",
-                                stagger: 0.025,
-                                duration: 0.5,
-                                ease: "power3.inOut",
-                                delay: 1,
-                            },
-                            {
-                                opacity: 1,
-                                scale: 1.1,
-
-                                color: "var(--color-primary, #4f46e5)",
-                                stagger: 0.025,
-                                duration: 0.5,
-                                ease: "power3.inOut",
-                                delay: 1,
-                            }
-                        );
+                        // Name animation
+                        mainTimeline
+                            .fromTo(
+                                splitText.chars,
+                                {
+                                    opacity: 0.1,
+                                    scale: 0.5,
+                                    color: "var(--color-primary, #4f46e5)",
+                                },
+                                {
+                                    opacity: 1,
+                                    scale: 1.1,
+                                    color: "var(--color-primary, #4f46e5)",
+                                    stagger: 0.025,
+                                    duration: 0.5,
+                                    ease: "power3.inOut",
+                                    delay: 1,
+                                }
+                            )
+                            // Animate intro text ("Hi, I'm")
+                            .to(
+                                introText,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.5,
+                                    ease: "power2.out",
+                                },
+                                "-=0.2"
+                            ) // Start slightly before name animation completes
+                            // Animate paragraph text
+                            .to(
+                                paragraphText,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.6,
+                                    ease: "power2.out",
+                                },
+                                "+=0.1"
+                            )
+                            // Animate location text with slight bounce
+                            .to(
+                                locationText,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.5,
+                                    ease: "back.out(1.2)",
+                                },
+                                "-=0.3"
+                            );
                     });
                 }
             });
