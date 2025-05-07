@@ -90,17 +90,17 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
         gsap.fromTo(
             plane1,
             { opacity: 0, scale: 0.8 },
-            { opacity: 1, scale: 1, duration: 1.25 }
+            { opacity: 0.8, scale: 1, duration: 1.25 }
         );
         gsap.fromTo(
             plane2,
             { opacity: 0, scale: 0.8 },
-            { opacity: 1, scale: 1, duration: 1.25, delay: 0.1 }
+            { opacity: 0.6, scale: 1, duration: 1.25, delay: 0.1 }
         );
         gsap.fromTo(
             plane3,
             { opacity: 0, scale: 0.8 },
-            { opacity: 1, scale: 1, duration: 1.25, delay: 0.2 }
+            { opacity: 0.4, scale: 1, duration: 1.25, delay: 0.2 }
         );
 
         // Variables for scroll-based parallax

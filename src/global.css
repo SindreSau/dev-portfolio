@@ -146,15 +146,19 @@
     }
 
     .plane-far {
-        @apply dark:brightness-50 brightness-125 opacity-15 -z-20;
+        @apply dark:brightness-50 brightness-125 opacity-0 -z-20;
     }
 
     .plane-mid {
-        @apply dark:brightness-50 brightness-110 opacity-50 -z-10;
+        @apply dark:brightness-50 brightness-110 opacity-0 -z-10;
     }
 
     .plane-near {
-        @apply dark:brightness-75 z-0 opacity-90;
+        @apply dark:brightness-75 z-0 opacity-0;
+    }
+
+    #hero-section {
+        @apply opacity-0;
     }
 
     @media (pointer: coarse) {
