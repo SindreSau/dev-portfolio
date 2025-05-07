@@ -65,7 +65,7 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
 
         document.addEventListener("astro:page-load", () => {
             if (typeof gsap === "undefined") {
-                console.error("GSAP is not defined. Make sure it is loaded.");
+                console.warn("GSAP is not defined. Make sure it is loaded.");
                 return;
             }
 
