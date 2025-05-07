@@ -1,5 +1,4 @@
 ---
-import { cn } from "@/utils/cn";
 import { Icon } from "astro-icon/components";
 import { techData } from "./tech-data";
 
@@ -132,9 +131,9 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
             mobileIcons.forEach(icon => {
                 // Create random values for each icon's animation
                 const randomDuration = 2 + Math.random() * 2; // Between 2-4 seconds
-                const randomXAmplitude = Math.random() * 4; // Between 0-4px
-                const randomYAmplitude = Math.random() * 2; // Between 0-2px
-                const randomDelay = Math.random() * 1; // Between 0-1 seconds
+                const randomXAmplitude = Math.random() * 7; // Between 0-7px
+                const randomYAmplitude = Math.random() * 4; // Between 0-4px
+                const randomDelay = Math.random() * 1.2; // Between 0-1 seconds
 
                 // Apply floating animation
                 gsap.to(icon, {

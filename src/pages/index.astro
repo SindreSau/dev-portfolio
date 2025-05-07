@@ -5,117 +5,166 @@ import Layout from "@/layouts/Layout.astro";
 
 import techbbqImage from "@/assets/images/tech-bbq.jpeg";
 import Picture from "astro/components/Picture.astro";
+
+// Check if a today is before or after 18th of june 2025
+const today = new Date();
+const finishedGrad = new Date("2025-06-18");
+const isAfterGrad = today > finishedGrad;
 ---
 
 <Layout>
     <HeroSection />
 
-    <section
-        id="hero-short-info"
-        class="flex flex-col gap-6 w-full short-info-scroll-in-y-mobile md:short-info-scroll-in-y-desktop"
-    >
-        <Divider scrollFadeIn class="mb-4" />
-        <article class="flex flex-col md:flex-row gap-4">
-            <div class="flex flex-col gap-2 scroll-fadein">
-                <h2 class="text-muted-foreground">I'm passionate</h2>
-                <p class="text-lg">
-                    I'm a full-stack developer with a passion for creating
-                    innovative solutions. I have experience in various
-                    technologies and frameworks, and I'm always eager to learn
-                    more.
+    <section id="hero-short-info" class="flex flex-col gap-6 w-full">
+        <!-- <Divider scrollFadeIn class="mb-4" /> -->
+        <article class="grid grid-cols-1 md:grid-cols-2 gap-4 scroll-fadein">
+            <div class="flex flex-col gap-2">
+                <h2 class="text-primary md:text-4xl">Fullstack Developer</h2>
+                <p class="md:text-lg leading-7">
+                    <!-- TODO: Add scroll word-split to this section -->
+                    I'm a
+                    <span
+                        class="text-primary/90 font-caveat text-[1.5rem] px-1"
+                    >
+                        passionate
+                    </span>
+                    full-stack developer
+                    {
+                        isAfterGrad
+                            ? " who just graduated with a Bachelor's degree in Information Technology from OsloMet."
+                            : " - currently wrapping up my Bachelor's degree in Information Technology at OsloMet."
+                    }
+
+                    I have a strong interest in web development, cloud
+                    computing, and software architecture. I am always eager to
+                    learn new technologies and improve my skills.
                 </p>
             </div>
-            <Picture
-                src={techbbqImage}
-                alt="Sindre at TechBBQ 2024"
-                title={"Sindre at TechBBQ 2024"}
-                class="w-full h-auto object-cover rounded-image scroll-fadein"
-                format="avif"
-                loading="lazy"
-                width={1877}
-                height={3336}
-                quality={40}
-                widths={[256, 540, 768, 1024]}
-            />
+            <div class="image-parallax-container rounded-image aspect-[8/12]">
+                <Picture
+                    src={techbbqImage}
+                    alt="Sindre at TechBBQ 2024"
+                    title={"Sindre at TechBBQ 2024"}
+                    class="parallax-image"
+                    format="avif"
+                    loading="lazy"
+                    width={1877}
+                    height={3336}
+                    quality={40}
+                    widths={[256, 540, 768, 1024]}
+                />
+            </div>
         </article>
     </section>
 </Layout>
+
+<style>
+    .image-parallax-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .parallax-image {
+        position: absolute;
+        width: 100%;
+        height: 130%; /* Just slightly taller than the container */
+        object-fit: cover;
+        top: -1%; /* Start with a slight offset to crop top */
+        left: 0;
+    }
+</style>
 
 <script>
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    // Initialize context variable with proper typing
     let ctx: gsap.Context | null = null;
 
     document.addEventListener("astro:page-load", () => {
         gsap.registerPlugin(ScrollTrigger);
-
-        // Clean up previous animations
         ScrollTrigger.disable(false);
         ScrollTrigger.enable();
         ctx && ctx.revert();
 
-        // Create new GSAP context for all animations
         ctx = gsap.context(() => {
-            // Short info section animations
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#hero-short-info",
-                    start: "top 90%",
-                    end: "top 20%",
-                    scrub: true,
-                    // markers: true,
-                },
+            let mm = gsap.matchMedia();
+
+            // Mobile animation for viewports under 769px.
+            mm.add("(max-width: 768px)", () => {
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#hero-short-info",
+                        start: "top 90%",
+                        end: "top 20%",
+                        scrub: true,
+                    },
+                });
+
+                tl.to("#hero-short-info", {
+                    y: -60,
+                    duration: 0.5,
+                    ease: "power4.inOut",
+                });
+
+                // Parallax effect for image - Mobile version.
+                gsap.fromTo(
+                    ".parallax-image",
+                    { y: "0%" },
+                    {
+                        scrollTrigger: {
+                            trigger: ".image-parallax-container",
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true,
+                            markers: false,
+                        },
+                        y: "-15%",
+                        ease: "none",
+                    }
+                );
             });
 
-            const tl2 = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#hero-short-info",
-                    start: "top 90%", // Adjusted to make the animation appear earlier
-                    end: "top 80%",
-                    scrub: true,
-                    // markers: true,
-                },
-            });
+            mm.add("(min-width: 769px)", () => {
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#hero-short-info",
+                        start: "top bottom",
+                        end: "top 70%",
+                        scrub: true,
+                        markers: false,
+                    },
+                });
 
-            tl.to(".short-info-scroll-in-y-mobile", {
-                y: -60,
-                duration: 0.5,
-                ease: "power4.inOut",
-            });
+                tl.to("#hero-short-info", {
+                    translateY: -400,
+                    duration: 1,
+                    ease: "power1.out",
+                    stagger: {
+                        amount: 0.5,
+                        from: "end",
+                    },
+                });
 
-            tl2.to(".short-info-scroll-in-y-desktop", {
-                translateY: -250,
-                duration: 1,
-                ease: "power1.inOut",
-                stagger: {
-                    amount: 0.5,
-                    from: "end",
-                },
-            });
-
-            // Initialize scroll fade-in animations
-            gsap.to(".scroll-fadein", {
-                scrollTrigger: {
-                    trigger: ".scroll-fadein",
-                    start: "0 98%",
-                    end: "0 75%",
-                    scrub: true,
-                },
-                opacity: 1,
-                duration: 5,
-                translateY: 0,
-                ease: "power1.inOut",
-                stagger: {
-                    amount: 0.5,
-                    from: "end",
-                },
+                // Parallax effect for image - Desktop
+                gsap.fromTo(
+                    ".parallax-image",
+                    { y: "0%" },
+                    {
+                        scrollTrigger: {
+                            trigger: ".image-parallax-container",
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true,
+                        },
+                        y: "-20%",
+                        ease: "none",
+                    }
+                );
             });
         });
     });
 
-    // Clean up on page leave
+    // Clean up on page swap.
     document.addEventListener("astro:before-swap", () => {
         ctx && ctx.revert();
     });

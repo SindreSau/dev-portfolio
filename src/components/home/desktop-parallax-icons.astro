@@ -129,10 +129,11 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
             // Add ScrollTrigger for parallax effect
             const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: "body",
+                    trigger: "#planes-wrapper",
                     start: "top top",
-                    end: "bottom bottom",
+                    end: "bottom 20%",
                     scrub: true,
+                    markers: false,
                 },
             });
 

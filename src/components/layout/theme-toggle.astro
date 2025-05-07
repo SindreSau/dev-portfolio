@@ -57,7 +57,7 @@
     function initializeAnimation() {
         // Clean up previous context if it exists
         ctx && ctx.revert();
-        
+
         // Create new context
         ctx = gsap.context(() => {
             const sunPath = document.getElementById(
@@ -165,7 +165,7 @@
         initializeAnimation();
         applyThemeState(true);
     });
-    
+
     // Clean up on page leave
     document.addEventListener("astro:before-swap", () => {
         ctx && ctx.revert();

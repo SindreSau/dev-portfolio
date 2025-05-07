@@ -10,20 +10,24 @@
     --font-expletus: 'Expletus Sans Variable', sans-serif;
 
     /* Colors - Green Theme */
-    --color-background: hsl(120, 12%, 96%);
-    --color-background-darker: hsl(120, 8%, 85%);
-    --color-background-lighter: hsl(120, 12%, 98%);
+    --color-background: hsl(40, 15%, 92%);
+    --color-background-darker: hsl(40, 10%, 80%);
+    --color-background-lighter: hsl(40, 12%, 98%);
     --color-foreground: hsl(174, 47%, 12%);
-    --color-card: hsl(120, 20%, 92%);
+    --color-card: hsl(40, 20%, 92%);
 
     /* Primary: Modern Green */
-    --color-primary: hsl(142, 79%, 54%);
-    --color-primary-muted: hsl(142, 50%, 60%);
+    --color-primary: hsl(209, 85%, 40%);
+    --color-primary-muted: hsl(209, 50%, 60%);
     --color-primary-foreground: hsl(0, 0%, 100%);
 
     /* Secondary: Teal */
     --color-secondary: hsl(188, 86%, 70%);
     --color-secondary-foreground: hsl(188, 73%, 25%);
+
+    /* Accent: Mint/Aqua */
+    --color-accent: hsl(142, 70%, 66%);
+    --color-accent-foreground: hsl(142, 67%, 25%);
 
     /* Accent: Mint/Aqua */
     --color-accent: hsl(142, 70%, 66%);
@@ -171,10 +175,6 @@
         .hide-on-mouse {
             @apply hidden;
         }
-    }
-
-    .scroll-fadein {
-        @apply opacity-0 translate-y-24;
     }
 
     .rounded-image {

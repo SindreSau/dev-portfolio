@@ -13,6 +13,7 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
     class="w-full h-[calc(100vh-4rem)] md:overflow-hidden pointer-events-none"
 >
     <div
+        id="hero-text-section"
         class="md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 text-left z-10 md:w-2/3 lg:w-1/2 max-w-4xl pointer-events-none"
     >
         <div class="md:hidden">
@@ -37,11 +38,11 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
             <span class="">Hi, I'm </span>
             <span
                 id="animated-heading"
-                class="xl:text-7xl text-nowrap md:text-5xl bg-gradient-to-r text-primary-muted dark:brightness-125 brightness-75 bg-clip-text uppercase md:tracking-wider font-expletus pointer-events-auto"
+                class="text-5xl md:text-6xl xl:text-7xl text-nowrap bg-gradient-to-r text-primary-muted dark:brightness-125 brightness-75 bg-clip-text tracking-wider font-caveat pointer-events-auto"
                 >Sindre Sauarlia</span
             >
         </h1>
-        <p class="mt-4 text-lg pointer-events-auto md:text-justify">
+        <p class="mt-6 text-lg pointer-events-auto md:text-justify">
             I'm a full-stack developer dedicated to deeply understand every
             aspect of the software development process.
 
@@ -83,6 +84,8 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
             // Create new GSAP context
             ctx = gsap.context(() => {
                 const heroSection = document.getElementById("hero-section");
+                const heroTextSection =
+                    document.getElementById("hero-text-section");
                 const animatedHeading =
                     document.getElementById("animated-heading");
 
@@ -99,6 +102,51 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                     { opacity: 1, translateY: 60, duration: 0.6, delay: 1.8 }
                 );
 
+                let mm = gsap.matchMedia();
+
+                mm.add("(max-width: 768px)", () => {
+                    // Mobile animation for viewports under 769px
+                    // Add scroll trigger animation for the hero text section
+                    gsap.fromTo(
+                        heroTextSection,
+                        { translateY: 0, opacity: 1 },
+                        {
+                            translateY: 25,
+                            opacity: 0.6,
+                            duration: 0.2,
+                            delay: 1,
+                            scrollTrigger: {
+                                trigger: heroTextSection,
+                                start: "80% 40%",
+                                end: "80% 10%",
+                                scrub: true,
+                                markers: false,
+                            },
+                        }
+                    );
+                });
+                mm.add("(min-width: 769px)", () => {
+                    // Desktop animation for viewports 769px and above
+                    // Add scroll trigger animation for the hero text section
+                    gsap.fromTo(
+                        heroTextSection,
+                        { translateY: 0, opacity: 1 },
+                        {
+                            translateY: 10,
+                            opacity: 0.6,
+                            duration: 0.2,
+                            delay: 1,
+                            scrollTrigger: {
+                                trigger: heroTextSection,
+                                start: "top 40%",
+                                end: "top 10%",
+                                scrub: true,
+                                // markers: true,
+                            },
+                        }
+                    );
+                });
+
                 // Add hover animation for the heading
                 if (animatedHeading) {
                     // Create split text instance
@@ -110,15 +158,58 @@ console.log("Available for work badge is set to: ", AVAILABLE_FOR_WORK);
                     // Store the timeline for later use
                     let hoverTimeline = gsap.timeline();
 
+                    let mm = gsap.matchMedia();
+
                     // Animate each character
-                    hoverTimeline.to(splitText.chars, {
-                        y: 9,
-                        scale: 1.2,
-                        color: "var(--color-primary, #4f46e5)",
-                        stagger: 0.025,
-                        duration: 0.5,
-                        ease: "power3.inOut",
-                        delay: 1,
+                    mm.add("(max-width: 768px)", () => {
+                        hoverTimeline.fromTo(
+                            splitText.chars,
+                            {
+                                opacity: 0,
+                                scale: 0.4,
+
+                                color: "var(--color-primary, #4f46e5)",
+                                stagger: 0.025,
+                                duration: 0.5,
+                                ease: "power3.inOut",
+                                delay: 1,
+                            },
+                            {
+                                opacity: 1,
+                                scale: 1,
+
+                                color: "var(--color-primary, #4f46e5)",
+                                stagger: 0.025,
+                                duration: 0.5,
+                                ease: "power3.inOut",
+                                delay: 1,
+                            }
+                        );
+                    });
+                    mm.add("(min-width: 769px)", () => {
+                        hoverTimeline.fromTo(
+                            splitText.chars,
+                            {
+                                opacity: 0.1,
+                                scale: 0.5,
+
+                                color: "var(--color-primary, #4f46e5)",
+                                stagger: 0.025,
+                                duration: 0.5,
+                                ease: "power3.inOut",
+                                delay: 1,
+                            },
+                            {
+                                opacity: 1,
+                                scale: 1.1,
+
+                                color: "var(--color-primary, #4f46e5)",
+                                stagger: 0.025,
+                                duration: 0.5,
+                                ease: "power3.inOut",
+                                delay: 1,
+                            }
+                        );
                     });
                 }
             });

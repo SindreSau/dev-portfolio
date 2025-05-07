@@ -52,12 +52,12 @@ const {
                 });
 
                 gsap.registerPlugin(ScrollTrigger);
-                
+
                 // Clean up previous animations
                 ScrollTrigger.disable(false);
                 ScrollTrigger.enable();
                 ctx && ctx.revert();
-                
+
                 // Create new GSAP context
                 ctx = gsap.context(() => {
                     gsap.to(".scroll-fadein", {
@@ -78,8 +78,65 @@ const {
                         },
                     });
                 });
+
+                let mm = gsap.matchMedia();
+
+                mm.add("(max-width: 768px)", () => {
+                    // Shared scroll fade-in animation.
+                    gsap.fromTo(
+                        ".scroll-fadein",
+                        {
+                            opacity: 0,
+                            translateY: 20,
+                        },
+                        {
+                            scrollTrigger: {
+                                trigger: ".scroll-fadein",
+                                start: "0 bottom",
+                                end: "0 80%",
+                                scrub: true,
+                                markers: false,
+                            },
+                            opacity: 1,
+                            duration: 0.5,
+                            translateY: 0,
+                            ease: "power1.inOut",
+                            stagger: {
+                                amount: 0.5,
+                                from: "start",
+                            },
+                        }
+                    );
+                });
+                mm.add("(min-width: 769px)", () => {
+                    // Shared scroll fade-in animation.
+                    gsap.fromTo(
+                        ".scroll-fadein",
+                        {
+                            opacity: 0,
+                            translateY: 20,
+                        },
+                        {
+                            scrollTrigger: {
+                                trigger: ".scroll-fadein",
+                                start: "0 bottom",
+                                end: "0 88%",
+                                scrub: true,
+                                markers: false,
+                            },
+                            opacity: 1,
+                            duration: 0.5,
+                            translateY: 0,
+                            ease: "power1.inOut",
+                            stagger: {
+                                amount: 0.5,
+                                from: "end",
+                            },
+                        }
+                    );
+                });
             });
-            
+
             // Clean up on page leave
             document.addEventListener("astro:before-swap", () => {
                 ctx && ctx.revert();
