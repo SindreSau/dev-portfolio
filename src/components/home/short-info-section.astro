@@ -1,6 +1,6 @@
 ---
 import techbbqImage from "@/assets/images/tech-bbq.jpeg";
-import ParallaxImage from "@/components/general/parallax-image.astro";
+import ParallaxImage from "@components/general/parallax-image.astro";
 import IconArrowUpRight from "../icons/icon-arrow-up-right.astro";
 import SvgMeAtTectBbq from "../svg/svg-me-at-tect-bbq.astro";
 
@@ -56,6 +56,7 @@ const isAfterGrad = today > finishedGrad;
             alt="Sindre at TechBBQ 2024"
             title="Sindre at TechBBQ 2024"
             containerClass="rounded-image aspect-[8/12] lg:ml-12"
+            borderRadius="1rem"
             format="avif"
             loading="lazy"
             width={1877}
@@ -96,14 +97,15 @@ const isAfterGrad = today > finishedGrad;
             gsap.timeline({
                 scrollTrigger: {
                     trigger: "#me-at-techbbq",
-                    start: "top 90%",
+                    start: "top 88%",
+                    end: "top 30%",
                     toggleActions: "play none none reverse",
-                    markers: false,
+                    scrub: 1,
                 },
             })
                 .to("#me-at-techbbq svg path", {
                     drawSVG: "0 100%",
-                    duration: 1.8,
+                    duration: 1.2,
                     ease: "power2.inOut",
                     stagger: 0.2,
                 })
@@ -113,6 +115,16 @@ const isAfterGrad = today > finishedGrad;
                         drawSVG: "0 100%",
                         duration: 0.1,
                         delay: 0.3,
+                        ease: "power1.in",
+                    },
+                    "-=0.5"
+                )
+                .to(
+                    "#me-at-techbbq",
+                    {
+                        opacity: 0,
+                        duration: 0.5,
+                        delay: 0.5,
                         ease: "power1.in",
                     },
                     "-=0.5"
