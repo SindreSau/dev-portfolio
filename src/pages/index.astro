@@ -88,7 +88,7 @@ const isAfterGrad = today > finishedGrad;
 
     let ctx: gsap.Context | null = null;
 
-    document.addEventListener("astro:page-load", () => {
+    function inigGsap() {
         gsap.registerPlugin(ScrollTrigger);
         ScrollTrigger.disable(false);
         ScrollTrigger.enable();
@@ -171,22 +171,26 @@ const isAfterGrad = today > finishedGrad;
 
                 gsap.fromTo(
                     "#hero-short-info-text",
-                    { translateY: -90 },
+                    { translateY: -110 },
                     {
                         scrollTrigger: {
                             trigger: "#hero-short-info-text",
                             start: "top bottom",
-                            end: "top 70%",
+                            end: "top 20%",
                             scrub: true,
-                            markers: false,
+                            markers: true,
                         },
-                        translateY: 40,
+                        translateY: 60,
                         duration: 0.5,
-                        ease: "power1.inOut",
+                        ease: "power1.in",
                     }
                 );
             });
         });
+    }
+
+    document.addEventListener("astro:page-load", () => {
+        inigGsap();
     });
 
     // Clean up on page swap.
