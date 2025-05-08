@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -111,10 +112,25 @@
 }
 
 @layer base {
-    html,
+    html {
+        @apply scroll-smooth;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        scrollbar-gutter: stable both-edges; /* Reserve space for scrollbar consistently */
+    }
+
+    html.mobile-menu-open {
+        overflow-y: hidden; /* Prevent page scroll when menu is open */
+    }
+
+    html.mobile-menu-open body {
+        /* Compensate for the scrollbar disappearing */
+        padding-right: 17px; /* Adjust this value if necessary */
+    }
+
     body {
-        @apply bg-background text-foreground font-work transition-colors duration-300 scroll-smooth;
-        scrollbar-gutter: stable;
+        @apply bg-background text-foreground font-work transition-colors duration-300;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        /* Ensure body itself doesn't have conflicting overflow-y that would show a scrollbar */
     }
 
     :root {
@@ -189,5 +205,108 @@
         @apply md:sticky md:top-28;
         max-height: calc(100vh - 8rem);
         overflow-y: auto;
+    }
+}
+
+/* SHADCN VARIABLES */
+
+@theme inline {
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    /* Removed conflicting color variable definitions like --color-background: var(--background); */
+    /* Shadcn components will use variables like --background, --primary directly,
+       which we will map to your --color-* variables in :root and .dark sections. */
+}
+
+:root {
+    --radius: 0.625rem;
+    --background: var(--color-background); /* Mapped to user's theme */
+    --foreground: var(--color-foreground); /* Mapped to user's theme */
+    --card: var(--color-card); /* Mapped to user's theme */
+    --card-foreground: oklch(0.145 0 0); /* Shadcn specific */
+    --popover: oklch(1 0 0); /* Shadcn specific */
+    --popover-foreground: oklch(0.145 0 0); /* Shadcn specific */
+    --primary: var(--color-primary); /* Mapped to user's theme */
+    --primary-foreground: var(
+        --color-primary-foreground
+    ); /* Mapped to user's theme */
+    --secondary: var(--color-secondary); /* Mapped to user's theme */
+    --secondary-foreground: var(
+        --color-secondary-foreground
+    ); /* Mapped to user's theme */
+    --muted: var(--color-muted); /* Mapped to user's theme */
+    --muted-foreground: var(
+        --color-muted-foreground
+    ); /* Mapped to user's theme */
+    --accent: var(--color-accent); /* Mapped to user's theme */
+    --accent-foreground: var(
+        --color-accent-foreground
+    ); /* Mapped to user's theme */
+    --destructive: oklch(0.577 0.245 27.325); /* Shadcn specific */
+    --border: var(--color-border); /* Mapped to user's theme */
+    --input: oklch(0.922 0 0); /* Shadcn specific */
+    --ring: oklch(0.708 0 0); /* Shadcn specific */
+    --chart-1: oklch(0.646 0.222 41.116); /* Shadcn specific */
+    --chart-2: oklch(0.6 0.118 184.704); /* Shadcn specific */
+    --chart-3: oklch(0.398 0.07 227.392); /* Shadcn specific */
+    --chart-4: oklch(0.828 0.189 84.429); /* Shadcn specific */
+    --chart-5: oklch(0.769 0.188 70.08); /* Shadcn specific */
+    --sidebar: oklch(0.985 0 0); /* Shadcn specific */
+    --sidebar-foreground: oklch(0.145 0 0); /* Shadcn specific */
+    --sidebar-primary: oklch(0.205 0 0); /* Shadcn specific */
+    --sidebar-primary-foreground: oklch(0.985 0 0); /* Shadcn specific */
+    --sidebar-accent: oklch(0.97 0 0); /* Shadcn specific */
+    --sidebar-accent-foreground: oklch(0.205 0 0); /* Shadcn specific */
+    --sidebar-border: oklch(0.922 0 0); /* Shadcn specific */
+    --sidebar-ring: oklch(0.708 0 0); /* Shadcn specific */
+}
+
+.dark {
+    --background: var(--color-background); /* Mapped to user's theme */
+    --foreground: var(--color-foreground); /* Mapped to user's theme */
+    --card: var(--color-card); /* Mapped to user's theme */
+    --card-foreground: oklch(0.985 0 0); /* Shadcn specific */
+    --popover: oklch(0.205 0 0); /* Shadcn specific */
+    --popover-foreground: oklch(0.985 0 0); /* Shadcn specific */
+    --primary: var(--color-primary); /* Mapped to user's theme */
+    --primary-foreground: var(
+        --color-primary-foreground
+    ); /* Mapped to user's theme */
+    --secondary: var(--color-secondary); /* Mapped to user's theme */
+    --secondary-foreground: var(
+        --color-secondary-foreground
+    ); /* Mapped to user's theme */
+    --muted: var(--color-muted); /* Mapped to user's theme */
+    --muted-foreground: var(
+        --color-muted-foreground
+    ); /* Mapped to user's theme */
+    --accent: var(--color-accent); /* Mapped to user's theme */
+    --accent-foreground: var(
+        --color-accent-foreground
+    ); /* Mapped to user's theme */
+    --destructive: oklch(0.704 0.191 22.216); /* Shadcn specific */
+    --border: var(--color-border); /* Mapped to user's theme */
+    --input: oklch(1 0 0 / 15%); /* Shadcn specific */
+    --ring: oklch(0.556 0 0); /* Shadcn specific */
+    --chart-1: oklch(0.488 0.243 264.376); /* Shadcn specific */
+    --chart-2: oklch(0.696 0.17 162.48); /* Shadcn specific */
+    --chart-3: oklch(0.769 0.188 70.08); /* Shadcn specific */
+    --chart-4: oklch(0.627 0.265 303.9); /* Shadcn specific */
+    --chart-5: oklch(0.645 0.246 16.439); /* Shadcn specific */
+    --sidebar: oklch(0.205 0 0); /* Shadcn specific */
+    --sidebar-foreground: oklch(0.985 0 0); /* Shadcn specific */
+    --sidebar-primary: oklch(0.488 0.243 264.376); /* Shadcn specific */
+    --sidebar-primary-foreground: oklch(0.985 0 0); /* Shadcn specific */
+    --sidebar-accent: oklch(0.269 0 0); /* Shadcn specific */
+    --sidebar-accent-foreground: oklch(0.985 0 0); /* Shadcn specific */
+    --sidebar-border: oklch(1 0 0 / 10%); /* Shadcn specific */
+    --sidebar-ring: oklch(0.556 0 0); /* Shadcn specific */
+}
+
+@layer base {
+    * {
+        @apply border-border outline-[var(--ring)]/50;
     }
 }
