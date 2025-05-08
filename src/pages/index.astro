@@ -1,12 +1,11 @@
 ---
-import Divider from "@/components/general/divider.astro";
 import HeroSection from "@/components/home/hero-section.astro";
 import Layout from "@/layouts/Layout.astro";
 
 import techbbqImage from "@/assets/images/tech-bbq.jpeg";
 import Picture from "astro/components/Picture.astro";
 
-// Check if a today is before or after 18th of june 2025
+// Check if I have graduated
 const today = new Date();
 const finishedGrad = new Date("2025-06-18");
 const isAfterGrad = today > finishedGrad;
@@ -16,27 +15,40 @@ const isAfterGrad = today > finishedGrad;
     <HeroSection />
 
     <section id="hero-short-info" class="flex flex-col gap-6 w-full">
-        <!-- <Divider scrollFadeIn class="mb-4" /> -->
-        <article class="grid grid-cols-1 md:grid-cols-2 gap-4 scroll-fadein">
-            <div class="flex flex-col gap-2">
+        <article
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 scroll-fadein items-center justify-center"
+        >
+            <div
+                id="hero-short-info-text"
+                class="flex flex-col gap-2 md:text-justify"
+            >
                 <h2 class="text-primary md:text-4xl">Fullstack Developer</h2>
                 <p class="md:text-lg leading-7">
-                    <!-- TODO: Add scroll word-split to this section -->
-                    I'm a
-                    <span
-                        class="text-primary/90 font-caveat text-[1.5rem] px-1"
-                    >
-                        passionate
-                    </span>
-                    full-stack developer
+                    I'm a passionate full-stack developer
                     {
-                        isAfterGrad
-                            ? " who just graduated with a Bachelor's degree in Information Technology from OsloMet."
-                            : " - currently wrapping up my Bachelor's degree in Information Technology at OsloMet."
+                        isAfterGrad ? (
+                            <>
+                                who just graduated with a Bachelor's degree in
+                                Information Technology from OsloMet.
+                            </>
+                        ) : (
+                            <>
+                                - currently wrapping up my Bachelor's degree in
+                                Information Technology at OsloMet.
+                            </>
+                        )
                     }
                 </p>
+                <p class="md:text-lg leading-7">
+                    I began my career as a performing musician, where dedication
+                    and hard work were essential. Seeking the 9-5 lifestyle, I
+                    transitioned into software development — and quickly found a
+                    similar enthusiasm for coding and problemsolving.
+                </p>
             </div>
-            <div class="image-parallax-container rounded-image aspect-[8/12]">
+            <div
+                class="image-parallax-container rounded-image aspect-[8/12] md:mx-14 mx-8"
+            >
                 <Picture
                     src={techbbqImage}
                     alt="Sindre at TechBBQ 2024"
@@ -154,6 +166,23 @@ const isAfterGrad = today > finishedGrad;
                         },
                         y: "-20%",
                         ease: "none",
+                    }
+                );
+
+                gsap.fromTo(
+                    "#hero-short-info-text",
+                    { translateY: -60 },
+                    {
+                        scrollTrigger: {
+                            trigger: "#hero-short-info-text",
+                            start: "top bottom",
+                            end: "top 70%",
+                            scrub: true,
+                            markers: false,
+                        },
+                        translateY: 40,
+                        duration: 0.5,
+                        ease: "power1.inOut",
                     }
                 );
             });
