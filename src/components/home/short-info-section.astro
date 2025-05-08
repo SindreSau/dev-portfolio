@@ -1,6 +1,8 @@
 ---
 import techbbqImage from "@/assets/images/tech-bbq.jpeg";
 import ParallaxImage from "@/components/general/parallax-image.astro";
+import IconArrowUpRight from "../icons/icon-arrow-up-right.astro";
+import SvgMeAtTectBbq from "../svg/svg-me-at-tect-bbq.astro";
 
 const today = new Date();
 const finishedGrad = new Date("2025-06-18");
@@ -38,12 +40,22 @@ const isAfterGrad = today > finishedGrad;
                 transitioned into software development — and quickly found a
                 similar enthusiasm for coding and problemsolving.
             </p>
+
+            <div
+                id="me-at-techbbq"
+                class="hidden lg:flex flex-row size-24 absolute right-0 -bottom-40 w-fit text-left items-center justify-center stroke-foreground/80 lg:translate-x-14"
+            >
+                <SvgMeAtTectBbq
+                    class="w-40 translate-x-12 translate-y-6 stroke-foreground/70"
+                />
+                <IconArrowUpRight class="w-24" />
+            </div>
         </div>
         <ParallaxImage
             src={techbbqImage}
             alt="Sindre at TechBBQ 2024"
             title="Sindre at TechBBQ 2024"
-            containerClass="rounded-image aspect-[8/12] md:mx-14 mx-8"
+            containerClass="rounded-image aspect-[8/12] lg:ml-12"
             format="avif"
             loading="lazy"
             width={1877}
@@ -57,11 +69,12 @@ const isAfterGrad = today > finishedGrad;
 <script>
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
     let ctx: gsap.Context | null = null;
 
     document.addEventListener("astro:page-load", () => {
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
         ScrollTrigger.disable(false);
         ScrollTrigger.enable();
@@ -71,7 +84,39 @@ const isAfterGrad = today > finishedGrad;
             gsap.set("#hero-short-info", { clearProps: "all" });
             gsap.set("#hero-short-info-text", { clearProps: "all" });
 
+            // Initialize DrawSVG for both SVGs - setting them to 0 initially
+            gsap.set("#me-at-techbbq svg path", { drawSVG: 0 });
+            gsap.set("#me-at-techbbq .icon-arrow-up-right path", {
+                drawSVG: 0,
+            });
+
             let mm = gsap.matchMedia();
+
+            // Add DrawSVG animations
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#me-at-techbbq",
+                    start: "top 90%",
+                    toggleActions: "play none none reverse",
+                    markers: false,
+                },
+            })
+                .to("#me-at-techbbq svg path", {
+                    drawSVG: "0 100%",
+                    duration: 1.8,
+                    ease: "power2.inOut",
+                    stagger: 0.2,
+                })
+                .to(
+                    "#me-at-techbbq .icon-arrow-up-right path",
+                    {
+                        drawSVG: "0 100%",
+                        duration: 0.1,
+                        delay: 0.3,
+                        ease: "power1.in",
+                    },
+                    "-=0.5"
+                );
 
             mm.add("(max-width: 768px)", () => {
                 const tl = gsap.timeline({
@@ -127,6 +172,24 @@ const isAfterGrad = today > finishedGrad;
                             markers: false,
                         },
                         translateY: 60,
+                        duration: 0.5,
+                        ease: "power1.in",
+                    }
+                );
+
+                gsap.fromTo(
+                    "#me-at-techbbq",
+                    { translateY: -60 },
+                    {
+                        scrollTrigger: {
+                            trigger: "#me-at-techbbq",
+                            start: "top bottom",
+                            end: "top 20%",
+                            scrub: true,
+                            invalidateOnRefresh: true,
+                            markers: false,
+                        },
+                        translateY: 30,
                         duration: 0.5,
                         ease: "power1.in",
                     }
