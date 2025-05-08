@@ -113,7 +113,7 @@
 @layer base {
     html,
     body {
-        @apply bg-background text-foreground font-work transition-colors duration-300;
+        @apply bg-background text-foreground font-work transition-colors duration-300 scroll-smooth;
         scrollbar-gutter: stable;
     }
 
@@ -179,5 +179,15 @@
 
     .rounded-image {
         @apply rounded-lg;
+    }
+
+    .scroll-fadein {
+        @apply opacity-0;
+    }
+
+    .toc-container nav {
+        @apply md:sticky md:top-28;
+        max-height: calc(100vh - 8rem);
+        overflow-y: auto;
     }
 }

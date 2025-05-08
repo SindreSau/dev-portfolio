@@ -9,7 +9,10 @@ const finishedGrad = new Date("2025-06-18");
 const isAfterGrad = today > finishedGrad;
 ---
 
-<section id="hero-short-info" class="flex flex-col gap-6 w-full">
+<section
+    id="hero-short-info"
+    class="flex flex-col gap-6 w-full xl:h-[26rem] lg:h-[28rem] md:h-[18rem]"
+>
     <article
         class="grid grid-cols-1 md:grid-cols-2 gap-4 scroll-fadein items-center justify-center"
     >
@@ -43,7 +46,7 @@ const isAfterGrad = today > finishedGrad;
 
             <div
                 id="me-at-techbbq"
-                class="hidden lg:flex flex-row size-24 absolute right-0 -bottom-40 w-fit text-left items-center justify-center stroke-foreground/80 lg:translate-x-14"
+                class="hidden md:flex flex-row size-24 absolute right-0 -bottom-40 w-fit text-left items-center justify-center stroke-foreground/80 translate-x-14"
             >
                 <SvgMeAtTectBbq
                     class="w-40 translate-x-12 translate-y-6 stroke-foreground/70"
@@ -55,7 +58,7 @@ const isAfterGrad = today > finishedGrad;
             src={techbbqImage}
             alt="Sindre at TechBBQ 2024"
             title="Sindre at TechBBQ 2024"
-            containerClass="rounded-image aspect-[8/12] lg:ml-12"
+            containerClass="rounded-image lg:aspect-[8/12] aspect-[7/12] md:ml-12"
             borderRadius="1rem"
             format="avif"
             loading="lazy"

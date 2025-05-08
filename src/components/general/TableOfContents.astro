@@ -1,0 +1,161 @@
+---
+import { cn } from "@/utils/cn";
+
+export interface Props {
+    sections: { id: string; title: string }[];
+}
+
+const { sections } = Astro.props;
+const tocTitle = "Table of Contents";
+---
+
+<div id="toc-container" class="toc-container">
+    <nav aria-label="Table of contents">
+        <div class="md:hidden"></div>
+
+        {/* Desktop: Sticky Sidebar */}
+        <ul class="hidden md:block space-y-2">
+            {
+                sections.map(section => (
+                    <li>
+                        <a
+                            href={`#${section.id}`}
+                            id={`toc-link-${section.id}`}
+                            class={cn(
+                                "block py-1 text-sm hover:text-primary transition-colors duration-150",
+                                "toc-link" // Common class for JS targeting
+                            )}
+                            data-section-id={section.id}
+                        >
+                            {section.title}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+</div>
+
+<script define:vars={{ tocTitleFromProps: tocTitle }}>
+    document.addEventListener("DOMContentLoaded", () => {
+        const desktopLinks =
+            document.querySelectorAll<HTMLAnchorElement>(".toc-link");
+        const mobileLinks =
+            document.querySelectorAll<HTMLAnchorElement>(".toc-link-mobile");
+        const sections = document.querySelectorAll<HTMLElement>(".cv-section");
+        const tocMobileSelectedTitle = document.getElementById(
+            "toc-mobile-selected-title"
+        );
+
+        const tocTitle = tocTitleFromProps;
+
+        if ((!desktopLinks.length && !mobileLinks.length) || !sections.length) {
+            console.warn(
+                "TOC links or CV sections not found. Active highlighting might not work."
+            );
+            return;
+        }
+
+        const allLinks = [...desktopLinks, ...mobileLinks];
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "-20% 0px -70% 0px",
+            threshold: 0,
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            let firstVisibleSectionId;
+            let firstVisibleSectionTitle;
+
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute("id");
+                const correspondingDesktopLink =
+                    document.querySelector<HTMLAnchorElement>(
+                        `.toc-link[data-section-id="${id}"]`
+                    );
+                const correspondingMobileLink =
+                    document.querySelector<HTMLAnchorElement>(
+                        `.toc-link-mobile[data-section-id="${id}"]`
+                    );
+
+                if (entry.isIntersecting) {
+                    if (!firstVisibleSectionId && id) {
+                        firstVisibleSectionId = id;
+                        firstVisibleSectionTitle =
+                            correspondingMobileLink?.dataset.sectionTitle ||
+                            correspondingDesktopLink?.textContent?.trim() ||
+                            tocTitle;
+                    }
+                    desktopLinks.forEach(link =>
+                        link.classList.remove("text-primary", "font-semibold")
+                    );
+                    mobileLinks.forEach(link =>
+                        link.classList.remove(
+                            "bg-background-darker",
+                            "text-primary"
+                        )
+                    );
+
+                    correspondingDesktopLink?.classList.add(
+                        "text-primary",
+                        "font-semibold"
+                    );
+                    correspondingMobileLink?.classList.add(
+                        "bg-background-darker",
+                        "text-primary"
+                    );
+                } else {
+                    correspondingDesktopLink?.classList.remove(
+                        "text-primary",
+                        "font-semibold"
+                    );
+                    correspondingMobileLink?.classList.remove(
+                        "bg-background-darker",
+                        "text-primary"
+                    );
+                }
+            });
+
+            if (tocMobileSelectedTitle) {
+                let activeTitle = tocTitle;
+                const activeDesktopLink =
+                    document.querySelector<HTMLAnchorElement>(
+                        ".toc-link.text-primary"
+                    );
+                if (activeDesktopLink && activeDesktopLink.textContent) {
+                    activeTitle = activeDesktopLink.textContent.trim();
+                }
+                if (firstVisibleSectionTitle) {
+                    activeTitle = firstVisibleSectionTitle;
+                }
+                tocMobileSelectedTitle.textContent = activeTitle;
+            }
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        allLinks.forEach(link => {
+            link.addEventListener("click", function (this, e) {
+                e.preventDefault();
+                const targetId = this.getAttribute("href")?.substring(1);
+                if (targetId) {
+                    document.getElementById(targetId)?.scrollIntoView({
+                        behavior: "smooth",
+                    });
+                    if (
+                        this.classList.contains("toc-link-mobile") &&
+                        tocMobileSelectedTitle
+                    ) {
+                        tocMobileSelectedTitle.textContent =
+                            this.dataset.sectionTitle ||
+                            this.textContent?.trim() ||
+                            tocTitle;
+                    }
+                }
+            });
+        });
+    });
+</script>
