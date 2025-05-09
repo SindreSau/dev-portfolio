@@ -13,6 +13,10 @@ const ROUTES: Route[] = [
         path: '/about-me',
     },
     {
+        name: 'Projects',
+        path: '/projects',
+    },
+    {
         name: 'Experience & CV',
         path: '/experience-cv',
     },

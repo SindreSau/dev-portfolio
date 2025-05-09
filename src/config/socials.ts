@@ -21,4 +21,10 @@ const socials = [
     },
 ];
 
+const email = socials.find(social => social.name === 'Email');
+const github = socials.find(social => social.name === 'GitHub');
+const linkedin = socials.find(social => social.name === 'LinkedIn');
+const instagram = socials.find(social => social.name === 'Instagram');
+
 export default socials;
+export { email, github, linkedin, instagram };

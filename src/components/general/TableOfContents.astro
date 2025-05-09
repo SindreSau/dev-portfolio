@@ -68,18 +68,24 @@ const tocTitle = "Table of Contents";
         <ul class="hidden md:block space-y-2">
             {
                 sections.map(section => (
-                    <li>
+                    <li class="relative">
                         <a
                             href={`#${section.id}`}
                             id={`toc-link-${section.id}`}
                             class={cn(
-                                "block py-1 text-sm hover:text-primary transition-colors duration-150",
+                                "block py-1 text-sm text-text-secondary hover:text-primary transition-colors duration-150",
                                 "toc-link" // Common class for JS targeting
                             )}
                             data-section-id={section.id}
                         >
                             {section.title}
                         </a>
+                        <div class="progress-container h-0.5 w-full bg-gray-200 dark:bg-gray-700 mt-1 rounded-full overflow-hidden opacity-0 transition-opacity duration-300">
+                            <div
+                                class="progress-bar h-full bg-primary/60 w-0 transition-all duration-300"
+                                data-section={section.id}
+                            />
+                        </div>
                     </li>
                 ))
             }
@@ -87,8 +93,11 @@ const tocTitle = "Table of Contents";
     </nav>
 </div>
 
-<script define:vars={{ tocTitleFromProps: tocTitle }}>
-    document.addEventListener("DOMContentLoaded", () => {
+<script>
+    document.addEventListener("DOMContentLoaded", initializeTableOfContents);
+    document.addEventListener("astro:page-load", initializeTableOfContents);
+
+    function initializeTableOfContents() {
         const desktopLinks =
             document.querySelectorAll<HTMLAnchorElement>(".toc-link");
         const mobileLinks =
@@ -100,7 +109,7 @@ const tocTitle = "Table of Contents";
         const tocMobileButton = document.getElementById("toc-mobile-button");
         const tocMobileMenu = document.getElementById("toc-mobile-menu");
 
-        const tocTitle = tocTitleFromProps;
+        const tocTitle = "Table of Contents";
 
         if ((!desktopLinks.length && !mobileLinks.length) || !sections.length) {
             console.warn(
@@ -111,103 +120,105 @@ const tocTitle = "Table of Contents";
 
         const allLinks = [...desktopLinks, ...mobileLinks];
 
+        // Better intersection observer options for more accurate active section detection
         const observerOptions = {
             root: null,
-            rootMargin: "-20% 0px -70% 0px",
-            threshold: 0,
+            rootMargin: "-10% 0px -70% 0px", // Adjusted for better accuracy
+            threshold: [0, 0.1, 0.5, 1], // Multiple thresholds for better detection
         };
 
-        const observer = new IntersectionObserver(entries => {
-            let firstVisibleSectionId;
-            let firstVisibleSectionTitle;
+        // Track current active section and its intersection ratio
+        let currentActiveSection: HTMLElement | null = null;
+        let maxIntersectionRatio = 0;
 
+        const observer = new IntersectionObserver(entries => {
+            // First, find the section with the highest intersection ratio
             entries.forEach(entry => {
-                const id = entry.target.getAttribute("id");
+                if (
+                    entry.isIntersecting &&
+                    entry.intersectionRatio > maxIntersectionRatio
+                ) {
+                    maxIntersectionRatio = entry.intersectionRatio;
+                    currentActiveSection = entry.target as HTMLElement;
+                }
+            });
+
+            // Then update UI based on the most visible section
+            if (currentActiveSection) {
+                const id = currentActiveSection.getAttribute("id");
+
+                // Reset all links to inactive state
+                desktopLinks.forEach(link => {
+                    link.classList.remove("text-primary", "font-semibold");
+                    link.classList.add("text-text-secondary");
+                });
+
+                mobileLinks.forEach(link => {
+                    link.classList.remove(
+                        "bg-background-darker",
+                        "text-primary"
+                    );
+                });
+
+                // Activate the corresponding link
                 const correspondingDesktopLink =
                     document.querySelector<HTMLAnchorElement>(
                         `.toc-link[data-section-id="${id}"]`
                     );
+
                 const correspondingMobileLink =
                     document.querySelector<HTMLAnchorElement>(
                         `.toc-link-mobile[data-section-id="${id}"]`
                     );
 
-                if (entry.isIntersecting) {
-                    if (!firstVisibleSectionId && id) {
-                        firstVisibleSectionId = id;
-                        firstVisibleSectionTitle =
-                            correspondingMobileLink?.dataset.sectionTitle ||
-                            correspondingDesktopLink?.textContent?.trim() ||
-                            tocTitle;
-                    }
-                    desktopLinks.forEach(link =>
-                        link.classList.remove("text-primary", "font-semibold")
-                    );
-                    mobileLinks.forEach(link =>
-                        link.classList.remove(
-                            "bg-background-darker",
-                            "text-primary"
-                        )
-                    );
-
-                    correspondingDesktopLink?.classList.add(
-                        "text-primary",
-                        "font-semibold"
-                    );
-                    correspondingMobileLink?.classList.add(
-                        "bg-background-darker",
-                        "text-primary"
-                    );
-                } else {
-                    correspondingDesktopLink?.classList.remove(
-                        "text-primary",
-                        "font-semibold"
-                    );
-                    correspondingMobileLink?.classList.remove(
+                if (correspondingMobileLink) {
+                    correspondingMobileLink.classList.add(
                         "bg-background-darker",
                         "text-primary"
                     );
                 }
-            });
 
-            if (tocMobileSelectedTitle) {
-                let activeTitle = tocTitle;
-                const activeDesktopLink =
-                    document.querySelector<HTMLAnchorElement>(
-                        ".toc-link.text-primary"
-                    );
-                if (activeDesktopLink && activeDesktopLink.textContent) {
-                    activeTitle = activeDesktopLink.textContent.trim();
+                // Update mobile dropdown title if available
+                if (
+                    tocMobileSelectedTitle &&
+                    (correspondingMobileLink || correspondingDesktopLink)
+                ) {
+                    const title =
+                        correspondingMobileLink?.dataset.sectionTitle ||
+                        correspondingDesktopLink?.textContent?.trim() ||
+                        tocTitle;
+                    tocMobileSelectedTitle.textContent = title;
                 }
-                if (firstVisibleSectionTitle) {
-                    activeTitle = firstVisibleSectionTitle;
-                }
-                tocMobileSelectedTitle.textContent = activeTitle;
+
+                // Reset for next check
+                maxIntersectionRatio = 0;
             }
         }, observerOptions);
 
+        // Observe all sections
         sections.forEach(section => {
             observer.observe(section);
         });
 
+        // Handle smooth scrolling when clicking TOC links
         allLinks.forEach(link => {
-            link.addEventListener("click", function (this, e) {
+            link.addEventListener("click", function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute("href")?.substring(1);
+
                 if (targetId) {
-                    document.getElementById(targetId)?.scrollIntoView({
-                        behavior: "smooth",
-                    });
-                    if (
-                        this.classList.contains("toc-link-mobile") &&
-                        tocMobileSelectedTitle
-                    ) {
-                        tocMobileSelectedTitle.textContent =
-                            this.dataset.sectionTitle ||
-                            this.textContent?.trim() ||
-                            tocTitle;
-                        // Hide mobile menu after click
-                        if (tocMobileMenu) {
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+
+                        // Update mobile menu state after click (if applicable)
+                        if (
+                            this.classList.contains("toc-link-mobile") &&
+                            tocMobileMenu
+                        ) {
                             tocMobileMenu.classList.add("hidden");
                             tocMobileButton?.setAttribute(
                                 "aria-expanded",
@@ -237,13 +248,66 @@ const tocTitle = "Table of Contents";
                 if (
                     tocMobileButton &&
                     tocMobileMenu &&
-                    !tocMobileButton.contains(event.target) &&
-                    !tocMobileMenu.contains(event.target)
+                    !tocMobileButton.contains(event.target as Node) &&
+                    !tocMobileMenu.contains(event.target as Node)
                 ) {
                     tocMobileMenu.classList.add("hidden");
                     tocMobileButton.setAttribute("aria-expanded", "false");
                 }
             });
         }
-    });
+
+        // Progress bar update for each section
+        const progressBars =
+            document.querySelectorAll<HTMLDivElement>(".progress-bar");
+
+        const progressObserver = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    const sectionId = entry.target.getAttribute("id");
+                    const progressBar = document.querySelector<HTMLDivElement>(
+                        `.progress-bar[data-section="${sectionId}"]`
+                    );
+
+                    const progressContainer = progressBar?.parentElement;
+
+                    if (entry.isIntersecting) {
+                        const sectionHeight = entry.target.scrollHeight;
+                        const viewportHeight = window.innerHeight;
+                        const sectionTop =
+                            entry.target.getBoundingClientRect().top;
+                        const progress = Math.min(
+                            1,
+                            Math.max(
+                                0,
+                                (viewportHeight - sectionTop) / sectionHeight
+                            )
+                        );
+
+                        if (progressBar && progressContainer) {
+                            progressBar.style.width = `${progress * 100}%`;
+                            progressContainer.classList.remove("opacity-0");
+                            progressContainer.classList.add("opacity-100");
+                        }
+                    } else {
+                        if (progressBar && progressContainer) {
+                            progressBar.style.width = "0%";
+                            progressContainer.classList.remove("opacity-100");
+                            progressContainer.classList.add("opacity-0");
+                        }
+                    }
+                });
+            },
+            {
+                root: null,
+                rootMargin: "0px",
+                threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+            }
+        );
+
+        // Observe all sections for progress tracking
+        sections.forEach(section => {
+            progressObserver.observe(section);
+        });
+    }
 </script>

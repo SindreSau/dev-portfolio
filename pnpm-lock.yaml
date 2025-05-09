@@ -20,6 +20,12 @@ importers:
       '@fontsource-variable/expletus-sans':
         specifier: ^5.2.5
         version: 5.2.5
+      '@fontsource-variable/hepta-slab':
+        specifier: ^5.2.5
+        version: 5.2.5
+      '@fontsource-variable/jetbrains-mono':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource-variable/work-sans':
         specifier: ^5.2.5
         version: 5.2.5
@@ -484,6 +490,12 @@ packages:
 
   '@fontsource-variable/expletus-sans@5.2.5':
     resolution: {integrity: sha512-w76O4gvGUbzL996Ah2lLvuYgztDsEqOhShvWxNguNwq2Sns4JdRxFFUdHKsgkyL8mRYsaXccTwXrA5tbTPYg/g==}
+
+  '@fontsource-variable/hepta-slab@5.2.5':
+    resolution: {integrity: sha512-+tsP13mhj15ce/93VuvcMFCjtfV/FJTevUJvao2ND48W1Cu2HjEWajdcVmgV7D8ji/4hDjsF3j6YuuZGoQuagg==}
+
+  '@fontsource-variable/jetbrains-mono@5.2.5':
+    resolution: {integrity: sha512-G3sN1xq1moZd0JL+hFaA4MEdsiQS+JXC/z7m+EqA5/Fzn5CQlXGUaaNKFGQdDsFuLTnCfW0KOOSWHjygNfjEPw==}
 
   '@fontsource-variable/work-sans@5.2.5':
     resolution: {integrity: sha512-zvoUtTMsk0c0Iygz8DAWrSdVgQvcIMxRtLS7a1H3tFuUHIOAN0NHRrwONyeebDuzXrgAUmSrDOAxOz5D+pn6nw==}
@@ -3255,6 +3267,10 @@ snapshots:
   '@fontsource-variable/caveat@5.2.5': {}
 
   '@fontsource-variable/expletus-sans@5.2.5': {}
+
+  '@fontsource-variable/hepta-slab@5.2.5': {}
+
+  '@fontsource-variable/jetbrains-mono@5.2.5': {}
 
   '@fontsource-variable/work-sans@5.2.5': {}
 

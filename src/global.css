@@ -8,6 +8,8 @@
     --font-caveat: 'Caveat Variable', sans-serif;
     --font-work: 'Work Sans Variable', sans-serif;
     --font-expletus: 'Expletus Sans Variable', sans-serif;
+    --font-hepta-slap: 'Hepta Slab Variable', sans-serif;
+    --font-jetbrains: 'JetBrains Mono Variable', monospace;
 
     /* Colors - Green Theme */
     --color-background: hsl(40, 15%, 95%);
@@ -18,15 +20,17 @@
 
     /* Primary: Modern Green */
     --color-primary: hsl(209, 85%, 40%);
-    --color-primary-muted: hsl(209, 50%, 60%);
+    --color-primary-muted: hsl(209, 45%, 48%);
     --color-primary-foreground: hsl(0, 0%, 100%);
 
     /* Secondary: Teal */
     --color-secondary: hsl(188, 86%, 70%);
+    --color-secondary-muted: hsl(188, 49%, 82%);
     --color-secondary-foreground: hsl(188, 73%, 25%);
 
     /* Accent: Mint/Aqua */
     --color-accent: hsl(142, 70%, 66%);
+    --color-accent-muted: hsl(142, 63%, 79%);
     --color-accent-foreground: hsl(142, 67%, 25%);
 
     /* Accent: Mint/Aqua */
@@ -38,7 +42,7 @@
 
     --color-border: hsl(202, 23%, 91%);
     --color-link: hsl(246, 73%, 28%);
-    --color-link-visited: hsl(312, 44%, 35%);
+    --color-link-visited: hsl(246, 60%, 25%);
 
     /* Terminal Colors */
     --color-terminal-bg: hsl(120, 10%, 97%);
@@ -77,10 +81,12 @@
 
         /* Secondary: Aqua/Teal */
         --color-secondary: hsl(182, 100%, 65%);
+        --color-secondary-muted: hsl(181, 60%, 82%);
         --color-secondary-foreground: hsl(0, 0%, 100%);
 
         /* Accent: Mint */
         --color-accent: hsl(48, 97%, 72%);
+        --color-accent-muted: hsl(48, 41%, 85%);
         --color-accent-foreground: hsl(0, 0%, 100%);
 
         --color-muted: hsl(174, 23%, 35%);
@@ -88,7 +94,7 @@
 
         --color-border: hsl(48, 14%, 12%);
         --color-link: hsl(160, 60%, 60%);
-        --color-link-visited: hsl(306, 45%, 45%);
+        --color-link-visited: hsl(160, 40%, 58%);
 
         /* Dark Terminal Colors */
         --color-terminal-bg: hsl(174, 30%, 12%);
@@ -128,7 +134,7 @@
     h1,
     h2,
     h3 {
-        @apply font-semibold;
+        @apply font-semibold font-hepta-slap;
     }
 
     h1 {
@@ -145,6 +151,10 @@
 
     a {
         @apply text-link hover:underline font-normal visited:text-link-visited;
+    }
+
+    code {
+        @apply font-jetbrains;
     }
 }
 
@@ -199,9 +209,9 @@
         overflow-y: auto;
     }
 
-    .index-section h1,
-    h2,
-    h3 {
+    .index-section > h1,
+    .index-section > h2,
+    .index-section > h3 {
         @apply text-primary;
     }
 }
