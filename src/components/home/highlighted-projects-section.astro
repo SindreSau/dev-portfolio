@@ -4,6 +4,8 @@ import bachelor from "@assets/images/bachelor-admin.png";
 import furekunst from "@assets/images/furekunst.png";
 import gamenamegen from "@assets/images/gamenamegen.png";
 import IconArrowUpRight from "@components/icons/icon-arrow-up-right.astro";
+import LinkButton from "../general/link-button.astro";
+import IconOpenInNew from "../icons/icon-open-in-new.astro";
 
 const projects = [
     {
@@ -11,28 +13,28 @@ const projects = [
         title: "furekunst.no",
         imageSrc: furekunst,
         altText: "Screenshot of Furekunst.no",
-        link: "/furekunst",
+        link: "/projects/furekunst",
     },
     {
         id: 2,
         title: "Bachelor Project",
         imageSrc: bachelor,
         altText: "Screenshot of Bachelor Project",
-        link: "/bachelor-project",
+        link: "/projects/bachelor-project-accenture",
     },
     {
         id: 3,
-        title: "AI Character Name Generator",
+        title: "Game Character Name Generator",
         imageSrc: gamenamegen,
-        altText: "Screenshot of AI Character Name Generator",
-        link: "/ai-character-name-generator",
+        altText: "Screenshot of Game Character Name Generator",
+        link: "/projects/game-character-name-generator",
     },
 ];
 ---
 
 <section
     id="current-projects"
-    class="pt-8 md:pt-16 pb-16 md:pb-24 overflow-visible index-section"
+    class="pt-8 md:pt-16 pb-8 overflow-visible index-section flex flex-col items-center"
 >
     <h2
         id="highlighted-projects-heading"
@@ -40,8 +42,9 @@ const projects = [
     >
         Highlighted Projects
     </h2>
+
     <div
-        class="project-cards-container flex flex-col md:flex-row justify-around items-start gap-8 md:gap-4 px-4"
+        class="project-cards-container flex flex-col md:flex-row justify-around items-start gap-8 md:gap-4 px-4 md:mb-24 mb-14"
     >
         {
             projects.map((project, index) => (
@@ -58,6 +61,7 @@ const projects = [
                         </h3>
                         <div class="image-and-overlay-container relative flex-grow">
                             <Picture
+                                transition:name={`${project.title}-image`}
                                 src={project.imageSrc}
                                 alt={project.altText}
                                 class="project-image w-full h-full object-cover"
@@ -79,6 +83,10 @@ const projects = [
             ))
         }
     </div>
+    <LinkButton href="/projects" class="w-fit">
+        See more projects
+        <IconOpenInNew />
+    </LinkButton>
 </section>
 
 <script>

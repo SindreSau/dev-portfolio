@@ -16,6 +16,8 @@
         "@astrojs/sitemap": "^3.3.1",
         "@fontsource-variable/caveat": "^5.2.5",
         "@fontsource-variable/expletus-sans": "^5.2.5",
+        "@fontsource-variable/hepta-slab": "^5.2.5",
+        "@fontsource-variable/jetbrains-mono": "^5.2.5",
         "@fontsource-variable/work-sans": "^5.2.5",
         "@fontsource/megrim": "^5.2.5",
         "@iconify-json/devicon": "^1.2.23",

@@ -1,0 +1,29 @@
+---
+import ProjectsLayout from "@/layouts/projects-layout.astro";
+
+import { Picture } from "astro:assets";
+import bacheloradmin from "@/assets/images/bachelor-admin.png";
+---
+
+<ProjectsLayout>
+    <h1 transition:name="bachelor-title">Bachelor Project - Accenture</h1>
+
+    <p class="mb-8">
+        Development of a dashboard and an application portal for Accenture.
+        Built with React, Next.js, and Tailwind CSS. The website is fully
+        responsive and works on all devices. It also has a dark mode toggle. The
+        website is hosted on Vercel and uses a custom domain.
+    </p>
+
+    <Picture
+        transition:name="bachelor-image"
+        src={bacheloradmin}
+        alt="Bachelor Project - Accenture"
+        class="rounded-lg mb-2"
+        loading="lazy"
+        format="avif"
+        width={800}
+        height={600}
+        quality={50}
+    />
+</ProjectsLayout>

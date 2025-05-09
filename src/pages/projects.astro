@@ -1,0 +1,205 @@
+---
+import { Picture } from "astro:assets";
+import { github } from "@/config/socials";
+import Layout from "@/layouts/Layout.astro";
+
+type Project = {
+    name: string;
+    transtionName?: string;
+    description: string;
+    url: string;
+    projectUrl?: string;
+    image: ImageMetadata;
+    tech?: string[];
+};
+
+import bachelor from "@/assets/images/bachelor-admin.png";
+import coding from "@/assets/images/coding-illustration.jpeg";
+import furekunst from "@/assets/images/furekunst.png";
+import gamenamegen from "@/assets/images/gamenamegen.png";
+import Badge from "@/components/general/badge.astro";
+import IconOpenInNew from "@/components/icons/icon-open-in-new.astro";
+import { Icon } from "astro-icon/components";
+
+const projects: Project[] = [
+    {
+        name: "Developer Portfolio",
+        description:
+            "My personal portfolio website. Built with Astro, Tailwind CSS, and TypeScript.",
+        url: "/projects/developer-portfolio",
+        // projectUrl: "/",
+        image: coding,
+        tech: ["Astro", "Tailwind CSS", "TypeScript", "GSAP"],
+    },
+    {
+        name: "Furekunst",
+        description:
+            "A React/Next.js website made for a Norwegian artist - who also happens to be my girlfriend.",
+        url: "/projects/furekunst",
+        projectUrl: "https://furekunst.no",
+        image: furekunst,
+        tech: ["React", "Next.js", "Tailwind CSS"],
+    },
+    {
+        name: "Game Character Name Generator",
+        description:
+            "AI powered name generator for game characters. Built with Next.js and Cloudflare AI-workers.",
+        url: "/projects/game-character-name-generator",
+        projectUrl: "https://gamenamegen.site",
+        image: gamenamegen,
+        tech: ["Next.js", "Cloudflare AI-workers"],
+    },
+    {
+        name: "Bachelor Project - Accenture",
+        description:
+            "Development of a dashboard an an application portal for Accenture. Built with React, Next.js, and Tailwind CSS.",
+        url: "/projects/bachelor-project-accenture",
+        projectUrl: "https://bachelorproject.sindresau.me",
+        image: bachelor,
+        tech: ["React", "Next.js", "Tailwind CSS"],
+    },
+];
+---
+
+<Layout
+    title="Projects"
+    description="A curated list of my projects. Primarily web development done with React/Next.js and Astro."
+>
+    <h1 class="mb-4">Projects</h1>
+    <p class="mb-8">
+        Here are some of the projects I have worked on. Each project takes you
+        to a page with more information about the work put into each project.
+        You can find more of my work on my{" "}
+        <a href={github?.url} target="_blank" rel="noopener noreferrer">
+            GitHub Profile
+        </a>
+    </p>
+
+    <ul class="grid grid-cols-1 md:grid-cols-2 xl:gap-24 md:gap-12 gap-6">
+        {
+            projects.map(project => (
+                <li class="mb-4 w-full projects-project-card will-change-transform backface-hidden h-full ">
+                    <a
+                        href={project.url}
+                        class="text-foreground no-underline h-full"
+                    >
+                        <Picture
+                            transition:name={`${project.name.toLowerCase().replace(/\s+/g, "-")}-image`}
+                            src={project.image}
+                            alt={project.name}
+                            class="rounded-lg mb-2 w-full will-change-transform aspect-[11/9] object-cover"
+                            loading="lazy"
+                            format="avif"
+                            width={600}
+                            height={400}
+                            quality={50}
+                        />
+                        <div class="flex flex-col gap-1">
+                            <div class="md:min-h-13">
+                                <h2
+                                    class="text-xl mb-0"
+                                    transition:name={`${project.name.toLowerCase().replace(/\s+/g, "-")}-title`}
+                                >
+                                    {project.name}
+                                </h2>
+
+                                {project.projectUrl && (
+                                    <a
+                                        href={project.projectUrl}
+                                        target="_blank"
+                                        class="text-sm flex items-center gap-1"
+                                    >
+                                        {project.projectUrl}
+                                        <IconOpenInNew />
+                                    </a>
+                                )}
+                            </div>
+
+                            <ul class="flex gap-2">
+                                {project.tech?.map(tech => (
+                                    <li>
+                                        <Badge>{tech}</Badge>
+                                    </li>
+                                ))}
+                            </ul>
+                            <p>{project.description}</p>
+                        </div>
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+
+    <script>
+        import gsap from "gsap";
+        import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+        let ctx: gsap.Context | null = null;
+
+        document.addEventListener("astro:page-load", () => {
+            ctx && ctx.revert();
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            ctx = gsap.context(() => {
+                const projectCards: HTMLElement[] = gsap.utils.toArray(
+                    ".projects-project-card"
+                );
+                const projectsContainer = document.querySelector("ul");
+
+                // Set initial state immediately when possible
+                gsap.set(projectCards, {
+                    opacity: 0,
+                    y: 20,
+                    force3D: true, // Enable hardware acceleration
+                });
+
+                // Create the stagger animation with optimized settings
+                gsap.to(projectCards, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.15,
+                    delay: 0.35,
+                    ease: "power2.out",
+                    clearProps: "transform",
+                    scrollTrigger: {
+                        trigger: projectsContainer, // Use the container as trigger
+                        start: "top bottom-=100",
+                        toggleActions: "play none none none",
+                    },
+                });
+
+                // Add mouseover effect
+                projectCards.forEach(card => {
+                    card.addEventListener("mouseover", () => {
+                        gsap.to(card, {
+                            scale: 1.02,
+                            duration: 0.3,
+                            ease: "power2.out",
+                        });
+                    });
+
+                    card.addEventListener("mouseout", () => {
+                        gsap.to(card, {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: "power2.out",
+                        });
+                    });
+                });
+            });
+        });
+
+        document.addEventListener("astro:before-swap", () => {
+            ctx && ctx.revert();
+            ScrollTrigger.getAll().forEach(ST => ST.kill());
+        });
+    </script>
+</Layout>
+
+<style>
+    .projects-project-card {
+        opacity: 0;
+    }
+</style>

@@ -3,6 +3,10 @@ import TableOfContents from "@/components/general/TableOfContents.astro";
 import Divider from "@/components/general/divider.astro";
 import Layout from "@/layouts/Layout.astro";
 
+import { email } from "@config/socials";
+import { github } from "@config/socials";
+import { linkedin } from "@config/socials";
+
 const sections = [
     { id: "personal-information", title: "Personal Information" },
     { id: "professional-summary", title: "Professional Summary" },
@@ -33,16 +37,20 @@ const cvDescription =
             <main
                 class="w-full md:w-3/4 prose max-w-none prose-headings:font-semibold prose-a:text-blue-600 hover:prose-a:text-blue-800"
             >
-                <h1 class="text-3xl md:text-4xl font-bold">
-                    {cvTitle}
-                </h1>
+                <div class="flex items-center justify-between mb-4">
+                    <h1
+                        class="text-3xl md:text-4xl font-bold cv-title-anim opacity-0 my-0"
+                    >
+                        {cvTitle}
+                    </h1>
+                </div>
 
                 <Divider class="my-4" />
 
                 <section
                     id="personal-information"
                     data-section-id="personal-information"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-48 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">
                         Personal Information
@@ -52,18 +60,18 @@ const cvDescription =
                     <p><strong>Location:</strong> Oslo, Norway</p>
                     <p>
                         <strong>Contact:</strong>
-                        <a href="mailto:sindre.sauarlia@gmail.com"
-                            >sindre.sauarlia@gmail.com</a
+                        <a href={email?.url}
+                            >{email?.url.replace("mailto:", "")}</a
                         > | +47 41659872
                     </p>
                     <p>
                         <strong>Professional Profiles:</strong>
                         <a
-                            href="https://linkedin.com/in/sindresauarlia"
+                            href={linkedin?.url}
                             target="_blank"
                             rel="noopener noreferrer">LinkedIn</a
                         > | <a
-                            href="https://github.com/sindresauarlia"
+                            href={github?.url}
                             target="_blank"
                             rel="noopener noreferrer">GitHub</a
                         >
@@ -75,28 +83,30 @@ const cvDescription =
                 <section
                     id="professional-summary"
                     data-section-id="professional-summary"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">
                         Professional Summary
                     </h2>
                     <p>
-                        Fullstack web developer with a distinctive combination
-                        of technical expertise and strong communication skills.
-                        I excel at seeing the big picture in development
-                        processes, from understanding customer needs to
-                        implementing and deploying complete solutions. My
-                        background in music and education has fostered valuable
-                        perspectives on knowledge sharing and communication that
-                        I apply to my work as a developer.
+                        I'm a Fullstack web developer with a wide technical
+                        expertise and strong communication skills. I strive to
+                        see the bigger picture in the development processes,
+                        from understanding customer needs to coding and
+                        deploying complete solutions.
                     </p>
                     <p>
-                        As the sole developer in an early-stage healthcare
-                        startup, I've demonstrated the ability to balance agile
-                        development with requirements for scalability, security,
-                        and compliance. I'm driven by a genuine desire for
-                        professional growth and consistently approach challenges
-                        with high ambition and engagement.
+                        My background in music and education has shaped how I
+                        collaborate and communicate, enhancing my ability to
+                        share knowledge and work effectively in diverse teams as
+                        well as handle stressful situations.
+                    </p>
+                    <p>
+                        As the sole developer in an early-stage healthtech
+                        startup, I've learned to navigate the trade-offs between
+                        scalability, security, and user experience while keeping
+                        time-to-market in focus. I'm passionate about continuous
+                        learning and driven by curiosity and growth.
                     </p>
                 </section>
 
@@ -105,27 +115,98 @@ const cvDescription =
                 <section
                     id="technical-skills"
                     data-section-id="technical-skills"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">Technical Skills</h2>
                     <h3 class="text-xl font-semibold mb-3">
                         Programming Languages
                     </h3>
-                    <ul class="list-disc pl-5 mb-4">
+                    <ul class="list-none pl-0 mb-4 space-y-3">
                         <li>
-                            <strong>TypeScript/JavaScript:</strong> Advanced proficiency,
-                            used extensively for both frontend and backend development
+                            <div class="flex justify-between mb-1">
+                                <span
+                                    ><strong>TypeScript/JavaScript</strong
+                                    ></span
+                                >
+                                <span class="text-sm text-muted-foreground"
+                                    >Advanced</span
+                                >
+                            </div>
+                            <div
+                                class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 skill-bar-container"
+                            >
+                                <div
+                                    class="bg-primary h-2 rounded-full skill-bar"
+                                    data-percentage="90"
+                                >
+                                </div>
+                            </div>
+                            <p class="text-sm mt-1">
+                                Used extensively for both frontend, backend and
+                                CLI development
+                            </p>
                         </li>
                         <li>
-                            <strong>Python:</strong> Solid experience with automation,
-                            data processing, and backend services
+                            <div class="flex justify-between mb-1">
+                                <span><strong>Python</strong></span>
+                                <span class="text-sm text-muted-foreground"
+                                    >Intermediate</span
+                                >
+                            </div>
+                            <div
+                                class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 skill-bar-container"
+                            >
+                                <div
+                                    class="bg-primary h-2 rounded-full skill-bar"
+                                    data-percentage="75"
+                                >
+                                </div>
+                            </div>
+                            <p class="text-sm mt-1">
+                                Solid experience with automation, data
+                                processing, and backend services
+                            </p>
                         </li>
                         <li>
-                            <strong>C#:</strong> Working knowledge with focus on
-                            ASP.NET Core applications
+                            <div class="flex justify-between mb-1">
+                                <span><strong>C#</strong></span>
+                                <span class="text-sm text-muted-foreground"
+                                    >Intermediate</span
+                                >
+                            </div>
+                            <div
+                                class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 skill-bar-container"
+                            >
+                                <div
+                                    class="bg-primary h-2 rounded-full skill-bar"
+                                    data-percentage="65"
+                                >
+                                </div>
+                            </div>
+                            <p class="text-sm mt-1">
+                                Working knowledge with focus on ASP.NET Core
+                                applications
+                            </p>
                         </li>
                         <li>
-                            <strong>Java:</strong> Familiarity with Spring Boot framework
+                            <div class="flex justify-between mb-1">
+                                <span><strong>Java</strong></span>
+                                <span class="text-sm text-muted-foreground"
+                                    >Basic</span
+                                >
+                            </div>
+                            <div
+                                class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 skill-bar-container"
+                            >
+                                <div
+                                    class="bg-primary h-2 rounded-full skill-bar"
+                                    data-percentage="40"
+                                >
+                                </div>
+                            </div>
+                            <p class="text-sm mt-1">
+                                Familiarity with Spring Boot framework
+                            </p>
                         </li>
                     </ul>
                     <h3 class="text-xl font-semibold mb-3">
@@ -135,19 +216,24 @@ const cvDescription =
                         <li>
                             <strong>React & Next.js:</strong> Primary frontend frameworks,
                             extensive experience with hooks, TypeScript integration,
-                            and modern patterns
+                            and rendering strategies - including CSR, SSR, SSG and
+                            ISR.
                         </li>
                         <li>
                             <strong>Astro:</strong> Skilled in building static and
-                            hybrid sites using Astro's island architecture
+                            hybrid sites using Astro - including SEO optimization
+                            and integrations with CMS.
                         </li>
                         <li>
-                            <strong>Vue.js:</strong> Working experience with Vue
-                            for interactive applications
+                            <strong>Vue.js & Nuxt:</strong> Some projects using Vue
+                            3 with Laravel, as well as some using Nuxt.
                         </li>
                         <li>
                             <strong>TailwindCSS:</strong> Preferred styling solution
-                            for all frontend projects
+                            for all frontend projects due its development speed without
+                            sacrificing configuration or performance. I usually work
+                            with a global.css containing variables for easy theming
+                            at any point and additional utility classes.
                         </li>
                     </ul>
                     <h3 class="text-xl font-semibold mb-3">
@@ -156,19 +242,20 @@ const cvDescription =
                     <ul class="list-disc pl-5 mb-4">
                         <li>
                             <strong>Node.js (Express/Hono):</strong> Developed REST
-                            APIs and server applications
+                            APIs, microservices, CLI applications and some tRPC endpoints.
                         </li>
                         <li>
-                            <strong>FastAPI (Python):</strong> Built efficient API
-                            services with Python
+                            <strong>FastAPI (Python):</strong> Built API services
+                            with Python - useful for quickly setting up AI services
+                            or anything else that Python is good at.
                         </li>
                         <li>
                             <strong>ASP.NET Core:</strong> Created backend services
-                            using C# and .NET ecosystem
+                            using C# and ASP.NET ecosystem.
                         </li>
                         <li>
-                            <strong>Database:</strong> Experience with PostgreSQL
-                            and other relational databases
+                            <strong>Database:</strong> Most experience with PostgreSQL
+                            and some other relational databases like MySQL and SQLite.
                         </li>
                     </ul>
                     <h3 class="text-xl font-semibold mb-3">
@@ -177,19 +264,22 @@ const cvDescription =
                     <ul class="list-disc pl-5 mb-4">
                         <li>
                             <strong>Docker:</strong> Containerization for local development
-                            and production
+                            and production. Good understanding of writing Dockerfiles
+                            and docker compose files for efficient multi-container
+                            setups.
                         </li>
                         <li>
-                            <strong>CI/CD:</strong> Implementation of automated pipelines
-                            for testing and deployment
+                            <strong>CI/CD:</strong> Simple implementations of automated
+                            pipelines for testing and deployment.
                         </li>
                         <li>
                             <strong>Cloud Services:</strong> Experience with various
-                            VPS solutions
+                            VPS solutions - especially using Coolify. I have also
+                            some experience using Azure and OVH Cloud.
                         </li>
                         <li>
                             <strong>Coolify:</strong> Self-hosted deployment platform
-                            for web applications
+                            for web applications.
                         </li>
                     </ul>
                     <h3 class="text-xl font-semibold mb-3">
@@ -198,15 +288,16 @@ const cvDescription =
                     <ul class="list-disc pl-5 mb-4">
                         <li>
                             <strong>Applied AI:</strong> Integration of AI services
-                            and language models
+                            and language models as well as some experience with training
+                            models.
                         </li>
                         <li>
                             <strong>Automation:</strong> Creating scripts and tools
-                            to improve development workflows
+                            to improve development workflows.
                         </li>
                         <li>
-                            <strong>Version Control:</strong> Advanced Git workflows
-                            including branching strategies and collaboration
+                            <strong>Version Control:</strong> Git and Github workflows
+                            including branching strategies and collaboration.
                         </li>
                     </ul>
                     <h3 class="text-xl font-semibold mb-3">
@@ -214,8 +305,8 @@ const cvDescription =
                     </h3>
                     <ul class="list-disc pl-5">
                         <li>
-                            <strong>Architecture & System Design:</strong> Ability
-                            to design scalable and maintainable software architectures
+                            <strong>Architecture & System Design:</strong> Some experience
+                            in designing scalable and maintainable software architectures
                         </li>
                         <li>
                             <strong>Fullstack Development:</strong> End-to-end implementation
@@ -240,385 +331,403 @@ const cvDescription =
                     </ul>
                 </section>
 
+                <Divider class="my-4" />
+
                 <section
                     id="work-experience"
                     data-section-id="work-experience"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
-                    <h2 class="text-2xl font-bold mb-4">
+                    <h2 class="text-2xl font-bold mb-8">
                         Detailed Work Experience
                     </h2>
-                    <div class="mb-6">
-                        <h3 class="text-xl font-semibold">
-                            Accenture - Bachelor Project
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            January 2025 - present
-                        </p>
-                        <p>
-                            Working in a team of three to develop a
-                            comprehensive solution for streamlining Accenture's
-                            bachelor thesis application management, replacing a
-                            fragmented email-based system with a centralized
-                            digital solution.
-                        </p>
-                        <h4 class="font-semibold mt-2 mb-1">
-                            Key Responsibilities & Achievements:
-                        </h4>
-                        <ul class="list-disc pl-5">
-                            <li>
-                                <strong>Requirements Analysis:</strong> Analyzing
-                                customer needs and prioritizing functionality using
-                                MoSCoW methodology
-                            </li>
-                            <li>
-                                <strong>Architecture Design:</strong> Designing system
-                                architecture and database structure tailored to project
-                                requirements
-                            </li>
-                            <li>
-                                <strong>Technical Implementation:</strong> Leading
-                                local development environment setup, implementing
-                                CI/CD pipeline for demo environment
-                            </li>
-                            <li>
-                                <strong>Technology Stack:</strong> Next.js, React,
-                                TypeScript, TailwindCSS, PostgreSQL
-                            </li>
-                            <li>
-                                <strong>DevOps:</strong> Implementing Azurite for
-                                Azure blob storage, establishing CI/CD pipelines
-                                with GitHub and Coolify
-                            </li>
-                        </ul>
-                        <h4 class="font-semibold mt-2 mb-1">Impact:</h4>
-                        <ul class="list-disc pl-5">
-                            <li>
-                                Centralized the entire application workflow,
-                                significantly reducing administrative workload
-                            </li>
-                            <li>
-                                Enhanced user experience for both students and
-                                staff
-                            </li>
-                            <li>
-                                Gained practical experience with the transition
-                                from local development to production
-                            </li>
-                        </ul>
-                        <p class="mt-2">
-                            <strong>Reference:</strong> Jens Omfjord (Product Owner)
-                            - <a href="mailto:jens.omfjord@accenture.com"
-                                >jens.omfjord@accenture.com</a
-                            >
-                        </p>
-                    </div>
-                    <div class="mb-6">
-                        <h3 class="text-xl font-semibold">
-                            Medlytic AS - Intern/Developer
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            June 2024 - December 2024
-                        </p>
-                        <p>
-                            As the sole developer in this early-stage healthcare
-                            technology startup, I played a pivotal role in
-                            developing solutions that address the healthcare
-                            sector's most costly challenge: the 60% failure rate
-                            of technology implementations.
-                        </p>
-                        <h4 class="font-semibold mt-2 mb-1">
-                            Key Responsibilities & Achievements:
-                        </h4>
-                        <ul class="list-disc pl-5">
-                            <li>
-                                <strong
-                                    >System Architecture & Development:</strong
-                                > Designed and implemented technical systems while
-                                maintaining scalability, security, and GDPR compliance
-                            </li>
-                            <li>
-                                <strong>Data Automation:</strong> Developed a Python-based
-                                system for advanced data analysis and automated PDF
-                                generation
-                            </li>
-                            <li>
-                                <strong>Dashboard Development:</strong> Built an
-                                interactive dashboard for healthcare project managers
-                                to track technology implementation progress
-                            </li>
-                            <li>
-                                <strong>Collaboration:</strong> Participated in workshops
-                                with healthcare specialists and technical experts
-                            </li>
-                            <li>
-                                <strong>Independent Project Management:</strong>
-                                Led development initiatives from concept to implementation
-                            </li>
-                        </ul>
-                        <h4 class="font-semibold mt-2 mb-1">
-                            Skills Enhanced:
-                        </h4>
-                        <ul class="list-disc pl-5">
-                            <li>Holistic understanding of complex systems</li>
-                            <li>Self-directed project management</li>
-                            <li>
-                                Balancing rapid development with regulatory
-                                compliance
-                            </li>
-                            <li>
-                                Cross-functional collaboration with
-                                non-technical stakeholders
-                            </li>
-                            <li>
-                                Technical problem-solving in a production
-                                environment
-                            </li>
-                        </ul>
-                        <p class="mt-2">
-                            <strong>Reference:</strong> Ida Susanna Fattah (CEO)
-                            - <a href="mailto:idafattah@gmail.com"
-                                >idafattah@gmail.com</a
-                            >
-                        </p>
-                    </div>
-                    <div class="mb-6">
-                        <h3 class="text-xl font-semibold">
-                            Sindre Sauarlia Freelance Musician
-                        </h3>
-                        <p class="text-sm text-gray-600">2017 - present</p>
-                        <p>
-                            Working professionally as a musician, performing at
-                            festivals, touring internationally, and
-                            participating in studio recordings.
-                        </p>
-                        <h4 class="font-semibold mt-2 mb-1">
-                            Relevant Transferable Skills:
-                        </h4>
-                        <ul class="list-disc pl-5">
-                            <li>
-                                <strong>Technical Production:</strong> Responsible
-                                for technical production for performances with audiences
-                                of up to 10,000 people
-                            </li>
-                            <li>
-                                <strong>International Experience:</strong> Toured
-                                in Southeast Asia and throughout Norway
-                            </li>
-                            <li>
-                                <strong>Adaptability:</strong> Working in different
-                                ensemble configurations and quickly adapting to new
-                                environments
-                            </li>
-                            <li>
-                                <strong>Performance Under Pressure:</strong> Managing
-                                stressful situations and delivering high-quality
-                                work under tight deadlines
-                            </li>
-                            <li>
-                                <strong>Creative Problem-Solving:</strong> Finding
-                                solutions to unexpected technical and logistical
-                                challenges
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">
-                            Teaching Positions
-                        </h3>
-                        <ul class="list-disc pl-5 mb-2">
-                            <li>
-                                Bærum Cultural School: Piano Teacher (October
-                                2023 - June 2024)
-                            </li>
-                            <li>
-                                Muno: Piano Teacher (August 2018 - August 2021)
-                            </li>
-                            <li>
-                                Bjørnesletta School: Substitute Teacher (May
-                                2016 - June 2017)
-                            </li>
-                        </ul>
-                        <h4 class="font-semibold mt-2 mb-1">
-                            Relevant Transferable Skills:
-                        </h4>
-                        <ul class="list-disc pl-5">
-                            <li>
-                                <strong>Communication:</strong> Explaining complex
-                                concepts in accessible ways
-                            </li>
-                            <li>
-                                <strong>Patience:</strong> Working with students
-                                of varying skill levels
-                            </li>
-                            <li>
-                                <strong>Curriculum Development:</strong> Creating
-                                structured learning paths
-                            </li>
-                            <li>
-                                <strong>Progress Assessment:</strong> Evaluating
-                                and giving constructive feedback
-                            </li>
-                        </ul>
+
+                    <div class="timeline">
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Accenture - Bachelor Project
+                                </h3>
+                                <p class="text-sm text-gray-600 timeline-date">
+                                    January 2025 - present
+                                </p>
+                                <p class="mt-3">
+                                    Working in a team of three to develop a
+                                    comprehensive solution for streamlining
+                                    Accenture's bachelor thesis application
+                                    management, replacing a fragmented
+                                    email-based system with a centralized
+                                    digital solution.
+                                </p>
+                                <h4 class="font-semibold mt-4 mb-1">
+                                    Key Responsibilities & Achievements:
+                                </h4>
+                                <ul class="list-disc pl-5">
+                                    <li>
+                                        <strong>Requirements Analysis:</strong> Analyzing
+                                        customer needs and prioritizing functionality
+                                        using MoSCoW methodology
+                                    </li>
+                                    <li>
+                                        <strong>Architecture Design:</strong> Designing
+                                        system architecture and database structure
+                                        tailored to project requirements
+                                    </li>
+                                    <li>
+                                        <strong
+                                            >Technical Implementation:</strong
+                                        > Leading local development environment setup,
+                                        implementing CI/CD pipeline for demo environment
+                                    </li>
+                                    <li>
+                                        <strong>Technology Stack:</strong> Next.js,
+                                        React, TypeScript, TailwindCSS, PostgreSQL
+                                    </li>
+                                    <li>
+                                        <strong>DevOps:</strong> Implementing Azurite
+                                        for Azure blob storage, establishing CI/CD
+                                        pipelines with GitHub and Coolify
+                                    </li>
+                                </ul>
+                                <h4 class="font-semibold mt-2 mb-1">Impact:</h4>
+                                <ul class="list-disc pl-5">
+                                    <li>
+                                        Centralized the entire application
+                                        workflow, significantly reducing
+                                        administrative workload
+                                    </li>
+                                    <li>
+                                        Enhanced user experience for both
+                                        students and staff
+                                    </li>
+                                    <li>
+                                        Gained practical experience with the
+                                        transition from local development to
+                                        production
+                                    </li>
+                                </ul>
+                                <p class="mt-3">
+                                    <strong>Reference:</strong> Jens Omfjord (Product
+                                    Owner) - <a
+                                        href="mailto:jens.omfjord@accenture.com"
+                                        >jens.omfjord@accenture.com</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Medlytic AS - Intern/Developer
+                                </h3>
+                                <p class="text-sm text-gray-600 timeline-date">
+                                    June 2024 - December 2024
+                                </p>
+                                <p class="mt-3">
+                                    As the sole developer in this early-stage
+                                    healthcare technology startup, I played a
+                                    pivotal role in developing solutions that
+                                    address the healthcare sector's most costly
+                                    challenge: the 60% failure rate of
+                                    technology implementations.
+                                </p>
+                                <h4 class="font-semibold mt-4 mb-1">
+                                    Key Responsibilities & Achievements:
+                                </h4>
+                                <ul class="list-disc pl-5">
+                                    <li>
+                                        <strong
+                                            >System Architecture & Development:</strong
+                                        > Designed and implemented technical systems
+                                        while maintaining scalability, security,
+                                        and GDPR compliance
+                                    </li>
+                                    <li>
+                                        <strong>Data Automation:</strong> Developed
+                                        a Python-based system for advanced data analysis
+                                        and automated PDF generation
+                                    </li>
+                                    <li>
+                                        <strong>Dashboard Development:</strong> Built
+                                        an interactive dashboard for healthcare project
+                                        managers to track technology implementation
+                                        progress
+                                    </li>
+                                    <li>
+                                        <strong>Collaboration:</strong> Participated
+                                        in workshops with healthcare specialists
+                                        and technical experts
+                                    </li>
+                                    <li>
+                                        <strong
+                                            >Independent Project Management:</strong
+                                        >
+                                        Led development initiatives from concept
+                                        to implementation
+                                    </li>
+                                </ul>
+                                <h4 class="font-semibold mt-2 mb-1">
+                                    Skills Enhanced:
+                                </h4>
+                                <ul class="list-disc pl-5">
+                                    <li>
+                                        Holistic understanding of complex
+                                        systems
+                                    </li>
+                                    <li>Self-directed project management</li>
+                                    <li>
+                                        Balancing rapid development with
+                                        regulatory compliance
+                                    </li>
+                                    <li>
+                                        Cross-functional collaboration with
+                                        non-technical stakeholders
+                                    </li>
+                                    <li>
+                                        Technical problem-solving in a
+                                        production environment
+                                    </li>
+                                </ul>
+                                <p class="mt-3">
+                                    <strong>Reference:</strong> Ida Susanna Fattah
+                                    (CEO) - <a href="mailto:idafattah@gmail.com"
+                                        >idafattah@gmail.com</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Sindre Sauarlia Freelance Musician
+                                </h3>
+                                <p class="text-sm text-gray-600 timeline-date">
+                                    2017 - present
+                                </p>
+                                <p class="mt-3">
+                                    Working professionally as a musician,
+                                    performing at festivals, touring
+                                    internationally, and participating in studio
+                                    recordings.
+                                </p>
+                                <h4 class="font-semibold mt-4 mb-1">
+                                    Relevant Transferable Skills:
+                                </h4>
+                                <ul class="list-disc pl-5">
+                                    <li>
+                                        <strong>Technical Production:</strong> Responsible
+                                        for technical production for performances
+                                        with audiences of up to 10,000 people
+                                    </li>
+                                    <li>
+                                        <strong
+                                            >International Experience:</strong
+                                        > Toured in Southeast Asia and throughout
+                                        Norway
+                                    </li>
+                                    <li>
+                                        <strong>Adaptability:</strong> Working in
+                                        different ensemble configurations and quickly
+                                        adapting to new environments
+                                    </li>
+                                    <li>
+                                        <strong
+                                            >Performance Under Pressure:</strong
+                                        > Managing stressful situations and delivering
+                                        high-quality work under tight deadlines
+                                    </li>
+                                    <li>
+                                        <strong
+                                            >Creative Problem-Solving:</strong
+                                        > Finding solutions to unexpected technical
+                                        and logistical challenges
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Teaching Positions
+                                </h3>
+                                <ul class="list-disc pl-5 mb-2">
+                                    <li>
+                                        Bærum Cultural School: Piano Teacher
+                                        (October 2023 - June 2024)
+                                    </li>
+                                    <li>
+                                        Muno: Piano Teacher (August 2018 -
+                                        August 2021)
+                                    </li>
+                                    <li>
+                                        Bjørnesletta School: Substitute Teacher
+                                        (May 2016 - June 2017)
+                                    </li>
+                                </ul>
+                                <h4 class="font-semibold mt-4 mb-1">
+                                    Relevant Transferable Skills:
+                                </h4>
+                                <ul class="list-disc pl-5">
+                                    <li>
+                                        <strong>Communication:</strong> Explaining
+                                        complex concepts in accessible ways
+                                    </li>
+                                    <li>
+                                        <strong>Patience:</strong> Working with students
+                                        of varying skill levels
+                                    </li>
+                                    <li>
+                                        <strong>Curriculum Development:</strong>
+                                        Creating structured learning paths
+                                    </li>
+                                    <li>
+                                        <strong>Progress Assessment:</strong> Evaluating
+                                        and giving constructive feedback
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </section>
+
+                <Divider class="my-4" />
 
                 <section
                     id="education"
                     data-section-id="education"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
-                    <h2 class="text-2xl font-bold mb-4">Education</h2>
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold">
-                            Bachelor in Information Technology
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            OsloMet, 2022 - present
-                        </p>
-                        <ul class="list-disc pl-5">
-                            <li>
-                                Focusing on programming, system development,
-                                networks, databases, and AI
-                            </li>
-                            <li>
-                                Strong academic performance across technical
-                                subjects
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold">
-                            Practical Pedagogical Education (PPU)
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            Norwegian Academy of Music (NMH), 2021 - 2022
-                        </p>
-                        <ul class="list-disc pl-5">
-                            <li>Educational theory and practice</li>
-                            <li>
-                                Teaching methodology and communication skills
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold">
-                            Film Music Composition
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            Inland Norway University (HINN), 2020 - 2021
-                        </p>
-                        <ul class="list-disc pl-5">
-                            <li>Audio production and composition techniques</li>
-                            <li>Project management in creative contexts</li>
-                        </ul>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold">
-                            Bachelor's Degree in Popular Music
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            Kristiania University College (Westerdals Oslo ACT),
-                            2017 - 2020
-                        </p>
-                        <ul class="list-disc pl-5">
-                            <li>Performance, production, and music theory</li>
-                            <li>Creative collaboration and project work</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">
-                            Music: Stage, Studio & Band
-                        </h3>
-                        <p class="text-sm text-gray-600">
-                            Nordhordland Folk High School, 2015 - 2016
-                        </p>
-                        <ul class="list-disc pl-5">
-                            <li>Intensive practical music training</li>
-                            <li>Performance and production experience</li>
-                        </ul>
+                    <h2 class="text-2xl font-bold mb-8">Education</h2>
+
+                    <div class="timeline">
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Bachelor in Information Technology
+                                </h3>
+                                <p
+                                    class="text-sm text-gray-600 dark:text-gray-400 timeline-date"
+                                >
+                                    OsloMet, 2022 - present
+                                </p>
+                                <ul class="list-disc pl-5 mt-3">
+                                    <li>
+                                        Focusing on programming, system
+                                        development, networks, databases, and AI
+                                    </li>
+                                    <li>
+                                        Strong academic performance across
+                                        technical subjects
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Practical Pedagogical Education (PPU)
+                                </h3>
+                                <p
+                                    class="text-sm text-gray-600 dark:text-gray-400 timeline-date"
+                                >
+                                    Norwegian Academy of Music (NMH), 2021 -
+                                    2022
+                                </p>
+                                <ul class="list-disc pl-5 mt-3">
+                                    <li>Educational theory and practice</li>
+                                    <li>
+                                        Teaching methodology and communication
+                                        skills
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Film Music Composition
+                                </h3>
+                                <p
+                                    class="text-sm text-gray-600 dark:text-gray-400 timeline-date"
+                                >
+                                    Inland Norway University (HINN), 2020 - 2021
+                                </p>
+                                <ul class="list-disc pl-5 mt-3">
+                                    <li>
+                                        Audio production and composition
+                                        techniques
+                                    </li>
+                                    <li>
+                                        Project management in creative contexts
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item mb-12">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Bachelor's Degree in Popular Music
+                                </h3>
+                                <p
+                                    class="text-sm text-gray-600 dark:text-gray-400 timeline-date"
+                                >
+                                    Kristiania University College (Westerdals
+                                    Oslo ACT), 2017 - 2020
+                                </p>
+                                <ul class="list-disc pl-5 mt-3">
+                                    <li>
+                                        Performance, production, and music
+                                        theory
+                                    </li>
+                                    <li>
+                                        Creative collaboration and project work
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3 class="text-xl font-semibold">
+                                    Music: Stage, Studio & Band
+                                </h3>
+                                <p
+                                    class="text-sm text-gray-600 dark:text-gray-400 timeline-date"
+                                >
+                                    Nordhordland Folk High School, 2015 - 2016
+                                </p>
+                                <ul class="list-disc pl-5 mt-3">
+                                    <li>Intensive practical music training</li>
+                                    <li>
+                                        Performance and production experience
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                <section
-                    id="notable-projects"
-                    data-section-id="notable-projects"
-                    class="cv-section mb-12 scroll-mt-20"
-                >
-                    <h2 class="text-2xl font-bold mb-4">Notable Projects</h2>
-                    <div class="mb-6">
-                        <h3 class="text-xl font-semibold">
-                            <a
-                                href="https://gamenamegen.site/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="hover:underline"
-                                >Game Character Name Generator</a
-                            >
-                        </h3>
-                        <p>
-                            <strong>Technology:</strong> Next.js, TypeScript, TailwindCSS,
-                            Cloudflare AI workers
-                        </p>
-                        <p>
-                            <strong>Description:</strong> An AI-powered web application
-                            that generates character names for games based on user
-                            preferences.
-                        </p>
-                        <p>
-                            <strong>Key Features:</strong> Responsive design, integration
-                            with AI services, user-friendly interface.
-                        </p>
-                    </div>
-                    <div class="mb-6">
-                        <h3 class="text-xl font-semibold">
-                            <a
-                                href="https://furekunst.no/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="hover:underline">Furekunst</a
-                            >
-                        </h3>
-                        <p>
-                            <strong>Technology:</strong> Astro, TypeScript, TailwindCSS,
-                            Contentful CMS
-                        </p>
-                        <p>
-                            <strong>Description:</strong> Portfolio website for an
-                            artist with dynamic content management.
-                        </p>
-                        <p>
-                            <strong>Key Features:</strong> Content management integration,
-                            responsive gallery, performance optimization.
-                        </p>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">
-                            <a
-                                href="https://www.bogstadsmie.no/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="hover:underline">Bogstad Smie</a
-                            >
-                        </h3>
-                        <p>
-                            <strong>Technology:</strong> Astro, TypeScript, TailwindCSS
-                        </p>
-                        <p>
-                            <strong>Description:</strong> Business website for a
-                            blacksmith workshop.
-                        </p>
-                        <p>
-                            <strong>Key Features:</strong> Static site generation,
-                            optimized image loading, custom animations.
-                        </p>
-                    </div>
-                </section>
+                <Divider class="my-4" />
 
                 <section
                     id="professional-development"
                     data-section-id="professional-development"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">
                         Professional Development
@@ -678,10 +787,12 @@ const cvDescription =
                     </div>
                 </section>
 
+                <Divider class="my-4" />
+
                 <section
                     id="personal-strengths"
                     data-section-id="personal-strengths"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">Personal Strengths</h2>
                     <h3 class="text-xl font-semibold mb-3">
@@ -749,25 +860,28 @@ const cvDescription =
                     </ul>
                 </section>
 
+                <Divider class="my-4" />
+
                 <section
                     id="language-skills"
                     data-section-id="language-skills"
-                    class="cv-section mb-12 scroll-mt-20"
+                    class="cv-section mb-12 scroll-mt-10 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">Language Skills</h2>
                     <ul class="list-disc pl-5">
-                        <li><strong>Norwegian:</strong> Native proficiency</li>
+                        <li><strong>Norwegian:</strong> Native</li>
                         <li>
-                            <strong>English:</strong> Professional working proficiency,
-                            fluent in technical and business contexts
+                            <strong>English:</strong> Professional/fluent
                         </li>
                     </ul>
                 </section>
 
+                <Divider class="my-4" />
+
                 <section
                     id="references"
                     data-section-id="references"
-                    class="cv-section scroll-mt-20"
+                    class="cv-section scroll-mt-10 cv-section-anim opacity-0"
                 >
                     <h2 class="text-2xl font-bold mb-4">References</h2>
                     <div class="mb-4">
@@ -809,3 +923,122 @@ const cvDescription =
         </div>
     </div>
 </Layout>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    let ctx: gsap.Context | null = null;
+
+    function initAnimations() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Clean up previous animations
+        ScrollTrigger.disable(false);
+        ScrollTrigger.enable();
+        ctx && ctx.revert();
+
+        // Create new GSAP context
+        ctx = gsap.context(() => {
+            // Print button functionality
+            const printButton = document.getElementById("print-button");
+            if (printButton) {
+                printButton.addEventListener("click", () => {
+                    window.print();
+                });
+            }
+
+            // Animate the title
+            gsap.to(".cv-title-anim", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                delay: 0.2,
+            });
+
+            // Animate each section with a staggered fade in
+            gsap.utils.toArray(".cv-section-anim").forEach((section, i) => {
+                gsap.set(section as HTMLElement, { opacity: 0, y: 20 });
+
+                ScrollTrigger.create({
+                    trigger: section as Element,
+                    start: "top 95%",
+                    onEnter: () => {
+                        gsap.to(section as HTMLElement, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.6,
+                            delay: 0.1,
+                            ease: "power2.out",
+                        });
+                    },
+                    once: true, // Only trigger once
+                });
+            });
+
+            // Animate skill bars when they come into view
+            gsap.utils.toArray<HTMLElement>(".skill-bar").forEach(bar => {
+                const percentage = bar.dataset.percentage;
+
+                gsap.set(bar, { width: "0%" });
+
+                ScrollTrigger.create({
+                    trigger: bar,
+                    start: "top 96%",
+                    onEnter: () => {
+                        gsap.to(bar, {
+                            width: percentage + "%",
+                            duration: 1.2,
+                            ease: "power2.out",
+                        });
+                    },
+                    once: true,
+                });
+            });
+
+            // Timeline animations
+            const timelineItems = document.querySelectorAll(".timeline-item");
+
+            timelineItems.forEach((item, index) => {
+                const dot = item.querySelector(".timeline-dot");
+                const content = item.querySelector(".timeline-content");
+
+                if (!dot || !content) return;
+
+                ScrollTrigger.create({
+                    trigger: item as Element,
+                    start: "top 98%",
+                    end: "bottom 80%",
+                    markers: false,
+                    onEnter: () => {
+                        gsap.to(dot, {
+                            opacity: 1,
+                            scale: 1,
+                            duration: 0.4,
+                            delay: 0.2 + index * 0.1,
+                            ease: "back.out(1.7)",
+                        });
+
+                        gsap.to(content, {
+                            opacity: 1,
+                            x: 0,
+                            duration: 0.6,
+                            delay: 0.3 + index * 0.1,
+                            ease: "power2.out",
+                        });
+                    },
+                    once: true,
+                });
+            });
+        });
+    }
+
+    // Initialize animations on page load and after view transitions
+    document.addEventListener("astro:page-load", initAnimations);
+
+    // Clean up on page leave
+    document.addEventListener("astro:before-swap", () => {
+        ctx && ctx.revert();
+    });
+</script>

@@ -8,25 +8,32 @@
     --font-caveat: 'Caveat Variable', sans-serif;
     --font-work: 'Work Sans Variable', sans-serif;
     --font-expletus: 'Expletus Sans Variable', sans-serif;
+    --font-hepta-slap: 'Hepta Slab Variable', sans-serif;
+    --font-jetbrains: 'JetBrains Mono Variable', monospace;
 
     /* Colors - Green Theme */
     --color-background: hsl(40, 15%, 95%);
     --color-background-darker: hsl(40, 10%, 80%);
     --color-background-lighter: hsl(40, 12%, 100%);
+    --color-background-gutter: hsl(40, 10%, 91%);
     --color-foreground: hsl(174, 47%, 12%);
     --color-card: hsl(40, 10%, 100%);
 
     /* Primary: Modern Green */
     --color-primary: hsl(209, 85%, 40%);
-    --color-primary-muted: hsl(209, 50%, 60%);
+    --color-primary-muted: hsl(209, 45%, 48%);
     --color-primary-foreground: hsl(0, 0%, 100%);
+    --color-primary-darker: hsl(209, 40%, 40%);
+    --color-primary-darker-foreground: hsl(0, 0%, 100%);
 
     /* Secondary: Teal */
     --color-secondary: hsl(188, 86%, 70%);
+    --color-secondary-muted: hsl(188, 49%, 82%);
     --color-secondary-foreground: hsl(188, 73%, 25%);
 
     /* Accent: Mint/Aqua */
     --color-accent: hsl(142, 70%, 66%);
+    --color-accent-muted: hsl(142, 63%, 79%);
     --color-accent-foreground: hsl(142, 67%, 25%);
 
     /* Accent: Mint/Aqua */
@@ -38,7 +45,7 @@
 
     --color-border: hsl(202, 23%, 91%);
     --color-link: hsl(246, 73%, 28%);
-    --color-link-visited: hsl(312, 44%, 35%);
+    --color-link-visited: hsl(246, 60%, 25%);
 
     /* Terminal Colors */
     --color-terminal-bg: hsl(120, 10%, 97%);
@@ -60,6 +67,7 @@
 
     /* utils */
     --container-padding: 1rem;
+    --scroll-thumb: hsl(223, 18%, 73%);
 }
 
 @layer base {
@@ -67,6 +75,7 @@
         --color-background: hsl(48, 14%, 6%);
         --color-background-darker: hsl(174, 11%, 1%);
         --color-background-lighter: hsl(174, 11%, 6%);
+        --color-background-gutter: hsl(48, 14%, 6%);
         --color-foreground: hsl(120, 10%, 95%);
         --color-card: hsl(168, 10%, 10%);
 
@@ -74,13 +83,16 @@
         --color-primary: hsl(150, 85%, 42%);
         --color-primary-muted: hsl(150, 50%, 55%);
         --color-primary-foreground: hsl(0, 0%, 100%);
+        --color-primary-darker: hsl(150, 80%, 25%);
 
         /* Secondary: Aqua/Teal */
         --color-secondary: hsl(182, 100%, 65%);
+        --color-secondary-muted: hsl(181, 60%, 82%);
         --color-secondary-foreground: hsl(0, 0%, 100%);
 
         /* Accent: Mint */
         --color-accent: hsl(48, 97%, 72%);
+        --color-accent-muted: hsl(48, 41%, 85%);
         --color-accent-foreground: hsl(0, 0%, 100%);
 
         --color-muted: hsl(174, 23%, 35%);
@@ -88,7 +100,7 @@
 
         --color-border: hsl(48, 14%, 12%);
         --color-link: hsl(160, 60%, 60%);
-        --color-link-visited: hsl(306, 45%, 45%);
+        --color-link-visited: hsl(160, 40%, 58%);
 
         /* Dark Terminal Colors */
         --color-terminal-bg: hsl(174, 30%, 12%);
@@ -107,18 +119,23 @@
 
         /* Dark Tech icons */
         --color-tech-icons: hsl(160, 40%, 60%);
+        --color-scroll-thumb: hsl(123, 9%, 37%);
     }
 }
 
 @layer base {
-    html,
     body {
         @apply bg-background text-foreground font-work transition-colors duration-300 scroll-smooth border-accent;
-        scrollbar-gutter: stable;
     }
 
-    :root {
-        @apply bg-background;
+    :root,
+    html {
+        @apply bg-background-gutter;
+        scrollbar-gutter: stable;
+        scrollbar-track-color: var(--color-primary);
+        scrollbar-base-color: var(--color-background);
+        scrollbar-color: var(--color-scroll-thumb) var(--color-background);
+        scrollbar-width: thin;
     }
 
     main > a {
@@ -128,23 +145,31 @@
     h1,
     h2,
     h3 {
-        @apply font-semibold;
+        @apply font-semibold font-hepta-slap;
     }
 
     h1 {
-        @apply text-4xl md:text-5xl;
+        @apply text-4xl md:text-5xl mb-4;
     }
 
     h2 {
-        @apply text-3xl md:text-4xl;
+        @apply text-3xl md:text-4xl mb-3;
     }
 
     h3 {
-        @apply text-xl md:text-2xl;
+        @apply text-xl md:text-2xl mb-2;
     }
 
     a {
         @apply text-link hover:underline font-normal visited:text-link-visited;
+    }
+
+    p {
+        @apply mb-2;
+    }
+
+    code {
+        @apply font-jetbrains;
     }
 }
 
@@ -199,9 +224,9 @@
         overflow-y: auto;
     }
 
-    .index-section h1,
-    h2,
-    h3 {
+    .index-section > h1,
+    .index-section > h2,
+    .index-section > h3 {
         @apply text-primary;
     }
 }

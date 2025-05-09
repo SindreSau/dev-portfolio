@@ -6,15 +6,21 @@ import "@fontsource/megrim";
 import "@fontsource-variable/work-sans";
 import "@fontsource-variable/caveat";
 import "@fontsource-variable/expletus-sans";
+import "@fontsource-variable/hepta-slab";
+import "@fontsource-variable/jetbrains-mono";
 
 // Preload fonts for better performance
 import caveatWoff2 from "@fontsource-variable/caveat/files/caveat-latin-wght-normal.woff2?url";
 import expletusSansWoff2 from "@fontsource-variable/expletus-sans/files/expletus-sans-latin-wght-normal.woff2?url";
+import heptaSlabWoff2 from "@fontsource-variable/hepta-slab/files/hepta-slab-latin-wght-normal.woff2";
+import jetbrainsMonoWoff2 from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2";
 import workSansWoff2 from "@fontsource-variable/work-sans/files/work-sans-latin-wght-normal.woff2?url";
 import megrimWoff2 from "@fontsource/megrim/files/megrim-latin-400-normal.woff2?url";
 
 const { title, description } = Astro.props;
 ---
+
+<ClientRouter />
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
@@ -53,6 +59,21 @@ const { title, description } = Astro.props;
     href={expletusSansWoff2}
     crossorigin="anonymous"
 />
+<link
+    rel="preload"
+    as="font"
+    type="font/woff2"
+    href={heptaSlabWoff2}
+    crossorigin="anonymous"
+/>
+
+<link
+    rel="preload"
+    as="font"
+    type="font/woff2"
+    href={jetbrainsMonoWoff2}
+    crossorigin="anonymous"
+/>
 
 <!-- SEO -->
 <SEO
@@ -61,5 +82,3 @@ const { title, description } = Astro.props;
     titleTemplate="%s | Sindre Sauarlia Fullstack Developer"
     titleDefault="Sindre Sauarlia Fullstack Developer"
 />
-
-<ClientRouter />

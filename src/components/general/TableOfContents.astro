@@ -11,50 +11,16 @@ const tocTitle = "Table of Contents";
 
 <div id="toc-container" class="toc-container">
     <nav aria-label="Table of contents">
-        <div class="md:hidden relative">
-            {/* Mobile alternative: Dropdown */}
-            <button
-                id="toc-mobile-button"
-                type="button"
-                class="flex w-full items-center justify-between rounded-md border border-border bg-background-secondary p-2 text-sm font-medium text-text-secondary hover:bg-background-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-secondary"
-                aria-expanded="false"
-                aria-haspopup="true"
-                aria-controls="toc-mobile-menu"
-            >
-                <span id="toc-mobile-selected-title">{tocTitle}</span>
-                <svg
-                    class="h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                >
-                    <path
-                        fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                </svg>
-            </button>
-            <ul
-                id="toc-mobile-menu"
-                class="absolute z-10 mt-1 hidden w-full rounded-md border border-border bg-background-secondary shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="toc-mobile-button"
-            >
+        <div class="md:hidden">
+            <h2 class="text-lg font-semibold mb-4">Table of Contents</h2>
+            <ul class="space-y-2">
                 {
                     sections.map(section => (
-                        <li role="presentation">
+                        <li>
                             <a
                                 href={`#${section.id}`}
-                                id={`toc-link-mobile-${section.id}`}
-                                class={cn(
-                                    "block px-4 py-2 text-sm text-text-secondary hover:bg-background-tertiary hover:text-primary",
-                                    "toc-link-mobile" // Common class for JS targeting
-                                )}
-                                role="menuitem"
+                                class="block py-1 px-2 text-sm text-text-secondary hover:text-primary hover:bg-background-darker rounded transition-colors duration-150 toc-link"
                                 data-section-id={section.id}
-                                data-section-title={section.title}
                             >
                                 {section.title}
                             </a>
@@ -68,18 +34,24 @@ const tocTitle = "Table of Contents";
         <ul class="hidden md:block space-y-2">
             {
                 sections.map(section => (
-                    <li>
+                    <li class="relative">
                         <a
                             href={`#${section.id}`}
                             id={`toc-link-${section.id}`}
                             class={cn(
-                                "block py-1 text-sm hover:text-primary transition-colors duration-150",
+                                "block py-1 text-sm text-text-secondary hover:text-primary transition-colors duration-150",
                                 "toc-link" // Common class for JS targeting
                             )}
                             data-section-id={section.id}
                         >
                             {section.title}
                         </a>
+                        <div class="progress-container h-0.5 w-full bg-gray-200 dark:bg-gray-700 mt-1 rounded-full overflow-hidden opacity-0 transition-opacity duration-300">
+                            <div
+                                class="progress-bar h-full bg-primary/60 w-0 transition-all duration-300"
+                                data-section={section.id}
+                            />
+                        </div>
                     </li>
                 ))
             }
@@ -87,8 +59,11 @@ const tocTitle = "Table of Contents";
     </nav>
 </div>
 
-<script define:vars={{ tocTitleFromProps: tocTitle }}>
-    document.addEventListener("DOMContentLoaded", () => {
+<script>
+    document.addEventListener("DOMContentLoaded", initializeTableOfContents);
+    document.addEventListener("astro:page-load", initializeTableOfContents);
+
+    function initializeTableOfContents() {
         const desktopLinks =
             document.querySelectorAll<HTMLAnchorElement>(".toc-link");
         const mobileLinks =
@@ -100,7 +75,7 @@ const tocTitle = "Table of Contents";
         const tocMobileButton = document.getElementById("toc-mobile-button");
         const tocMobileMenu = document.getElementById("toc-mobile-menu");
 
-        const tocTitle = tocTitleFromProps;
+        const tocTitle = "Table of Contents";
 
         if ((!desktopLinks.length && !mobileLinks.length) || !sections.length) {
             console.warn(
@@ -111,103 +86,105 @@ const tocTitle = "Table of Contents";
 
         const allLinks = [...desktopLinks, ...mobileLinks];
 
+        // Better intersection observer options for more accurate active section detection
         const observerOptions = {
             root: null,
-            rootMargin: "-20% 0px -70% 0px",
-            threshold: 0,
+            rootMargin: "-10% 0px -70% 0px", // Adjusted for better accuracy
+            threshold: [0, 0.1, 0.5, 1], // Multiple thresholds for better detection
         };
 
-        const observer = new IntersectionObserver(entries => {
-            let firstVisibleSectionId;
-            let firstVisibleSectionTitle;
+        // Track current active section and its intersection ratio
+        let currentActiveSection: HTMLElement | null = null;
+        let maxIntersectionRatio = 0;
 
+        const observer = new IntersectionObserver(entries => {
+            // First, find the section with the highest intersection ratio
             entries.forEach(entry => {
-                const id = entry.target.getAttribute("id");
+                if (
+                    entry.isIntersecting &&
+                    entry.intersectionRatio > maxIntersectionRatio
+                ) {
+                    maxIntersectionRatio = entry.intersectionRatio;
+                    currentActiveSection = entry.target as HTMLElement;
+                }
+            });
+
+            // Then update UI based on the most visible section
+            if (currentActiveSection) {
+                const id = currentActiveSection.getAttribute("id");
+
+                // Reset all links to inactive state
+                desktopLinks.forEach(link => {
+                    link.classList.remove("text-primary", "font-semibold");
+                    link.classList.add("text-text-secondary");
+                });
+
+                mobileLinks.forEach(link => {
+                    link.classList.remove(
+                        "bg-background-darker",
+                        "text-primary"
+                    );
+                });
+
+                // Activate the corresponding link
                 const correspondingDesktopLink =
                     document.querySelector<HTMLAnchorElement>(
                         `.toc-link[data-section-id="${id}"]`
                     );
+
                 const correspondingMobileLink =
                     document.querySelector<HTMLAnchorElement>(
                         `.toc-link-mobile[data-section-id="${id}"]`
                     );
 
-                if (entry.isIntersecting) {
-                    if (!firstVisibleSectionId && id) {
-                        firstVisibleSectionId = id;
-                        firstVisibleSectionTitle =
-                            correspondingMobileLink?.dataset.sectionTitle ||
-                            correspondingDesktopLink?.textContent?.trim() ||
-                            tocTitle;
-                    }
-                    desktopLinks.forEach(link =>
-                        link.classList.remove("text-primary", "font-semibold")
-                    );
-                    mobileLinks.forEach(link =>
-                        link.classList.remove(
-                            "bg-background-darker",
-                            "text-primary"
-                        )
-                    );
-
-                    correspondingDesktopLink?.classList.add(
-                        "text-primary",
-                        "font-semibold"
-                    );
-                    correspondingMobileLink?.classList.add(
-                        "bg-background-darker",
-                        "text-primary"
-                    );
-                } else {
-                    correspondingDesktopLink?.classList.remove(
-                        "text-primary",
-                        "font-semibold"
-                    );
-                    correspondingMobileLink?.classList.remove(
+                if (correspondingMobileLink) {
+                    correspondingMobileLink.classList.add(
                         "bg-background-darker",
                         "text-primary"
                     );
                 }
-            });
 
-            if (tocMobileSelectedTitle) {
-                let activeTitle = tocTitle;
-                const activeDesktopLink =
-                    document.querySelector<HTMLAnchorElement>(
-                        ".toc-link.text-primary"
-                    );
-                if (activeDesktopLink && activeDesktopLink.textContent) {
-                    activeTitle = activeDesktopLink.textContent.trim();
+                // Update mobile dropdown title if available
+                if (
+                    tocMobileSelectedTitle &&
+                    (correspondingMobileLink || correspondingDesktopLink)
+                ) {
+                    const title =
+                        correspondingMobileLink?.dataset.sectionTitle ||
+                        correspondingDesktopLink?.textContent?.trim() ||
+                        tocTitle;
+                    tocMobileSelectedTitle.textContent = title;
                 }
-                if (firstVisibleSectionTitle) {
-                    activeTitle = firstVisibleSectionTitle;
-                }
-                tocMobileSelectedTitle.textContent = activeTitle;
+
+                // Reset for next check
+                maxIntersectionRatio = 0;
             }
         }, observerOptions);
 
+        // Observe all sections
         sections.forEach(section => {
             observer.observe(section);
         });
 
+        // Handle smooth scrolling when clicking TOC links
         allLinks.forEach(link => {
-            link.addEventListener("click", function (this, e) {
+            link.addEventListener("click", function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute("href")?.substring(1);
+
                 if (targetId) {
-                    document.getElementById(targetId)?.scrollIntoView({
-                        behavior: "smooth",
-                    });
-                    if (
-                        this.classList.contains("toc-link-mobile") &&
-                        tocMobileSelectedTitle
-                    ) {
-                        tocMobileSelectedTitle.textContent =
-                            this.dataset.sectionTitle ||
-                            this.textContent?.trim() ||
-                            tocTitle;
-                        // Hide mobile menu after click
-                        if (tocMobileMenu) {
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+
+                        // Update mobile menu state after click (if applicable)
+                        if (
+                            this.classList.contains("toc-link-mobile") &&
+                            tocMobileMenu
+                        ) {
                             tocMobileMenu.classList.add("hidden");
                             tocMobileButton?.setAttribute(
                                 "aria-expanded",
@@ -219,31 +196,129 @@ const tocTitle = "Table of Contents";
             });
         });
 
-        // Mobile TOC dropdown toggle
-        if (tocMobileButton && tocMobileMenu) {
+        // Enhanced mobile menu functionality
+        const tocDropdownIcon = document.getElementById("toc-dropdown-icon");
+        const tocMobileLinks = document.querySelectorAll(".toc-link-mobile");
+
+        if (tocMobileButton && tocMobileMenu && tocDropdownIcon) {
             tocMobileButton.addEventListener("click", () => {
                 const isExpanded =
-                    tocMobileButton.getAttribute("aria-expanded") === "true" ||
-                    false;
+                    tocMobileButton.getAttribute("aria-expanded") === "true";
+                const newState = !isExpanded;
+
+                // Update button state
                 tocMobileButton.setAttribute(
                     "aria-expanded",
-                    (!isExpanded).toString()
+                    newState.toString()
                 );
-                tocMobileMenu.classList.toggle("hidden");
-            });
 
-            // Close dropdown if clicked outside
-            document.addEventListener("click", event => {
-                if (
-                    tocMobileButton &&
-                    tocMobileMenu &&
-                    !tocMobileButton.contains(event.target) &&
-                    !tocMobileMenu.contains(event.target)
-                ) {
-                    tocMobileMenu.classList.add("hidden");
-                    tocMobileButton.setAttribute("aria-expanded", "false");
+                // Update menu visibility with smooth transition
+                if (newState) {
+                    tocMobileMenu.classList.remove("invisible");
+                    // Use setTimeout to ensure opacity transition works
+                    setTimeout(() => {
+                        tocMobileMenu.classList.remove(
+                            "opacity-0",
+                            "-translate-y-2"
+                        );
+                        tocDropdownIcon.style.transform = "rotate(180deg)";
+                    }, 10);
+                } else {
+                    tocMobileMenu.classList.add("opacity-0", "-translate-y-2");
+                    tocDropdownIcon.style.transform = "rotate(0deg)";
+                    // Hide menu after transition
+                    setTimeout(() => {
+                        tocMobileMenu.classList.add("invisible");
+                    }, 200);
                 }
             });
+
+            // Close dropdown when clicking outside
+            document.addEventListener("click", event => {
+                if (
+                    !tocMobileButton.contains(event.target as Node) &&
+                    !tocMobileMenu.contains(event.target as Node)
+                ) {
+                    tocMobileButton.setAttribute("aria-expanded", "false");
+                    tocMobileMenu.classList.add("opacity-0", "-translate-y-2");
+                    tocDropdownIcon.style.transform = "rotate(0deg)";
+                    setTimeout(() => {
+                        tocMobileMenu.classList.add("invisible");
+                    }, 200);
+                }
+            });
+
+            // Handle mobile link clicks
+            tocMobileLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    const sectionTitle =
+                        link.getAttribute("data-section-title") || tocTitle;
+                    document.getElementById(
+                        "toc-mobile-selected-title"
+                    )!.textContent = sectionTitle;
+
+                    // Close menu with animation
+                    tocMobileButton.setAttribute("aria-expanded", "false");
+                    tocMobileMenu.classList.add("opacity-0", "-translate-y-2");
+                    tocDropdownIcon.style.transform = "rotate(0deg)";
+                    setTimeout(() => {
+                        tocMobileMenu.classList.add("invisible");
+                    }, 200);
+                });
+            });
         }
-    });
+
+        // Progress bar update for each section
+        const progressBars =
+            document.querySelectorAll<HTMLDivElement>(".progress-bar");
+
+        const progressObserver = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    const sectionId = entry.target.getAttribute("id");
+                    const progressBar = document.querySelector<HTMLDivElement>(
+                        `.progress-bar[data-section="${sectionId}"]`
+                    );
+
+                    const progressContainer = progressBar?.parentElement;
+
+                    if (entry.isIntersecting) {
+                        const sectionHeight = entry.target.scrollHeight;
+                        const viewportHeight = window.innerHeight;
+                        const sectionTop =
+                            entry.target.getBoundingClientRect().top;
+                        const progress = Math.min(
+                            1,
+                            Math.max(
+                                0,
+                                (viewportHeight - sectionTop) / sectionHeight
+                            )
+                        );
+
+                        if (progressBar && progressContainer) {
+                            progressBar.style.width = `${progress * 100}%`;
+                            progressContainer.classList.remove("opacity-0");
+                            progressContainer.classList.add("opacity-100");
+                        }
+                    } else {
+                        if (progressBar && progressContainer) {
+                            progressBar.style.width = "0%";
+                            progressContainer.classList.remove("opacity-100");
+                            progressContainer.classList.add("opacity-0");
+                        }
+                    }
+                });
+            },
+            {
+                root: null,
+                rootMargin: "0px",
+                threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+            }
+        );
+
+        // Observe all sections for progress tracking
+        sections.forEach(section => {
+            progressObserver.observe(section);
+        });
+    }
 </script>

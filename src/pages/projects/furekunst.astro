@@ -1,0 +1,30 @@
+---
+import { Picture } from "astro:assets";
+
+import furekunst from "@/assets/images/furekunst.png";
+import ProjectsLayout from "@/layouts/projects-layout.astro";
+---
+
+<ProjectsLayout>
+    <h1 transition:name="furekunst-title">Furekunst</h1>
+
+    <p class="mb-8">
+        A React/Next.js website made for a Norwegian artist - who also happens
+        to be my girlfriend. The website is a portfolio showcasing her work, and
+        it was built using Next.js and Tailwind CSS. The website is fully
+        responsive and works on all devices. It also has a dark mode toggle. The
+        website is hosted on Vercel and uses a custom domain.
+    </p>
+
+    <Picture
+        transition:name="furekunst-image"
+        src={furekunst}
+        alt="Furekunst"
+        class="rounded-lg mb-2"
+        loading="lazy"
+        format="avif"
+        width={800}
+        height={600}
+        quality={50}
+    />
+</ProjectsLayout>
