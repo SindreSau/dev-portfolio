@@ -1,7 +1,282 @@
 ---
+import { Picture } from "astro:assets";
+import bachelor from "@assets/images/bachelor-admin.png";
+import furekunst from "@assets/images/furekunst.png";
+import gamenamegen from "@assets/images/gamenamegen.png";
+import IconArrowUpRight from "@components/icons/icon-arrow-up-right.astro";
 
+const projects = [
+    {
+        id: 1,
+        title: "furekunst.no",
+        imageSrc: furekunst,
+        altText: "Screenshot of Furekunst.no",
+        link: "/furekunst",
+    },
+    {
+        id: 2,
+        title: "Bachelor Project",
+        imageSrc: bachelor,
+        altText: "Screenshot of Bachelor Project",
+        link: "/bachelor-project",
+    },
+    {
+        id: 3,
+        title: "AI Character Name Generator",
+        imageSrc: gamenamegen,
+        altText: "Screenshot of AI Character Name Generator",
+        link: "/ai-character-name-generator",
+    },
+];
 ---
 
-<section id="current-projects" class="scroll-mt-12 pt-8 md:pt-16"></section>
+<section
+    id="current-projects"
+    class="scroll-mt-1 pt-8 md:pt-16 pb-16 md:pb-24 overflow-visible"
+>
+    <h2
+        id="highlighted-projects-heading"
+        class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16"
+    >
+        Highlighted Projects
+    </h2>
+    <div
+        class="project-cards-container flex flex-col md:flex-row justify-around items-start gap-8 md:gap-4 px-4"
+    >
+        {
+            projects.map((project, index) => (
+                <div
+                    class={`project-card project-card-${index + 1} w-full md:w-full rounded-lg bg-background shadow-lg relative`}
+                >
+                    <a
+                        href={project.link}
+                        rel="noopener noreferrer"
+                        class="block"
+                    >
+                        <div class="image-container relative rounded-lg overflow-hidden">
+                            <Picture
+                                src={project.imageSrc}
+                                alt={project.altText}
+                                class="project-image w-full object-cover transition-transform duration-300 ease-in-out rounded-lg"
+                                loading="lazy"
+                                width={600}
+                                height={600}
+                                quality={65}
+                                format="avif"
+                            />
+                            <div class="project-info-overlay absolute inset-0 flex flex-col justify-center items-center bg-background/30 opacity-0 pointer-events-none rounded-lg">
+                                <h3 class="text-white text-2xl font-bold mb-2 text-center px-4">
+                                    {project.title}
+                                </h3>
+                                <IconArrowUpRight class="w-8 h-8 text-white mt-2" />
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+</section>
 
-<script></script>
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    let ctx: gsap.Context | null = null;
+
+    function runAnimations() {
+        gsap.registerPlugin(ScrollTrigger);
+        ctx && ctx.revert(); // Clean up previous animations
+
+        ctx = gsap.context(() => {
+            const cards = gsap.utils.toArray(".project-card") as HTMLElement[];
+            const heading = document.querySelector(
+                "#highlighted-projects-heading"
+            ) as HTMLElement;
+
+            // Initial set up for each card (start off-screen, rotated)
+            cards.forEach((card, index) => {
+                let initialRotation = 0;
+                if (index === 0) {
+                    initialRotation = -10;
+                } else if (index === cards.length - 1) {
+                    initialRotation = 10;
+                }
+                gsap.set(card, {
+                    opacity: 0,
+                    xPercent: -80,
+                    rotation: initialRotation,
+                    zIndex: 1, // Initial zIndex
+                });
+            });
+
+            // Create a master timeline for the cards to animate one by one
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#current-projects",
+                    start: "top 90%",
+                    end: "top 50%",
+                    scrub: 2,
+                    markers: true,
+                },
+            });
+
+            // Set the heading to be visible and animate it in
+            gsap.set(heading, { opacity: 0, y: -50 });
+            tl.to(heading, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.inOut",
+            });
+
+            // Add animations for each card to the timeline sequentially
+            cards.forEach((card, index) => {
+                let finalRotation = 0;
+                let finalXPercent = 0;
+                let finalYPercent = 0;
+
+                // Define final fanned-out and overlapping positions
+                if (cards.length === 3) {
+                    if (index === 0) {
+                        // Left card
+                        finalRotation = -10;
+                        finalXPercent = 15;
+                        finalYPercent = 0;
+                    } else if (index === 1) {
+                        // Middle card
+                        finalRotation = 0;
+                        finalXPercent = 0;
+                        finalYPercent = -13;
+                    } else if (index === 2) {
+                        // Right card
+                        finalRotation = 10;
+                        finalXPercent = -15;
+                        finalYPercent = 0;
+                    }
+                } else {
+                    // Fallback for different number of cards
+                    const angleStep = 10 / (cards.length - 1 || 1);
+                    finalRotation = -5 + index * angleStep;
+                    finalXPercent = (index - (cards.length - 1) / 2) * -10;
+                }
+
+                // Add this card's animation to the timeline.
+                // Each animation will play sequentially.
+                // The duration here is relative to the timeline's total scrubbed duration.
+                tl.to(card, {
+                    opacity: 1,
+                    xPercent: finalXPercent,
+                    rotation: finalRotation,
+                    yPercent: finalYPercent,
+                    duration: 1,
+                    ease: "power2.inOut",
+                });
+            });
+
+            // Hover animations - Added this section
+            cards.forEach((card, hoveredIndex) => {
+                const overlay = card.querySelector(
+                    ".project-info-overlay"
+                ) as HTMLElement | null;
+                // Ensure overlay has pointer-events: auto when hovered, and none when not.
+                // GSAP can tween this or we can manage it with classes if needed.
+                // For simplicity, GSAP will just control opacity. Parent <a> tag handles click.
+
+                card.addEventListener("mouseenter", () => {
+                    gsap.to(card, {
+                        scale: 1.3,
+                        zIndex: 10,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                    if (overlay) {
+                        gsap.to(overlay, {
+                            opacity: 1,
+                            duration: 0.3,
+                            ease: "power2.out",
+                        });
+                    }
+
+                    cards.forEach((otherCard, otherIndex) => {
+                        if (otherCard === card) return; // Skip the hovered card
+
+                        let shoveX = 0;
+                        if (cards.length > 1) {
+                            // Determine position relative to the hovered card based on their original fanned out positions
+                            // This assumes finalXPercent values are somewhat indicative of their relative positions
+                            const hoveredCardX = parseFloat(
+                                gsap.getProperty(card, "xPercent") as string
+                            );
+                            const otherCardX = parseFloat(
+                                gsap.getProperty(
+                                    otherCard,
+                                    "xPercent"
+                                ) as string
+                            );
+
+                            if (otherCardX < hoveredCardX) {
+                                shoveX = 50; // Shove left
+                            } else if (otherCardX > hoveredCardX) {
+                                shoveX = -50; // Shove right
+                            } else {
+                                // If they are at the same xPercent (e.g. middle card vs another if only 2 cards)
+                                // Fallback to index comparison
+                                shoveX = otherIndex < hoveredIndex ? -30 : 30;
+                            }
+                        }
+
+                        gsap.to(otherCard, {
+                            x: shoveX, // Shove in pixels
+                            scale: 0.95, // Slightly shrink other cards
+                            zIndex: 0, // Ensure other cards are behind
+                            duration: 0.3,
+                            ease: "power2.out",
+                        });
+                    });
+                });
+
+                card.addEventListener("mouseleave", () => {
+                    gsap.to(card, {
+                        scale: 1,
+                        zIndex: 1, // Reset zIndex
+                        duration: 0.3,
+                        ease: "power2.inOut",
+                    });
+                    if (overlay) {
+                        gsap.to(overlay, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: "power2.inOut",
+                        });
+                    }
+
+                    cards.forEach(otherCard => {
+                        if (otherCard === card) return;
+                        gsap.to(otherCard, {
+                            x: 0, // Reset translation
+                            scale: 1, // Reset scale
+                            zIndex: 1,
+                            duration: 0.3,
+                            ease: "power2.inOut",
+                        });
+                    });
+                    // After mouse leave, re-evaluate z-index for fanned cards if necessary,
+                    // especially for the middle card that should be on top.
+                    // The scroll animation's yPercent naturally handles some of this visual stacking.
+                    // For simplicity, setting all non-hovered to zIndex:1 is a start.
+                    // If specific stacking order is needed post-hover, it might need more logic here
+                    // or rely on the yPercent of the scroll animation.
+                });
+            });
+        });
+    }
+
+    document.addEventListener("astro:page-load", runAnimations);
+    document.addEventListener("astro:before-swap", () => {
+        if (ctx) {
+            ctx.revert();
+        }
+        ScrollTrigger.getAll().forEach(ST => ST.kill());
+    });
+</script>

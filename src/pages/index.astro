@@ -1,6 +1,6 @@
 ---
 import HeroSection from "@/components/home/hero-section.astro";
-import CurrentProjectsSection from "@/components/home/highlighted-projects-section.astro";
+import ProjectsSection from "@/components/home/highlighted-projects-section.astro";
 import ShortInfoSection from "@/components/home/short-info-section.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
@@ -8,5 +8,11 @@ import Layout from "@/layouts/Layout.astro";
 <Layout>
     <HeroSection />
     <ShortInfoSection />
-    <CurrentProjectsSection />
+    <ProjectsSection />
+    <section>
+        <div>
+            Curious to see more? Check out my <a href="/projects">projects</a> page
+            for a deeper dive into my work.
+        </div>
+    </section>
 </Layout>

@@ -10,9 +10,9 @@
     --font-expletus: 'Expletus Sans Variable', sans-serif;
 
     /* Colors - Green Theme */
-    --color-background: hsl(40, 15%, 92%);
+    --color-background: hsl(40, 15%, 97%);
     --color-background-darker: hsl(40, 10%, 80%);
-    --color-background-lighter: hsl(40, 12%, 98%);
+    --color-background-lighter: hsl(40, 12%, 100%);
     --color-foreground: hsl(174, 47%, 12%);
     --color-card: hsl(40, 20%, 92%);
 
@@ -36,7 +36,7 @@
     --color-muted: hsl(120, 10%, 92%);
     --color-muted-foreground: hsl(160, 23%, 35%);
 
-    --color-border: hsl(160, 15%, 77%);
+    --color-border: hsl(202, 23%, 91%);
     --color-link: hsl(160, 84%, 39%);
     --color-link-visited: hsl(200, 75%, 50%);
 
@@ -86,7 +86,7 @@
         --color-muted: hsl(174, 23%, 35%);
         --color-muted-foreground: hsl(120, 7%, 71%);
 
-        --color-border: hsl(174, 20%, 22%);
+        --color-border: hsl(48, 14%, 12%);
         --color-link: hsl(160, 60%, 60%);
         --color-link-visited: hsl(200, 70%, 62%);
 
@@ -113,7 +113,7 @@
 @layer base {
     html,
     body {
-        @apply bg-background text-foreground font-work transition-colors duration-300 scroll-smooth;
+        @apply bg-background text-foreground font-work transition-colors duration-300 scroll-smooth border-accent;
         scrollbar-gutter: stable;
     }
 
@@ -145,6 +145,10 @@
 }
 
 @layer components {
+    * {
+        @apply border-border;
+    }
+
     .codelang-card {
         @apply w-fit p-3 md:p-4 rounded-sm transition-all duration-300 ease-out text-tech-icons saturate-[0.7];
     }
