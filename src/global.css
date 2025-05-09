@@ -10,11 +10,11 @@
     --font-expletus: 'Expletus Sans Variable', sans-serif;
 
     /* Colors - Green Theme */
-    --color-background: hsl(40, 15%, 97%);
+    --color-background: hsl(40, 15%, 95%);
     --color-background-darker: hsl(40, 10%, 80%);
     --color-background-lighter: hsl(40, 12%, 100%);
     --color-foreground: hsl(174, 47%, 12%);
-    --color-card: hsl(40, 20%, 92%);
+    --color-card: hsl(40, 10%, 100%);
 
     /* Primary: Modern Green */
     --color-primary: hsl(209, 85%, 40%);
@@ -37,8 +37,8 @@
     --color-muted-foreground: hsl(160, 23%, 35%);
 
     --color-border: hsl(202, 23%, 91%);
-    --color-link: hsl(160, 84%, 39%);
-    --color-link-visited: hsl(200, 75%, 50%);
+    --color-link: hsl(246, 73%, 28%);
+    --color-link-visited: hsl(312, 44%, 35%);
 
     /* Terminal Colors */
     --color-terminal-bg: hsl(120, 10%, 97%);
@@ -68,7 +68,7 @@
         --color-background-darker: hsl(174, 11%, 1%);
         --color-background-lighter: hsl(174, 11%, 6%);
         --color-foreground: hsl(120, 10%, 95%);
-        --color-card: hsl(174, 33%, 18%);
+        --color-card: hsl(168, 10%, 10%);
 
         /* Primary: Deep Emerald */
         --color-primary: hsl(150, 85%, 42%);
@@ -88,7 +88,7 @@
 
         --color-border: hsl(48, 14%, 12%);
         --color-link: hsl(160, 60%, 60%);
-        --color-link-visited: hsl(200, 70%, 62%);
+        --color-link-visited: hsl(306, 45%, 45%);
 
         /* Dark Terminal Colors */
         --color-terminal-bg: hsl(174, 30%, 12%);
@@ -141,6 +141,10 @@
 
     h3 {
         @apply text-xl md:text-2xl;
+    }
+
+    a {
+        @apply text-link hover:underline font-normal visited:text-link-visited;
     }
 }
 

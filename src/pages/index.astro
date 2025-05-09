@@ -1,24 +1,146 @@
 ---
+import { Picture } from "astro:assets";
+import Divider from "@/components/general/divider.astro";
 import HeroSection from "@/components/home/hero-section.astro";
 import ProjectsSection from "@/components/home/highlighted-projects-section.astro";
 import ShortInfoSection from "@/components/home/short-info-section.astro";
 import Layout from "@/layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+
+import codingIllustration from "@/assets/images/coding-illustration.jpeg";
+import LinkButton from "@/components/general/link-button.astro";
+
+import socials from "@/config/socials";
+
+const email = socials.find(social => social.name === "Email");
+const linkedIn = socials.find(social => social.name === "LinkedIn");
+
+console.log("email", email);
+console.log("linkedIn", linkedIn);
 ---
 
 <Layout>
     <HeroSection />
     <ShortInfoSection />
     <ProjectsSection />
-    <section class="index-section">
-        <div>Hit me up on Linkedin or Email.</div>
-        <div>
-            If your'e a recruiter or curious - feel free to check out my
-            Experience and Education <a href="/education-cv">here</a>.
-        </div>
-        <div>
-            If you want to see more projects, check out my <a href="/projects"
-                >projects</a
-            >.
+    <section
+        id="contact-section"
+        class="index-section pb-16 pt-8 md:pt-16 scroll-fadein"
+    >
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
+            Let's Connect
+        </h2>
+
+        <Divider class="mb-8 max-w-xl mx-auto" scrollFadeIn />
+
+        <div
+            class="flex flex-col gap-6 items-center text-center max-w-2xl mx-auto"
+        >
+            <Picture
+                src={codingIllustration}
+                alt="Coding illustration"
+                title="Coding illustration"
+                class="rounded-image w-full max-w-[300px] mb-4"
+                loading="lazy"
+                width={400}
+                height={400}
+            />
+
+            <div class="flex flex-wrap justify-center gap-6 mt-4">
+                <LinkButton href={email?.url || "#"}>
+                    <Icon name="mdi:email" class="size-5" />
+                    <span>Get in Touch</span>
+                </LinkButton>
+                <LinkButton href={linkedIn?.url || "#"} newTab>
+                    <Icon name="mdi:linkedin" class="size-5" />
+                    <span>Connect on LinkedIn</span>
+                </LinkButton>
+            </div>
+
+            <div
+                class="grid md:grid-cols-2 gap-4 mt-6 w-full max-w-2xl md:text-justify"
+            >
+                <div
+                    class="bg-card p-6 rounded-lg hover:shadow-md transition-all duration-300"
+                >
+                    <h3 class="text-xl mb-2">Looking to hire?</h3>
+                    <p>
+                        If you're a recruiter or curious about my background,
+                        check out my <a
+                            href="/experience-cv"
+                            class="text-link hover:underline font-normal"
+                            >Experience & Education</a
+                        >.
+                    </p>
+                </div>
+                <div
+                    class="bg-card p-6 rounded-lg hover:shadow-md transition-all duration-300"
+                >
+                    <h3 class="text-xl mb-2">Want to see more?</h3>
+                    <p>
+                        Explore my <a href="/projects" class=""
+                            >portfolio projects</a
+                        > to see what I've built or read more <a
+                            href="/about"
+                            class="text-link hover:underline font-normal"
+                            >about me</a
+                        >.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
+
+    <script>
+        import gsap from "gsap";
+        import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+        let ctx: gsap.Context | null = null;
+
+        function runContactAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            ctx && ctx.revert();
+
+            ctx = gsap.context(() => {
+                const contactBtns = gsap.utils.toArray(".contact-btn");
+                const heading = document.querySelector("#contact-section h2");
+
+                gsap.set(heading, { opacity: 0, y: 20 });
+                gsap.set(contactBtns, { opacity: 0, y: 20 });
+
+                // Animate heading
+                gsap.to(heading, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: "#contact-section",
+                        start: "top 80%",
+                        toggleActions: "play none none none",
+                    },
+                });
+
+                // Animate buttons with stagger
+                gsap.to(contactBtns, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.2,
+                    ease: "back.out(1.2)",
+                    scrollTrigger: {
+                        trigger: "#contact-section",
+                        start: "top 75%",
+                        toggleActions: "play none none none",
+                    },
+                });
+            });
+        }
+
+        document.addEventListener("astro:page-load", runContactAnimations);
+        document.addEventListener("astro:before-swap", () => {
+            ctx && ctx.revert();
+            ScrollTrigger.getAll().forEach(ST => ST.kill());
+        });
+    </script>
 </Layout>
