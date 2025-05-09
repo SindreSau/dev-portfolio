@@ -2,46 +2,6 @@
 
 ---
 
-<section id="current-projects" class="scroll-mt-12 pt-8 md:pt-16">
-    <h2 class="text-primary scroll-fadein">Highlighted projects</h2>
-    <div
-        class="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-10 scroll-fadein opacity-0"
-    >
-        <!-- Project cards will go here -->
-        <div class="p-6 bg-card rounded-lg border border-border flex flex-col">
-            <h3 class="text-lg font-medium">Coming soon</h3>
-            <p class="text-muted-foreground mt-2">
-                Project content will be added here shortly.
-            </p>
-        </div>
-    </div>
-</section>
+<section id="current-projects" class="scroll-mt-12 pt-8 md:pt-16"></section>
 
-<script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    let ctx: gsap.Context | null = null;
-
-    document.addEventListener("astro:page-load", () => {
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Clean up previous animations
-        ScrollTrigger.disable(false);
-        ScrollTrigger.enable();
-        ctx && ctx.revert();
-
-        // Create new GSAP context
-        ctx = gsap.context(() => {
-            const projectsSection = document.getElementById("current-projects");
-            if (!projectsSection) return;
-
-            // Add specific animations if needed
-        });
-    });
-
-    // Clean up on page leave
-    document.addEventListener("astro:before-swap", () => {
-        ctx && ctx.revert();
-    });
-</script>
+<script></script>
