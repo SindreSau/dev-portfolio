@@ -14,9 +14,6 @@ import socials from "@/config/socials";
 
 const email = socials.find(social => social.name === "Email");
 const linkedIn = socials.find(social => social.name === "LinkedIn");
-
-console.log("email", email);
-console.log("linkedIn", linkedIn);
 ---
 
 <Layout>
@@ -130,7 +127,7 @@ console.log("linkedIn", linkedIn);
                     ease: "back.out(1.2)",
                     scrollTrigger: {
                         trigger: "#contact-section",
-                        start: "top 75%",
+                        start: "top 85%",
                         toggleActions: "play none none none",
                     },
                 });

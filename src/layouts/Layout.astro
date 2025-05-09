@@ -14,7 +14,7 @@ const {
 
 <!doctype html>
 <html lang="en">
-    <CommonHead title={title} description={description} />
+    <head><CommonHead title={title} description={description} /> </head>
 
     <body class="smooth-wrapper min-h-screen flex flex-col">
         <header class="z-20">
@@ -24,10 +24,8 @@ const {
                 <Header />
             </div>
         </header>
-        <main
-            class="flex-grow py-3 md:py-5 px-4 container mx-auto min-h-screen z-10"
-        >
-            <div class="max-w-5xl mx-auto">
+        <main class="flex-grow py-3 md:py-5 px-4 container mx-auto z-10">
+            <div class="max-w-6xl mx-auto">
                 <slot />
             </div>
         </main>

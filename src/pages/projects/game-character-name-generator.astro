@@ -1,0 +1,29 @@
+---
+import ProjectsLayout from "@/layouts/projects-layout.astro";
+
+import { Picture } from "astro:assets";
+import gamenamgegen from "@/assets/images/gamenamegen.png";
+---
+
+<ProjectsLayout>
+    <h1 transition:name="gamenamegen-title">Game Character Name Generator</h1>
+
+    <p class="mb-8">
+        AI powered name generator for game characters. Built with Next.js and
+        Cloudflare AI-workers. The website is fully responsive and works on all
+        devices. It also has a dark mode toggle. The website is hosted on Vercel
+        and uses a custom domain.
+    </p>
+
+    <Picture
+        transition:name="gamenamegen-image"
+        src={gamenamgegen}
+        alt="Game Character Name Generator"
+        class="rounded-lg mb-2"
+        loading="lazy"
+        format="avif"
+        width={800}
+        height={600}
+        quality={50}
+    />
+</ProjectsLayout>

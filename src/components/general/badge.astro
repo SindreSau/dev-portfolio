@@ -1,0 +1,14 @@
+---
+import { cn } from "@/utils/cn";
+
+const { class: className } = Astro.props;
+---
+
+<div
+    class={cn(
+        "rounded-xl w-fit px-1.5 text-sm bg-primary-darker text-primary-darker-foreground font-light",
+        className
+    )}
+>
+    <slot />
+</div>

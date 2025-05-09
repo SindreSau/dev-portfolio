@@ -8,6 +8,7 @@ import ThemeToggle from "./theme-toggle.astro";
 const currentPath = Astro.url.pathname;
 const normalizedCurrentPath =
     currentPath === "/" ? "/" : currentPath.replace(/\/$/, "");
+const firstPartOfPath = `/${normalizedCurrentPath.split("/")[1]}`;
 const isHomePage = normalizedCurrentPath === "/";
 const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
 ---
@@ -36,7 +37,7 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
         <ul class="flex lg:gap-8 gap-6">
             {
                 ROUTES.map(route => {
-                    const isActive = normalizedCurrentPath === route.path;
+                    const isActive = firstPartOfPath === route.path;
                     return (
                         <li class="relative group">
                             <a
@@ -50,8 +51,9 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {route.name}
                             </a>
                             {isActive && (
+                                /* Active nav underline  */
                                 <div
-                                    class="absolute rounded-md scale-110 left-0 -bottom-0.5 w-full bg-primary/70 h-1 pointer-events-none"
+                                    class="absolute rounded-md scale-105 left-0 -bottom-0.5 w-full bg-primary/30 h-0.5 pointer-events-none"
                                     transition:name="navlink-active"
                                 />
                             )}
@@ -103,7 +105,7 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                         >
                             <a
                                 href={route.path}
-                                class="text-2xl block py-3 px-4 hover:text-foreground transition-colors duration-200"
+                                class="text-2xl block py-3 px-4 hover:text-foreground transition-colors duration-200 text-foreground"
                             >
                                 {route.name}
                             </a>

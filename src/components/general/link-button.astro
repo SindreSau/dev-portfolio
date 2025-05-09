@@ -1,11 +1,16 @@
 ---
-const { href, newTab } = Astro.props;
+import { cn } from "@/utils/cn";
+
+const { href, newTab, class: className } = Astro.props;
 ---
 
 <a
     href={href}
     target={newTab ? "_blank" : undefined}
-    class="contact-btn border-2 border-primary/30 text-primary hover:bg-primary/5 flex items-center gap-2 py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 w-full md:w-fit"
+    class={cn(
+        "contact-btn border-2 border-primary/30 text-primary hover:bg-primary/5 flex items-center gap-2 py-3 px-6 rounded-lg transition-all duration-300 w-full md:w-fit",
+        className
+    )}
 >
     <slot />
 </a>

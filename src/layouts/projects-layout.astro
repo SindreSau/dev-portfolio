@@ -1,0 +1,19 @@
+---
+import LinkButton from "@/components/general/link-button.astro";
+import { Icon } from "astro-icon/components";
+import Layout from "./Layout.astro";
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+    <!-- Back arrow -->
+    <LinkButton class="px-2 py-1 mb-2 md:mb-4 w-fit" href="/projects"
+        ><span>
+            <Icon name="mdi:arrow-left" />
+        </span> back to projects
+    </LinkButton>
+    <div class="project-wrapper max-w-4xl mx-auto">
+        <slot />
+    </div>
+</Layout>
