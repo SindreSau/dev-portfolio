@@ -11,7 +11,58 @@ const tocTitle = "Table of Contents";
 
 <div id="toc-container" class="toc-container">
     <nav aria-label="Table of contents">
-        <div class="md:hidden"></div>
+        <div class="md:hidden relative">
+            {/* Mobile alternative: Dropdown */}
+            <button
+                id="toc-mobile-button"
+                type="button"
+                class="flex w-full items-center justify-between rounded-md border border-border bg-background-secondary p-2 text-sm font-medium text-text-secondary hover:bg-background-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-secondary"
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls="toc-mobile-menu"
+            >
+                <span id="toc-mobile-selected-title">{tocTitle}</span>
+                <svg
+                    class="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </button>
+            <ul
+                id="toc-mobile-menu"
+                class="absolute z-10 mt-1 hidden w-full rounded-md border border-border bg-background-secondary shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="toc-mobile-button"
+            >
+                {
+                    sections.map(section => (
+                        <li role="presentation">
+                            <a
+                                href={`#${section.id}`}
+                                id={`toc-link-mobile-${section.id}`}
+                                class={cn(
+                                    "block px-4 py-2 text-sm text-text-secondary hover:bg-background-tertiary hover:text-primary",
+                                    "toc-link-mobile" // Common class for JS targeting
+                                )}
+                                role="menuitem"
+                                data-section-id={section.id}
+                                data-section-title={section.title}
+                            >
+                                {section.title}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
 
         {/* Desktop: Sticky Sidebar */}
         <ul class="hidden md:block space-y-2">
@@ -46,6 +97,8 @@ const tocTitle = "Table of Contents";
         const tocMobileSelectedTitle = document.getElementById(
             "toc-mobile-selected-title"
         );
+        const tocMobileButton = document.getElementById("toc-mobile-button");
+        const tocMobileMenu = document.getElementById("toc-mobile-menu");
 
         const tocTitle = tocTitleFromProps;
 
@@ -153,9 +206,44 @@ const tocTitle = "Table of Contents";
                             this.dataset.sectionTitle ||
                             this.textContent?.trim() ||
                             tocTitle;
+                        // Hide mobile menu after click
+                        if (tocMobileMenu) {
+                            tocMobileMenu.classList.add("hidden");
+                            tocMobileButton?.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+                        }
                     }
                 }
             });
         });
+
+        // Mobile TOC dropdown toggle
+        if (tocMobileButton && tocMobileMenu) {
+            tocMobileButton.addEventListener("click", () => {
+                const isExpanded =
+                    tocMobileButton.getAttribute("aria-expanded") === "true" ||
+                    false;
+                tocMobileButton.setAttribute(
+                    "aria-expanded",
+                    (!isExpanded).toString()
+                );
+                tocMobileMenu.classList.toggle("hidden");
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener("click", event => {
+                if (
+                    tocMobileButton &&
+                    tocMobileMenu &&
+                    !tocMobileButton.contains(event.target) &&
+                    !tocMobileMenu.contains(event.target)
+                ) {
+                    tocMobileMenu.classList.add("hidden");
+                    tocMobileButton.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
     });
 </script>
