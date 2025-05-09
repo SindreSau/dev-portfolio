@@ -25,7 +25,7 @@ const {
             </div>
         </header>
         <main
-            class="flex-grow py-3 px-4 container mx-auto min-h-screen h-[2400px] z-10"
+            class="flex-grow py-3 md:py-5 px-4 container mx-auto min-h-screen z-10"
         >
             <div class="max-w-5xl mx-auto">
                 <slot />
@@ -62,80 +62,62 @@ const {
 
                 // Create new GSAP context
                 ctx = gsap.context(() => {
-                    gsap.to(".scroll-fadein", {
-                        scrollTrigger: {
-                            trigger: ".scroll-fadein",
-                            start: "0 98%",
-                            end: "0 75%",
-                            scrub: 1,
-                            // markers: true,
-                        },
-                        opacity: 1,
-                        duration: 5,
-                        translateY: 0,
-                        ease: "power1.inOut",
-                        stagger: {
-                            amount: 0.5,
-                            from: "end",
-                        },
+                    let mm = gsap.matchMedia();
+
+                    mm.add("(max-width: 768px)", () => {
+                        // Shared scroll fade-in animation.
+                        gsap.fromTo(
+                            ".scroll-fadein",
+                            {
+                                opacity: 0,
+                                translateY: 20,
+                            },
+                            {
+                                scrollTrigger: {
+                                    trigger: ".scroll-fadein",
+                                    start: "0 bottom",
+                                    end: "0 80%",
+                                    scrub: 1,
+                                    markers: false,
+                                },
+                                opacity: 1,
+                                duration: 0.5,
+                                translateY: 0,
+                                ease: "power1.inOut",
+                                stagger: {
+                                    amount: 0.5,
+                                    from: "start",
+                                },
+                            }
+                        );
                     });
-                });
-
-                let mm = gsap.matchMedia();
-
-                mm.add("(max-width: 768px)", () => {
-                    // Shared scroll fade-in animation.
-                    gsap.fromTo(
-                        ".scroll-fadein",
-                        {
-                            opacity: 0,
-                            translateY: 20,
-                        },
-                        {
-                            scrollTrigger: {
-                                trigger: ".scroll-fadein",
-                                start: "0 bottom",
-                                end: "0 80%",
-                                scrub: 1,
-                                markers: false,
+                    mm.add("(min-width: 769px)", () => {
+                        // Shared scroll fade-in animation.
+                        gsap.fromTo(
+                            ".scroll-fadein",
+                            {
+                                opacity: 0,
+                                translateY: 20,
                             },
-                            opacity: 1,
-                            duration: 0.5,
-                            translateY: 0,
-                            ease: "power1.inOut",
-                            stagger: {
-                                amount: 0.5,
-                                from: "start",
-                            },
-                        }
-                    );
-                });
-                mm.add("(min-width: 769px)", () => {
-                    // Shared scroll fade-in animation.
-                    gsap.fromTo(
-                        ".scroll-fadein",
-                        {
-                            opacity: 0,
-                            translateY: 20,
-                        },
-                        {
-                            scrollTrigger: {
-                                trigger: ".scroll-fadein",
-                                start: "0 bottom",
-                                end: "0 88%",
-                                scrub: 1,
-                                markers: false,
-                            },
-                            opacity: 1,
-                            duration: 0.5,
-                            translateY: 0,
-                            ease: "power1.inOut",
-                            stagger: {
-                                amount: 0.5,
-                                from: "end",
-                            },
-                        }
-                    );
+                            {
+                                scrollTrigger: {
+                                    trigger: ".scroll-fadein",
+                                    start: "0 bottom",
+                                    end: "0 92%",
+                                    scrub: 1,
+                                    markers: false,
+                                },
+                                opacity: 1,
+                                duration: 0.5,
+                                translateY: 0,
+                                ease: "power1.inOut",
+                                stagger: {
+                                    amount: 0.5,
+                                    from: "end",
+                                },
+                            }
+                        );
+                    });
                 });
             });
 

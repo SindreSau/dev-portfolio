@@ -12,6 +12,10 @@ const ROUTES: Route[] = [
         name: 'About me',
         path: '/about-me',
     },
+    {
+        name: 'Experience & CV',
+        path: '/experience-cv',
+    },
 ];
 
 export default ROUTES;

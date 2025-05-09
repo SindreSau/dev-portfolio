@@ -15,6 +15,7 @@ interface Props {
     height?: number;
     quality?: number | "low" | "mid" | "high" | "max" | undefined;
     widths?: number[];
+    borderRadius?: string;
 }
 
 const {
@@ -30,10 +31,14 @@ const {
     height,
     quality,
     widths,
+    borderRadius = "0",
 } = Astro.props;
 ---
 
-<div class:list={["image-parallax-container", containerClass]}>
+<div
+    class:list={["image-parallax-container", containerClass]}
+    style={`border-radius: ${borderRadius}; overflow: hidden;`}
+>
     <Picture
         src={src}
         alt={alt}
@@ -45,6 +50,7 @@ const {
         height={height}
         quality={quality}
         widths={widths}
+        style={`border-radius: ${borderRadius};`}
     />
 </div>
 
@@ -57,10 +63,9 @@ const {
     .parallax-image {
         position: absolute;
         width: 100%;
-        height: 130%;
+        height: 120%;
         object-fit: cover;
-        top: -15%;
-        left: 0;
+        top: -1%;
     }
 </style>
 

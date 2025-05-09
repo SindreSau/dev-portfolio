@@ -1,0 +1,11 @@
+---
+const { href, newTab } = Astro.props;
+---
+
+<a
+    href={href}
+    target={newTab ? "_blank" : undefined}
+    class="contact-btn border-2 border-primary/30 text-primary hover:bg-primary/5 flex items-center gap-2 py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 w-full md:w-fit"
+>
+    <slot />
+</a>

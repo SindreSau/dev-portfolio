@@ -1,0 +1,279 @@
+---
+import { Picture } from "astro:assets";
+import bachelor from "@assets/images/bachelor-admin.png";
+import furekunst from "@assets/images/furekunst.png";
+import gamenamegen from "@assets/images/gamenamegen.png";
+import IconArrowUpRight from "@components/icons/icon-arrow-up-right.astro";
+
+const projects = [
+    {
+        id: 1,
+        title: "furekunst.no",
+        imageSrc: furekunst,
+        altText: "Screenshot of Furekunst.no",
+        link: "/furekunst",
+    },
+    {
+        id: 2,
+        title: "Bachelor Project",
+        imageSrc: bachelor,
+        altText: "Screenshot of Bachelor Project",
+        link: "/bachelor-project",
+    },
+    {
+        id: 3,
+        title: "AI Character Name Generator",
+        imageSrc: gamenamegen,
+        altText: "Screenshot of AI Character Name Generator",
+        link: "/ai-character-name-generator",
+    },
+];
+---
+
+<section
+    id="current-projects"
+    class="pt-8 md:pt-16 pb-16 md:pb-24 overflow-visible index-section"
+>
+    <h2
+        id="highlighted-projects-heading"
+        class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16"
+    >
+        Highlighted Projects
+    </h2>
+    <div
+        class="project-cards-container flex flex-col md:flex-row justify-around items-start gap-8 md:gap-4 px-4"
+    >
+        {
+            projects.map((project, index) => (
+                <div
+                    class={`project-card project-card-${index + 1} w-full md:w-full rounded-lg bg-background shadow-lg relative overflow-hidden`}
+                >
+                    <a
+                        href={project.link}
+                        rel="noopener noreferrer"
+                        class="h-full flex flex-col"
+                    >
+                        <h3 class="text-lg font-semibold p-3 text-center md:hidden text-neutral-800 dark:text-neutral-200">
+                            {project.title}
+                        </h3>
+                        <div class="image-and-overlay-container relative flex-grow">
+                            <Picture
+                                src={project.imageSrc}
+                                alt={project.altText}
+                                class="project-image w-full h-full object-cover"
+                                loading="lazy"
+                                width={600}
+                                height={600}
+                                quality={65}
+                                format="avif"
+                            />
+                            <div class="project-info-overlay absolute inset-0 hidden md:flex flex-col justify-center items-center bg-background/30 opacity-0 pointer-events-none rounded-lg">
+                                <h3 class="text-white text-2xl font-bold mb-2 text-center px-4">
+                                    {project.title}
+                                </h3>
+                                <IconArrowUpRight class="w-8 h-8 text-white mt-2" />
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    let ctx: gsap.Context | null = null;
+
+    function runAnimations() {
+        gsap.registerPlugin(ScrollTrigger);
+        ctx && ctx.revert();
+
+        ctx = gsap.context(() => {
+            const cards = gsap.utils.toArray(".project-card") as HTMLElement[];
+            const heading = document.querySelector(
+                "#highlighted-projects-heading"
+            ) as HTMLElement;
+
+            gsap.set(heading, { opacity: 0, y: -50 });
+            gsap.to(heading, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.inOut",
+                scrollTrigger: {
+                    trigger: "#current-projects",
+                    start: "top 90%",
+                    toggleActions: "play none none none",
+                },
+            });
+
+            let mm = gsap.matchMedia();
+
+            mm.add(
+                {
+                    isDesktop: "(min-width: 769px)",
+                    isMobile: "(max-width: 768px)",
+                },
+                context => {
+                    let { isDesktop, isMobile } = context.conditions!;
+
+                    cards.forEach((card, index) => {
+                        let initialRotation = 0;
+                        if (isDesktop) {
+                            if (index === 0) {
+                                initialRotation = -10;
+                            } else if (index === cards.length - 1) {
+                                initialRotation = 10;
+                            }
+                        }
+                        gsap.set(card, {
+                            opacity: 0,
+                            xPercent: isMobile ? 0 : -80,
+                            rotation: initialRotation,
+                            zIndex: 1,
+                            y: isMobile ? 20 : 0,
+                        });
+                    });
+
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: "#current-projects",
+                            start: "top 99%",
+                            end: "top 70%",
+                            scrub: isDesktop ? 2 : 1,
+                            markers: false,
+                        },
+                    });
+
+                    cards.forEach((card, index) => {
+                        let finalRotation = 0;
+                        let finalXPercent = 0;
+                        let finalYPercent = 0;
+
+                        if (isDesktop) {
+                            if (cards.length === 3) {
+                                if (index === 0) {
+                                    finalRotation = -10;
+                                    finalXPercent = 15;
+                                } else if (index === 1) {
+                                    finalXPercent = 0;
+                                    finalYPercent = -13;
+                                } else if (index === 2) {
+                                    finalRotation = 10;
+                                    finalXPercent = -15;
+                                }
+                            }
+                        } else {
+                            finalXPercent = 0;
+                            finalRotation = 0;
+                            finalYPercent = 0;
+                        }
+
+                        tl.to(card, {
+                            opacity: 1,
+                            xPercent: finalXPercent,
+                            rotation: finalRotation,
+                            yPercent: finalYPercent,
+                            y: 0,
+                            duration: 1,
+                            ease: "power2.inOut",
+                        });
+                    });
+
+                    if (isDesktop) {
+                        cards.forEach(card => {
+                            const overlay = card.querySelector(
+                                ".project-info-overlay"
+                            ) as HTMLElement | null;
+
+                            card.addEventListener("mouseenter", () => {
+                                gsap.to(card, {
+                                    scale: 1.3,
+                                    zIndex: 10,
+                                    duration: 0.3,
+                                    ease: "power2.out",
+                                });
+                                if (overlay) {
+                                    gsap.to(overlay, {
+                                        opacity: 1,
+                                        duration: 0.3,
+                                        ease: "power2.out",
+                                    });
+                                }
+                                cards.forEach(otherCard => {
+                                    if (otherCard === card) return;
+                                    const hoveredCardX = parseFloat(
+                                        gsap.getProperty(
+                                            card,
+                                            "xPercent"
+                                        ) as string
+                                    );
+                                    const otherCardX = parseFloat(
+                                        gsap.getProperty(
+                                            otherCard,
+                                            "xPercent"
+                                        ) as string
+                                    );
+                                    let shoveX =
+                                        otherCardX < hoveredCardX
+                                            ? 50
+                                            : otherCardX > hoveredCardX
+                                              ? -50
+                                              : cards.indexOf(otherCard) <
+                                                  cards.indexOf(card)
+                                                ? -30
+                                                : 30;
+                                    gsap.to(otherCard, {
+                                        x: shoveX,
+                                        scale: 0.95,
+                                        zIndex: 0,
+                                        duration: 0.3,
+                                        ease: "power2.out",
+                                    });
+                                });
+                            });
+
+                            card.addEventListener("mouseleave", () => {
+                                gsap.to(card, {
+                                    scale: 1,
+                                    zIndex: 1,
+                                    duration: 0.3,
+                                    ease: "power2.inOut",
+                                });
+                                if (overlay) {
+                                    gsap.to(overlay, {
+                                        opacity: 0,
+                                        duration: 0.3,
+                                        ease: "power2.inOut",
+                                    });
+                                }
+                                cards.forEach(otherCard => {
+                                    if (otherCard === card) return;
+                                    gsap.to(otherCard, {
+                                        x: 0,
+                                        scale: 1,
+                                        zIndex: 1,
+                                        duration: 0.3,
+                                        ease: "power2.inOut",
+                                    });
+                                });
+                            });
+                        });
+                    }
+                }
+            );
+        });
+    }
+
+    document.addEventListener("astro:page-load", runAnimations);
+    document.addEventListener("astro:before-swap", () => {
+        if (ctx) {
+            ctx.revert();
+        }
+        ScrollTrigger.getAll().forEach(ST => ST.kill());
+        gsap.matchMedia().revert();
+    });
+</script>

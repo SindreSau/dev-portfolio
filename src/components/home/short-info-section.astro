@@ -1,6 +1,6 @@
 ---
 import techbbqImage from "@/assets/images/tech-bbq.jpeg";
-import ParallaxImage from "@/components/general/parallax-image.astro";
+import ParallaxImage from "@components/general/parallax-image.astro";
 import IconArrowUpRight from "../icons/icon-arrow-up-right.astro";
 import SvgMeAtTectBbq from "../svg/svg-me-at-tect-bbq.astro";
 
@@ -9,9 +9,12 @@ const finishedGrad = new Date("2025-06-18");
 const isAfterGrad = today > finishedGrad;
 ---
 
-<section id="hero-short-info" class="flex flex-col gap-6 w-full">
+<section
+    id="hero-short-info"
+    class="flex flex-col gap-6 w-full xl:h-[26rem] lg:h-[28rem] md:h-[18rem] index-section"
+>
     <article
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 scroll-fadein items-center justify-center"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 scroll-fadein items-center justify-center scroll-fadein"
     >
         <div
             id="hero-short-info-text"
@@ -43,7 +46,7 @@ const isAfterGrad = today > finishedGrad;
 
             <div
                 id="me-at-techbbq"
-                class="hidden lg:flex flex-row size-24 absolute right-0 -bottom-40 w-fit text-left items-center justify-center stroke-foreground/80 lg:translate-x-14"
+                class="hidden md:flex flex-row size-24 absolute right-0 -bottom-40 w-fit text-left items-center justify-center stroke-foreground/80 translate-x-14"
             >
                 <SvgMeAtTectBbq
                     class="w-40 translate-x-12 translate-y-6 stroke-foreground/70"
@@ -55,7 +58,8 @@ const isAfterGrad = today > finishedGrad;
             src={techbbqImage}
             alt="Sindre at TechBBQ 2024"
             title="Sindre at TechBBQ 2024"
-            containerClass="rounded-image aspect-[8/12] lg:ml-12"
+            containerClass="rounded-image lg:aspect-[8/12] aspect-[7/12] md:ml-12"
+            borderRadius="1rem"
             format="avif"
             loading="lazy"
             width={1877}
@@ -96,14 +100,16 @@ const isAfterGrad = today > finishedGrad;
             gsap.timeline({
                 scrollTrigger: {
                     trigger: "#me-at-techbbq",
-                    start: "top 90%",
+                    start: "-50% bottom",
+                    end: "-50% 60%",
                     toggleActions: "play none none reverse",
+                    scrub: 1,
                     markers: false,
                 },
             })
                 .to("#me-at-techbbq svg path", {
                     drawSVG: "0 100%",
-                    duration: 1.8,
+                    duration: 1.2,
                     ease: "power2.inOut",
                     stagger: 0.2,
                 })
@@ -113,6 +119,16 @@ const isAfterGrad = today > finishedGrad;
                         drawSVG: "0 100%",
                         duration: 0.1,
                         delay: 0.3,
+                        ease: "power1.in",
+                    },
+                    "-=0.5"
+                )
+                .to(
+                    "#me-at-techbbq",
+                    {
+                        opacity: 0,
+                        duration: 0.5,
+                        delay: 0.5,
                         ease: "power1.in",
                     },
                     "-=0.5"
