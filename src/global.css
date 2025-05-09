@@ -194,4 +194,10 @@
         max-height: calc(100vh - 8rem);
         overflow-y: auto;
     }
+
+    .index-section h1,
+    h2,
+    h3 {
+        @apply text-primary;
+    }
 }
