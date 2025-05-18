@@ -171,6 +171,11 @@
     code {
         @apply font-jetbrains;
     }
+
+    /* Added to hide elements before GSAP animation */
+    .initially-hidden {
+        opacity: 0;
+    }
 }
 
 @layer components {

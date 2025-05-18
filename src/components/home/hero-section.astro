@@ -56,17 +56,26 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
         <!-- CTA buttons -->
         <div
             id="hero-cta-buttons"
-            class="flex md:flex-row flex-col mt-6 md:mt-8 gap-2 pointer-events-auto"
+            class="flex flex-row text-xs md:text-base mt-6 md:mt-8 md:gap-2 gap-0.5 pointer-events-auto initially-hidden"
         >
-            <LinkButton href="/projects">
+            <LinkButton
+                href="/projects"
+                class="px-2 py-2 md:px-5 md:py-2 w-fit"
+            >
                 <Icon name="mdi:folder" />
                 Projects
             </LinkButton>
-            <LinkButton href="/experience-cv">
+            <LinkButton
+                href="/experience-cv"
+                class="px-2 py-2 md:px-5 md:py-2 w-fit"
+            >
                 <Icon name="mdi:code-tags" />
                 Experience
             </LinkButton>
-            <LinkButton href={`mailto:${import.meta.env.PUBLIC_EMAIL}`}>
+            <LinkButton
+                href={`mailto:${import.meta.env.PUBLIC_EMAIL}`}
+                class="px-2 py-2 md:px-5 md:py-2 w-fit"
+            >
                 <Icon name="mdi:email" />
                 Contact
             </LinkButton>
@@ -131,7 +140,7 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 gsap.fromTo(
                     heroSection,
                     { opacity: 0 },
-                    { opacity: 1, duration: 0.5, delay: 0 }
+                    { opacity: 1, duration: 0.4, delay: 0 } // Reduced duration
                 );
 
                 // Initial state for intro text and paragraph
@@ -152,14 +161,14 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 gsap.fromTo(
                     "#hero-avilable-badge-mobile",
                     { opacity: 0, translateY: 40 },
-                    { opacity: 1, translateY: 60, duration: 0.5, delay: 1.2 }
+                    { opacity: 1, translateY: 60, duration: 0.3, delay: 0.6 } // Reduced duration and delay
                 );
 
                 // Animate the available badge (desktop)
                 gsap.fromTo(
                     "#hero-avilable-badge-desktop",
                     { opacity: 0, y: -20 },
-                    { opacity: 1, y: 0, duration: 0.4, delay: 0.8 }
+                    { opacity: 1, y: 0, duration: 0.25, delay: 0.4 } // Reduced duration and delay
                 );
 
                 let mm = gsap.matchMedia();
@@ -232,10 +241,10 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                     opacity: 1,
                                     scale: 1,
                                     color: "var(--color-primary, #4f46e5)",
-                                    stagger: 0.02,
-                                    duration: 0.4,
+                                    stagger: 0.015, // Reduced stagger
+                                    duration: 0.3, // Reduced duration
                                     ease: "power3.inOut",
-                                    delay: 0.6,
+                                    delay: 0.2, // Reduced delay
                                 }
                             )
                             // Animate intro text ("Hi, I'm")
@@ -244,7 +253,7 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.4,
+                                    duration: 0.3, // Reduced duration
                                     ease: "power2.out",
                                 },
                                 "-=0.1"
@@ -255,7 +264,7 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.5,
+                                    duration: 0.3, // Reduced duration
                                     ease: "power2.out",
                                 },
                                 "+=0.05"
@@ -266,24 +275,30 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.4,
+                                    duration: 0.3, // Reduced duration
                                     ease: "back.out(1.2)",
                                 },
                                 "-=0.15"
                             );
 
-                        if (ctaButtons && ctaButtons.length > 0) {
-                            mainTimeline.to(
-                                ctaButtons,
-                                {
-                                    opacity: 1,
-                                    y: 0,
-                                    duration: 0.4,
-                                    stagger: 0.1,
-                                    ease: "power2.out",
-                                },
-                                "-=0.2"
-                            );
+                        if (
+                            ctaButtons &&
+                            ctaButtons.length > 0 &&
+                            heroCtaButtons
+                        ) {
+                            mainTimeline
+                                .set(heroCtaButtons, { opacity: 1 }, "-=0.2") // Make parent div visible
+                                .to(
+                                    ctaButtons,
+                                    {
+                                        opacity: 1,
+                                        y: 0,
+                                        duration: 0.3, // Reduced duration
+                                        stagger: 0.07, // Reduced stagger
+                                        ease: "power2.out",
+                                    },
+                                    "<" // Start with the parent's .set
+                                );
                         }
                     });
                     mm.add("(min-width: 769px)", () => {
@@ -300,10 +315,10 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                     opacity: 1,
                                     scale: 1.1,
                                     color: "var(--color-primary, #4f46e5)",
-                                    stagger: 0.015,
-                                    duration: 0.3,
+                                    stagger: 0.01, // Reduced stagger
+                                    duration: 0.2, // Reduced duration
                                     ease: "power3.inOut",
-                                    delay: 0.4,
+                                    delay: 0.1, // Reduced delay
                                 }
                             )
                             // Animate intro text ("Hi, I'm")
@@ -312,7 +327,7 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.3,
+                                    duration: 0.2, // Reduced duration
                                     ease: "power2.out",
                                 },
                                 "-=0.1"
@@ -323,7 +338,7 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.4,
+                                    duration: 0.25, // Reduced duration
                                     ease: "power2.out",
                                 },
                                 "+=0.05"
@@ -334,24 +349,30 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.3,
+                                    duration: 0.2, // Reduced duration
                                     ease: "back.out(1.2)",
                                 },
                                 "-=0.15"
                             );
 
-                        if (ctaButtons && ctaButtons.length > 0) {
-                            mainTimeline.to(
-                                ctaButtons,
-                                {
-                                    opacity: 1,
-                                    y: 0,
-                                    duration: 0.3,
-                                    stagger: 0.05,
-                                    ease: "power2.out",
-                                },
-                                "-=0.2"
-                            );
+                        if (
+                            ctaButtons &&
+                            ctaButtons.length > 0 &&
+                            heroCtaButtons
+                        ) {
+                            mainTimeline
+                                .set(heroCtaButtons, { opacity: 1 }, "-=0.2") // Make parent div visible
+                                .to(
+                                    ctaButtons,
+                                    {
+                                        opacity: 1,
+                                        y: 0,
+                                        duration: 0.2, // Reduced duration
+                                        stagger: 0.04, // Reduced stagger
+                                        ease: "power2.out",
+                                    },
+                                    "<" // Start with the parent's .set
+                                );
                         }
                     });
                 }
