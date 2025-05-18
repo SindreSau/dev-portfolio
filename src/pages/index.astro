@@ -20,10 +20,7 @@ const linkedIn = socials.find(social => social.name === "LinkedIn");
     <HeroSection />
     <ShortInfoSection />
     <ProjectsSection />
-    <section
-        id="contact-section"
-        class="index-section pb-16 pt-8 md:pt-16 scroll-fadein"
-    >
+    <section id="contact-section" class="index-section pb-16 pt-8 md:pt-16">
         <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
             Let's Connect
         </h2>
@@ -88,7 +85,7 @@ const linkedIn = socials.find(social => social.name === "LinkedIn");
         </div>
     </section>
 
-    <script>
+    <!-- <script>
         import gsap from "gsap";
         import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -139,5 +136,5 @@ const linkedIn = socials.find(social => social.name === "LinkedIn");
             ctx && ctx.revert();
             ScrollTrigger.getAll().forEach(ST => ST.kill());
         });
-    </script>
+    </script> -->
 </Layout>
