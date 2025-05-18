@@ -153,11 +153,11 @@
     }
 
     h2 {
-        @apply text-3xl md:text-4xl mb-3;
+        @apply text-xl md:text-4xl mb-3 mt-6;
     }
 
     h3 {
-        @apply text-xl md:text-2xl mb-2;
+        @apply text-lg md:text-2xl mb-2;
     }
 
     a {
@@ -170,6 +170,11 @@
 
     code {
         @apply font-jetbrains;
+    }
+
+    /* Added to hide elements before GSAP animation */
+    .initially-hidden {
+        opacity: 0;
     }
 }
 

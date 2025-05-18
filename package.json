@@ -20,6 +20,8 @@
         "@fontsource-variable/jetbrains-mono": "^5.2.5",
         "@fontsource-variable/work-sans": "^5.2.5",
         "@fontsource/megrim": "^5.2.5",
+        "@iconify-json/bi": "^1.2.4",
+        "@iconify-json/dashicons": "^1.2.1",
         "@iconify-json/devicon": "^1.2.23",
         "@iconify-json/logos": "^1.2.4",
         "@iconify-json/mdi": "^1.2.3",
@@ -42,7 +44,7 @@
         "tailwind-merge": "^3.2.0",
         "tailwindcss": "^4.1.5"
     },
-    "packageManager": "pnpm@10.10.0+sha256.fa0f513aa8191764d2b6b432420788c270f07b4f999099b65bb2010eec702a30",
+    "packageManager": "pnpm@10.11.0",
     "devDependencies": {
         "@biomejs/biome": "1.9.4",
         "astro-icon": "^1.1.5",

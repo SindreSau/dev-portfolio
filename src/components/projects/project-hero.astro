@@ -1,0 +1,55 @@
+---
+import { Image } from "astro:assets";
+import type { Project } from "@/pages/projects/projects";
+import Badge from "../general/badge.astro";
+import IconOpenInNew from "../icons/icon-open-in-new.astro";
+type Props = {
+    project: Project;
+};
+
+const { project }: Props = Astro.props;
+---
+
+<h1 class="" transition:name={`${project.transitionName}-title`}>
+    {project.name}
+</h1>
+
+{
+    project.projectUrl && (
+        <a
+            href={project.projectUrl}
+            target="_blank"
+            class="text-sm flex items-center gap-1 mb-4 w-fit"
+            transition:name={`${project.transitionName}-project-url`}
+        >
+            {project.projectUrl}
+            <IconOpenInNew />
+        </a>
+    )
+}
+
+<ul class="flex gap-2 mb-4">
+    {
+        project.tech?.map(tech => (
+            <li>
+                <Badge>{tech}</Badge>
+            </li>
+        ))
+    }
+</ul>
+
+<p class="mb-6">
+    {project.longDescription ? project.longDescription : project.description}
+</p>
+
+<Image
+    transition:name={`${project.transitionName}-image`}
+    src={project.image}
+    alt="Furekunst"
+    class="rounded-lg mb-2 md:w-4/5 mx-auto w-full"
+    loading="eager"
+    priority
+    format="avif"
+    width={800}
+    height={600}
+/>

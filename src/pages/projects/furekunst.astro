@@ -1,30 +1,100 @@
 ---
-import { Picture } from "astro:assets";
-
-import furekunst from "@/assets/images/furekunst.png";
+import Divider from "@/components/general/divider.astro";
+import IconContentful from "@/components/icons/icon-contentful.astro";
+import IconFrame from "@/components/icons/icon-frame.astro";
+import IconGrid from "@/components/icons/icon-grid.astro";
+import IconImageOptimize from "@/components/icons/icon-image-optimize.astro";
+import IconSparkles from "@/components/icons/icon-sparkles.astro";
+import ProjectHero from "@/components/projects/project-hero.astro";
 import ProjectsLayout from "@/layouts/projects-layout.astro";
+import { furekunstProject } from "@/pages/projects/projects";
 ---
 
 <ProjectsLayout>
-    <h1 transition:name="furekunst-title">Furekunst</h1>
+    <ProjectHero project={furekunstProject} />
 
-    <p class="mb-8">
-        A React/Next.js website made for a Norwegian artist - who also happens
-        to be my girlfriend. The website is a portfolio showcasing her work, and
-        it was built using Next.js and Tailwind CSS. The website is fully
-        responsive and works on all devices. It also has a dark mode toggle. The
-        website is hosted on Vercel and uses a custom domain.
-    </p>
+    <Divider class="my-8" />
 
-    <Picture
-        transition:name="furekunst-image"
-        src={furekunst}
-        alt="Furekunst"
-        class="rounded-lg mb-2"
-        loading="lazy"
-        format="avif"
-        width={800}
-        height={600}
-        quality={50}
-    />
+    <div class="">
+        <div class="flex items-center gap-2">
+            <IconContentful class="size-8 text-primary translate-y-1" />
+            <h2 class="">Contentful Integration with Next.js</h2>
+        </div>
+        <p>
+            The site integrates Contentful as a headless CMS with Next.js, using
+            the Contentful Delivery API to retrieve and present artwork data.
+            The content model features a GalleryPost type, enabling the artist
+            to upload and manage their artwork entries, and a linked
+            SizeAndPrice model. This setup supports conditional rendering of
+            multiple size and price options when an artwork is categorized as a
+            "Print" instead of an "Original".
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-center gap-2">
+            <IconGrid class="size-8 text-primary translate-y-1" />
+            <h2>Masonry Gallery Layout</h2>
+        </div>
+        <p>
+            The gallery implements react-masonry-css to create a responsive,
+            Pinterest-style grid that adapts to various screen sizes and
+            gracefully handles artworks of different dimensions. The layout
+            automatically adjusts its column count based on viewport width,
+            maintaining visual harmony while maximizing screen usage across
+            devices, from three columns on larger displays down to a single
+            column on mobile.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-center gap-2">
+            <IconFrame class="size-8 text-primary translate-y-1" />
+            <h2>CSS Frame Effects</h2>
+        </div>
+        <p>
+            One distinctive feature is the realistic picture frame effect
+            created entirely with CSS, giving digital artwork a physical gallery
+            presence. The implementation uses layered shadows, borders, and
+            gradient overlays to simulate frame depth, with an optional
+            passepartout (mat board) effect toggled directly by the artistd
+            through Contentful's content model. This attention to presentation
+            details elevates the viewing experience, creating a sense of depth
+            and physicality that's often lacking in digital galleries.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-center gap-2">
+            <IconImageOptimize class="size-8 text-primary translate-y-1" />
+            <h2>Next.js Image Optimization</h2>
+        </div>
+        <p>
+            The site leverages Next.js's Image component for comprehensive
+            optimization, delivering responsive images in modern formats like
+            WebP and AVIF while reducing bundle size. Images load progressively
+            with smooth fade-in transitions, use appropriate sizing based on
+            viewport, and implement strategic loading priorities where
+            above-fold content appears first. The integration with Contentful's
+            image API allows for additional optimization through URL parameters,
+            enabling resizing and format adjustments directly from the CDN.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-center gap-2">
+            <IconSparkles class="size-8 text-primary translate-y-1" />
+            <h2>Motion Animations</h2>
+        </div>
+        <p>
+            The site implements Motion (formerly Framer Motion) for subtle
+            animations that enhance the viewing experience without overwhelming
+            the artwork itself. Staggered reveal effects create visual rhythm as
+            users scroll through the gallery, while subtle hover states provide
+            feedback without distracting from the art. The implementation
+            staggers animation timing based on each item's index, creating a
+            cascade effect as content appears on the page, all while respecting
+            user preferences for reduced motion.
+        </p>
+    </div>
 </ProjectsLayout>

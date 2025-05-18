@@ -32,6 +32,12 @@ importers:
       '@fontsource/megrim':
         specifier: ^5.2.5
         version: 5.2.5
+      '@iconify-json/bi':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/dashicons':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@iconify-json/devicon':
         specifier: ^1.2.23
         version: 1.2.23
@@ -502,6 +508,12 @@ packages:
 
   '@fontsource/megrim@5.2.5':
     resolution: {integrity: sha512-oEe1bKRskOZ4AAArMsN0yERf8LICSs1jQVdmMPYPFYkBrZiy8fP4A9aTLsOVAScelhq+84tL+qC3FHYsqV3Syw==}
+
+  '@iconify-json/bi@1.2.4':
+    resolution: {integrity: sha512-ipD8nm86ovjgXGEJj/B5oSJGaEIsGgzrKqNT1ei66nRExzK6Mgh4an/efG30Xtvp2eQjz9eWN5kHmadbnjUmzw==}
+
+  '@iconify-json/dashicons@1.2.1':
+    resolution: {integrity: sha512-uCuVx/QAbBOLZkjNgpwirV9CLHNcKZYWeYTZBGUZzFEtIpuW/hCC1yadmvAe8aqx5Q5mt0oie5cSd5znXgUd0w==}
 
   '@iconify-json/devicon@1.2.23':
     resolution: {integrity: sha512-JpDWec56q5FKZINnK6iewDIfZulmNw6K2StlxhTLcBAPGRqX/8/o/W3yx0W9Yy0VYt2rtku6sLMqHoIBiNXB7g==}
@@ -3275,6 +3287,14 @@ snapshots:
   '@fontsource-variable/work-sans@5.2.5': {}
 
   '@fontsource/megrim@5.2.5': {}
+
+  '@iconify-json/bi@1.2.4':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/dashicons@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/devicon@1.2.23':
     dependencies:

@@ -10,58 +10,73 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
 
 <div
     id="mobile-planes-wrapper"
-    class="relative w-full h-screen overflow-visible max-w-[1440px] text-primary-muted md:hidden block"
+    class="relative w-full h-screen overflow-visible max-w-[1440px] text-primary-muted md:hidden block pointer-events-auto"
 >
-    <div id="mobile-plane-1" class="plane-near w-full h-1/2 absolute z-0">
+    <div
+        id="mobile-plane-1"
+        class="plane-near w-full h-1/2 absolute z-0 pointer-events-none"
+    >
         {
             plane1Tech.map(tech => (
-                <div
-                    class="codelang-card absolute mobile-icon"
+                <a
+                    href="/experience-cv#technical-skills"
+                    class="codelang-card absolute mobile-icon block pointer-events-auto"
                     style={`top: ${tech.mobileTop}; left: ${tech.mobileLeft};`}
                     data-tech-name={tech.name}
+                    aria-label={`Technology: ${tech.name || "icon"}`}
                 >
                     <Icon
                         name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
                         class="size-12"
                     />
-                </div>
+                </a>
             ))
         }
     </div>
 
-    <div class="opacity-65">
-        <div id="mobile-plane-2" class="plane-mid w-full h-1/2 absolute -z-10">
+    <div class="opacity-65 pointer-events-none">
+        <div
+            id="mobile-plane-2"
+            class="plane-mid w-full h-1/2 absolute -z-10 pointer-events-none"
+        >
             {
                 plane2Tech.map(tech => (
-                    <div
-                        class="codelang-card absolute mobile-icon"
+                    <a
+                        href="/experience-cv#technical-skills"
+                        class="codelang-card absolute mobile-icon block pointer-events-auto"
                         style={`top: ${tech.mobileTop}; left: ${tech.mobileLeft};`}
                         data-tech-name={tech.name}
+                        aria-label={`Technology: ${tech.name || "icon"}`}
                     >
                         <Icon
                             name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
                             class="size-8"
                         />
-                    </div>
+                    </a>
                 ))
             }
         </div>
     </div>
 
-    <div class="opacity-40">
-        <div id="mobile-plane-3" class="plane-far w-full h-1/2 absolute -z-20">
+    <div class="opacity-40 pointer-events-none">
+        <div
+            id="mobile-plane-3"
+            class="plane-far w-full h-1/2 absolute -z-20 pointer-events-none"
+        >
             {
                 plane3Tech.map(tech => (
-                    <div
-                        class="codelang-card absolute mobile-icon"
+                    <a
+                        href="/experience-cv#technical-skills"
+                        class="codelang-card absolute mobile-icon block pointer-events-auto"
                         style={`top: ${tech.mobileTop}; left: ${tech.mobileLeft};`}
                         data-tech-name={tech.name}
+                        aria-label={`Technology: ${tech.name || "icon"}`}
                     >
                         <Icon
                             name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
                             class="size-5"
                         />
-                    </div>
+                    </a>
                 ))
             }
         </div>
@@ -131,8 +146,8 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
             mobileIcons.forEach(icon => {
                 // Create random values for each icon's animation
                 const randomDuration = 2 + Math.random() * 2; // Between 2-4 seconds
-                const randomXAmplitude = Math.random() * 7; // Between 0-7px
-                const randomYAmplitude = Math.random() * 4; // Between 0-4px
+                const randomXAmplitude = Math.random() * 8; // Between 0-8px
+                const randomYAmplitude = Math.random() * 6; // Between 0-6px
                 const randomDelay = Math.random() * 1.2; // Between 0-1 seconds
 
                 // Apply floating animation

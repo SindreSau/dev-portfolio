@@ -3,42 +3,22 @@ import { Icon } from "astro-icon/components";
 import Badge from "../../components/general/badge.astro";
 import Divider from "../../components/general/divider.astro";
 
+import ProjectHero from "@/components/projects/project-hero.astro";
 import ProjectsLayout from "@/layouts/projects-layout.astro";
+import { developerPortfolioProject } from "./projects";
 ---
 
 <ProjectsLayout title="Developer Portfolio | Project">
     <main class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div class="max-w-4xl mx-auto">
-            {/* Header Section */}
-            <header class="mb-8 sm:mb-12 text-center">
-                <h1
-                    class="text-primary"
-                    transition:name="developer-portfolio-heading"
-                >
-                    Developer Portfolio
-                </h1>
-
-                <p class="text-lg sm:text-xl text-foreground max-w-2xl mx-auto">
-                    A modern, performant portfolio website showcasing my work
-                    and experience as a developer, built with cutting-edge web
-                    technologies.
-                </p>
-
-                <div class="flex flex-wrap gap-2 justify-center mt-4 sm:mt-6">
-                    <Badge>Astro</Badge>
-                    <Badge>GSAP</Badge>
-                    <Badge>Tailwind CSS</Badge>
-                    <Badge>TypeScript</Badge>
-                </div>
-            </header>
+            {/* Hero Section */}
+            <ProjectHero project={developerPortfolioProject} />
 
             <Divider />
 
             {/* Tech Stack Section */}
             <section id="portfolio-tech-stack-section" class="my-8 sm:my-12">
-                <h2 class="text-primary text-center mb-6 sm:mb-8">
-                    Technology Choices
-                </h2>
+                <h2 class="text-center mb-6 sm:mb-8">Technology Choices</h2>
 
                 <div class="space-y-8 sm:space-y-12">
                     <div
@@ -195,8 +175,9 @@ import ProjectsLayout from "@/layouts/projects-layout.astro";
                     stagger: 0.1,
                     scrollTrigger: {
                         trigger: "#portfolio-tech-stack-section",
-                        start: "top 80%",
-                        end: "top 50%",
+                        start: "25% 95%",
+                        end: "25% 85%",
+                        // markers: true,
                         toggleActions: "play none none reverse",
                     },
                 }

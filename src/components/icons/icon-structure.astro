@@ -1,0 +1,6 @@
+---
+import { Icon } from "astro-icon/components";
+const { class: className, ...rest } = Astro.props;
+---
+
+<Icon name="mdi:folder-pound-outline" class:list={[className]} {...rest} />

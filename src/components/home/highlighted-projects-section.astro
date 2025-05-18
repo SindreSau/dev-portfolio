@@ -105,18 +105,18 @@ const projects = [
                 "#highlighted-projects-heading"
             ) as HTMLElement;
 
-            gsap.set(heading, { opacity: 0, y: -50 });
-            gsap.to(heading, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: "power2.inOut",
-                scrollTrigger: {
-                    trigger: "#current-projects",
-                    start: "top 90%",
-                    toggleActions: "play none none none",
-                },
-            });
+            // gsap.set(heading, { opacity: 0, y: -50 });
+            // gsap.to(heading, {
+            //     opacity: 1,
+            //     y: 0,
+            //     duration: 1,
+            //     ease: "power2.inOut",
+            //     scrollTrigger: {
+            //         trigger: "#current-projects",
+            //         start: "top 90%",
+            //         toggleActions: "play none none none",
+            //     },
+            // });
 
             let mm = gsap.matchMedia();
 
@@ -149,8 +149,8 @@ const projects = [
                     const tl = gsap.timeline({
                         scrollTrigger: {
                             trigger: "#current-projects",
-                            start: "top 99%",
-                            end: "top 70%",
+                            start: "top 94%",
+                            end: "top 50%",
                             scrub: isDesktop ? 2 : 1,
                             markers: false,
                         },

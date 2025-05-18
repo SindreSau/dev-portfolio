@@ -3,62 +3,10 @@ import { Picture } from "astro:assets";
 import { github } from "@/config/socials";
 import Layout from "@/layouts/Layout.astro";
 
-type Project = {
-    name: string;
-    transtionName?: string;
-    description: string;
-    url: string;
-    projectUrl?: string;
-    image: ImageMetadata;
-    tech?: string[];
-};
-
-import bachelor from "@/assets/images/bachelor-admin.png";
-import coding from "@/assets/images/coding-illustration.jpeg";
-import furekunst from "@/assets/images/furekunst.png";
-import gamenamegen from "@/assets/images/gamenamegen.png";
+import { Image } from "astro:assets";
 import Badge from "@/components/general/badge.astro";
 import IconOpenInNew from "@/components/icons/icon-open-in-new.astro";
-import { Icon } from "astro-icon/components";
-
-const projects: Project[] = [
-    {
-        name: "Developer Portfolio",
-        description:
-            "My personal portfolio website. Built with Astro, Tailwind CSS, and TypeScript.",
-        url: "/projects/developer-portfolio",
-        // projectUrl: "/",
-        image: coding,
-        tech: ["Astro", "Tailwind CSS", "TypeScript", "GSAP"],
-    },
-    {
-        name: "Furekunst",
-        description:
-            "A React/Next.js website made for a Norwegian artist - who also happens to be my girlfriend.",
-        url: "/projects/furekunst",
-        projectUrl: "https://furekunst.no",
-        image: furekunst,
-        tech: ["React", "Next.js", "Tailwind CSS"],
-    },
-    {
-        name: "Game Character Name Generator",
-        description:
-            "AI powered name generator for game characters. Built with Next.js and Cloudflare AI-workers.",
-        url: "/projects/game-character-name-generator",
-        projectUrl: "https://gamenamegen.site",
-        image: gamenamegen,
-        tech: ["Next.js", "Cloudflare AI-workers"],
-    },
-    {
-        name: "Bachelor Project - Accenture",
-        description:
-            "Development of a dashboard an an application portal for Accenture. Built with React, Next.js, and Tailwind CSS.",
-        url: "/projects/bachelor-project-accenture",
-        projectUrl: "https://bachelorproject.sindresau.me",
-        image: bachelor,
-        tech: ["React", "Next.js", "Tailwind CSS"],
-    },
-];
+import projects from "./projects/projects";
 ---
 
 <Layout
@@ -83,16 +31,15 @@ const projects: Project[] = [
                         href={project.url}
                         class="text-foreground no-underline h-full"
                     >
-                        <Picture
-                            transition:name={`${project.name.toLowerCase().replace(/\s+/g, "-")}-image`}
+                        <Image
+                            transition:name={`${project.transitionName}-image`}
                             src={project.image}
                             alt={project.name}
                             class="rounded-lg mb-2 w-full will-change-transform aspect-[11/9] object-cover"
                             loading="lazy"
                             format="avif"
-                            width={600}
-                            height={400}
-                            quality={50}
+                            width={800}
+                            height={600}
                         />
                         <div class="flex flex-col gap-1">
                             <div class="md:min-h-13">
@@ -174,7 +121,7 @@ const projects: Project[] = [
                 projectCards.forEach(card => {
                     card.addEventListener("mouseover", () => {
                         gsap.to(card, {
-                            scale: 1.02,
+                            scale: 1.015,
                             duration: 0.3,
                             ease: "power2.out",
                         });

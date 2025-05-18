@@ -1,29 +1,139 @@
 ---
+import Divider from "@/components/general/divider.astro";
+import IconAi from "@/components/icons/icon-ai.astro";
+import IconFallback from "@/components/icons/icon-fallback.astro";
+import IconFrontend from "@/components/icons/icon-frontend.astro";
+import IconServerActions from "@/components/icons/icon-server-actions.astro";
+import IconStructure from "@/components/icons/icon-structure.astro";
+import IconWorkflow from "@/components/icons/icon-workflow.astro";
+import ProjectHero from "@/components/projects/project-hero.astro";
 import ProjectsLayout from "@/layouts/projects-layout.astro";
-
-import { Picture } from "astro:assets";
-import gamenamgegen from "@/assets/images/gamenamegen.png";
+import { gameNameGenProject } from "./projects";
 ---
 
 <ProjectsLayout>
-    <h1 transition:name="gamenamegen-title">Game Character Name Generator</h1>
+    <ProjectHero project={gameNameGenProject} />
 
-    <p class="mb-8">
-        AI powered name generator for game characters. Built with Next.js and
-        Cloudflare AI-workers. The website is fully responsive and works on all
-        devices. It also has a dark mode toggle. The website is hosted on Vercel
-        and uses a custom domain.
-    </p>
+    <Divider class="my-8" />
 
-    <Picture
-        transition:name="gamenamegen-image"
-        src={gamenamgegen}
-        alt="Game Character Name Generator"
-        class="rounded-lg mb-2"
-        loading="lazy"
-        format="avif"
-        width={800}
-        height={600}
-        quality={50}
-    />
+    <div class="">
+        <div class="flex items-baseline gap-2">
+            <IconAi class="size-8 text-primary mr-2 translate-y-1" />
+            <h2 class="">LLM-Driven Name Generation</h2>
+        </div>
+        <p>
+            At its heart, the application uses Large Language Models to produce
+            character names. This allows for a vast range of creative and
+            contextually relevant suggestions. User inputs from the form (genre,
+            style, complexity) are sent to the backend via Next.js Server
+            Actions. These actions then construct a detailed prompt and query an
+            LLM to generate a list of names.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-baseline gap-2">
+            <IconFallback class="size-8 text-primary mr-2 translate-y-1" />
+            <h2 class="">Robust LLM Provider Fallback System</h2>
+        </div>
+        <p>
+            To ensure high availability and resilience, the system incorporates
+            a fallback mechanism between two LLM providers (e.g., Cloudflare and
+            Gemini). If the primary provider fails or returns an unsatisfactory
+            response, the system automatically attempts the request with the
+            secondary provider. The Server Action responsible for LLM
+            communication first calls the primary API. If this call encounters
+            an error or doesn't yield results, it transparently retries with the
+            configured backup API, enhancing the reliability of name generation.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-baseline gap-2">
+            <IconFrontend class="size-8 text-primary mr-2 translate-y-1" />
+            <h2 class="">Modern and Responsive Frontend</h2>
+        </div>
+        <p>
+            The user interface is built with Next.js 15 and React, utilizing
+            Tailwind CSS and pre-built shadcn/ui components for a clean, modern,
+            and responsive design. Client components, marked with 'use client',
+            manage the user interaction. Forms are built using react-hook-form
+            for efficient state management and zod for schema-based validation,
+            ensuring data integrity. User feedback is provided through sonner
+            toast notifications, and subtle animations are implemented using a
+            custom &lt;FadeInSection&gt; component for an enhanced user
+            experience.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-baseline gap-2">
+            <IconServerActions class="size-8 text-primary mr-2 translate-y-1" />
+            <h2 class="">Efficient Backend with Next.js Server Actions</h2>
+        </div>
+        <p>
+            The application leverages Next.js Server Actions to handle backend
+            logic, such as LLM API calls. This approach simplifies the
+            full-stack development process by allowing server-side code to be
+            co-located and easily invoked from client components. When a user
+            submits the form, a Server Action (defined in a .server.ts file) is
+            invoked. This function executes on the server, performs the
+            necessary operations (like calling the LLM APIs), and returns a
+            structured response (&#123; success: boolean, message: string,
+            names: string[] &#125;) to the client.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-baseline gap-2">
+            <IconStructure class="size-8 text-primary mr-2 translate-y-1" />
+            <h2 class="">Well-Defined Structure and Type Safety</h2>
+        </div>
+        <p>
+            The codebase is organized into logical directories for components
+            (ui, general, form-generator), application routes (app), Server
+            Actions (actions), React hooks (hooks), and TypeScript types
+            (types). This modular structure, combined with consistent naming
+            conventions and the use of TypeScript throughout, promotes
+            maintainability, scalability, and developer productivity by ensuring
+            type safety.
+        </p>
+
+        <Divider class="my-6" />
+
+        <div class="flex items-baseline gap-2">
+            <IconWorkflow class="size-8 text-primary mr-2 translate-y-1" />
+            <h2 class="">The Generation Workflow</h2>
+        </div>
+        <p>The process from user input to name generation is streamlined:</p>
+        <ul class="list-disc list-inside mt-2 space-y-1">
+            <li>
+                User Configuration: The user selects their desired parameters
+                (genre, style, complexity) via the form.
+            </li>
+            <li>
+                Client-Side Validation: react-hook-form and zod validate the
+                inputs on the client side.
+            </li>
+            <li>
+                Server Action Invocation: Upon successful validation and
+                submission, the relevant Server Action is called with the user's
+                parameters.
+            </li>
+            <li>
+                LLM Processing: The Server Action prepares a prompt and
+                communicates with the LLM services, utilizing the fallback
+                mechanism if needed.
+            </li>
+            <li>
+                Response Delivery: The LLM-generated names are returned to the
+                Server Action, which then formats the response and sends it back
+                to the client.
+            </li>
+            <li>
+                Displaying Results: The client component receives the names and
+                displays them to the user, accompanied by a status notification.
+            </li>
+        </ul>
+    </div>
 </ProjectsLayout>
