@@ -10,55 +10,70 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
 
 <div
     id="planes-wrapper"
-    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen overflow-hidden max-w-[1440px] text-primary-muted -z-10 hidden md:block"
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen overflow-hidden max-w-[1440px] text-primary-muted z-0 hidden md:block pointer-events-auto"
 >
-    <div id="plane-1" class="plane-near w-full h-full absolute">
+    <div
+        id="plane-1"
+        class="plane-near w-full h-full absolute pointer-events-none"
+    >
         {
             plane1Tech.map(tech => (
-                <div
-                    class="codelang-card absolute"
+                <a
+                    href="/experience-cv#technical-skills"
+                    class="codelang-card absolute block pointer-events-auto"
                     style={`top: ${tech.top}; left: ${tech.left};`}
+                    aria-label={`Technology: ${tech.iconifyIcon || "icon"}`}
                 >
                     <Icon
                         name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
                         class={getSizeClass(tech.size)}
                     />
-                </div>
+                </a>
             ))
         }
     </div>
 
-    <div class="opacity-65">
-        <div id="plane-2" class="plane-mid w-full h-full absolute">
+    <div class="opacity-65 pointer-events-none">
+        <div
+            id="plane-2"
+            class="plane-mid w-full h-full absolute pointer-events-none"
+        >
             {
                 plane2Tech.map(tech => (
-                    <div
-                        class="codelang-card absolute"
+                    <a
+                        href="/experience-cv#technical-skills"
+                        class="codelang-card absolute block pointer-events-auto"
                         style={`top: ${tech.top}; left: ${tech.left};`}
+                        aria-label={`Technology: ${tech.iconifyIcon || "icon"}`}
                     >
                         <Icon
                             name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
                             class={getSizeClass(tech.size)}
                         />
-                    </div>
+                    </a>
                 ))
             }
         </div>
     </div>
 
-    <div class="opacity-40">
-        <div id="plane-3" class="plane-far w-full h-full absolute">
+    <div class="opacity-40 pointer-events-none">
+        <div
+            id="plane-3"
+            class="plane-far w-full h-full absolute pointer-events-none"
+        >
             {
                 plane3Tech.map(tech => (
-                    <div
-                        class="codelang-card absolute"
+                    <a
+                        href="/experience-cv#technical-skills"
+                        class="codelang-card absolute block pointer-events-auto"
                         style={`top: ${tech.top}; left: ${tech.left};`}
+                        aria-label={`Technology: ${tech.iconifyIcon || "icon"}`}
                     >
                         <Icon
                             name={`${tech.iconifyPkg}:${tech.iconifyIcon}`}
                             class={getSizeClass(tech.size)}
                         />
-                    </div>
+                    </a>
                 ))
             }
         </div>
@@ -140,27 +155,22 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
             tl.to(
                 {},
                 {
-                    duration: 1,
+                    duration: 1, // Added a dummy duration to make the onUpdate work
                     onUpdate: () => {
-                        const progress = tl.progress();
-
-                        // Update scroll-based Y positions
+                        const progress = tl.scrollTrigger?.progress || 0;
                         scrollY1 = progress * -800;
                         scrollY2 = progress * -500;
                         scrollY3 = progress * -300;
 
-                        // Tween opacity alongside scroll progress
                         gsap.set(plane1, { opacity: 0.95 - progress * 2.6 });
                         gsap.set(plane2, { opacity: 0.6 - progress * 2.3 });
                         gsap.set(plane3, { opacity: 0.5 - progress * 1.8 });
 
-                        // Apply scroll effect along with mouse movement
                         updatePlanePositions();
                     },
                 }
             );
 
-            // Function to update plane positions with both mouse and scroll effects
             const updatePlanePositions = () => {
                 gsap.set(plane1, {
                     x: currentX,
@@ -199,7 +209,6 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
                 currentX = lerp(currentX, targetX, easing);
                 currentY = lerp(currentY, targetY, easing);
 
-                // Use the combined function to update positions
                 updatePlanePositions();
 
                 if (
@@ -210,7 +219,6 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
                         currentX = 0;
                         currentY = 0;
 
-                        // Reset only X positions, keep scroll-based Y offsets
                         gsap.set(plane1, { x: 0, y: scrollY1 });
                         gsap.set(plane2, { x: 0, y: scrollY2 });
                         gsap.set(plane3, { x: 0, y: scrollY3 });
@@ -275,7 +283,6 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
                 targetX = 0;
                 targetY = 0;
 
-                // When stopping mouse animation, keep scroll-based positions
                 gsap.set(plane1, { x: 0, y: scrollY1 });
                 gsap.set(plane2, { x: 0, y: scrollY2 });
                 gsap.set(plane3, { x: 0, y: scrollY3 });
@@ -306,15 +313,11 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
         });
     });
 
-    // Clean up on page leave
     document.addEventListener("astro:before-swap", () => {
-        // Cancel any running animation frames
         if (requestAnimationFrameId) {
             cancelAnimationFrame(requestAnimationFrameId);
             requestAnimationFrameId = null;
         }
-
-        // Revert GSAP context
         ctx && ctx.revert();
     });
 </script>

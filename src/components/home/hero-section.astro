@@ -1,6 +1,8 @@
 ---
 import AvailableBadge from "@/components/home/available-badge.astro";
 import IconCity from "@components/icons/icon-city.astro";
+import { Icon } from "astro-icon/components";
+import LinkButton from "../general/link-button.astro";
 import DesktopParallaxIcons from "./desktop-parallax-icons.astro";
 import MobileTechIcons from "./mobile-tech-icons.astro";
 
@@ -50,6 +52,25 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 Oslo, Norway
             </span>
         </p>
+
+        <!-- CTA buttons -->
+        <div
+            id="hero-cta-buttons"
+            class="flex md:flex-row flex-col mt-6 md:mt-8 gap-2 pointer-events-auto"
+        >
+            <LinkButton href="/projects">
+                <Icon name="mdi:folder" />
+                Projects
+            </LinkButton>
+            <LinkButton href="/experience-cv">
+                <Icon name="mdi:code-tags" />
+                Experience
+            </LinkButton>
+            <LinkButton href={`mailto:${import.meta.env.PUBLIC_EMAIL}`}>
+                <Icon name="mdi:email" />
+                Contact
+            </LinkButton>
+        </div>
     </div>
 
     <!-- Desktop parallax effect component -->
@@ -85,6 +106,8 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 const heroSection = document.getElementById("hero-section");
                 const heroTextSection =
                     document.getElementById("hero-text-section");
+                const heroCtaButtons =
+                    document.getElementById("hero-cta-buttons");
                 const animatedHeading =
                     document.getElementById("animated-heading");
                 if (!heroSection || !heroTextSection) {
@@ -100,6 +123,9 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 const locationText = heroTextSection.querySelector(
                     "p .text-primary-muted"
                 );
+                const ctaButtons = heroCtaButtons
+                    ? heroCtaButtons.querySelectorAll("a")
+                    : null;
 
                 // Fade in the hero section
                 gsap.fromTo(
@@ -109,10 +135,18 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 );
 
                 // Initial state for intro text and paragraph
-                gsap.set([introText, paragraphText, locationText], {
-                    opacity: 0,
-                    y: 20,
-                });
+                gsap.set(
+                    [
+                        introText,
+                        paragraphText,
+                        locationText,
+                        ...(ctaButtons || []),
+                    ].filter(Boolean),
+                    {
+                        opacity: 0,
+                        y: 20,
+                    }
+                );
 
                 // Animate the available badge (mobile)
                 gsap.fromTo(
@@ -183,8 +217,6 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                     // Store the timeline for later use
                     let mainTimeline = gsap.timeline();
 
-                    let mm = gsap.matchMedia();
-
                     // Animate each character
                     mm.add("(max-width: 768px)", () => {
                         // Name animation
@@ -239,6 +271,20 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 },
                                 "-=0.15"
                             );
+
+                        if (ctaButtons && ctaButtons.length > 0) {
+                            mainTimeline.to(
+                                ctaButtons,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.4,
+                                    stagger: 0.1,
+                                    ease: "power2.out",
+                                },
+                                "-=0.2"
+                            );
+                        }
                     });
                     mm.add("(min-width: 769px)", () => {
                         // Name animation
@@ -293,6 +339,20 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 },
                                 "-=0.15"
                             );
+
+                        if (ctaButtons && ctaButtons.length > 0) {
+                            mainTimeline.to(
+                                ctaButtons,
+                                {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.3,
+                                    stagger: 0.05,
+                                    ease: "power2.out",
+                                },
+                                "-=0.2"
+                            );
+                        }
                     });
                 }
             });
