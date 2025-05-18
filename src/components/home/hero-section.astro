@@ -105,7 +105,7 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 gsap.fromTo(
                     heroSection,
                     { opacity: 0 },
-                    { opacity: 1, duration: 1, delay: 0 }
+                    { opacity: 1, duration: 0.5, delay: 0 }
                 );
 
                 // Initial state for intro text and paragraph
@@ -118,14 +118,14 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 gsap.fromTo(
                     "#hero-avilable-badge-mobile",
                     { opacity: 0, translateY: 40 },
-                    { opacity: 1, translateY: 60, duration: 0.6, delay: 1.6 }
+                    { opacity: 1, translateY: 60, duration: 0.5, delay: 1.2 }
                 );
 
                 // Animate the available badge (desktop)
                 gsap.fromTo(
                     "#hero-avilable-badge-desktop",
                     { opacity: 0, y: -20 },
-                    { opacity: 1, y: 0, duration: 0.6, delay: 1.6 }
+                    { opacity: 1, y: 0, duration: 0.4, delay: 0.8 }
                 );
 
                 let mm = gsap.matchMedia();
@@ -139,8 +139,8 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                         {
                             translateY: 25,
                             opacity: 0.6,
-                            duration: 0.2,
-                            delay: 0.6,
+                            duration: 0.15,
+                            delay: 0.45,
                             scrollTrigger: {
                                 trigger: heroTextSection,
                                 start: "80% 40%",
@@ -160,8 +160,8 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                         {
                             translateY: 10,
                             opacity: 0.6,
-                            duration: 0.2,
-                            delay: 0.6,
+                            duration: 0.1,
+                            delay: 0.3,
                             scrollTrigger: {
                                 trigger: heroTextSection,
                                 start: "top 40%",
@@ -200,10 +200,10 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                     opacity: 1,
                                     scale: 1,
                                     color: "var(--color-primary, #4f46e5)",
-                                    stagger: 0.025,
-                                    duration: 0.5,
+                                    stagger: 0.02,
+                                    duration: 0.4,
                                     ease: "power3.inOut",
-                                    delay: 0.8,
+                                    delay: 0.6,
                                 }
                             )
                             // Animate intro text ("Hi, I'm")
@@ -212,21 +212,21 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.5,
+                                    duration: 0.4,
                                     ease: "power2.out",
                                 },
-                                "-=0.2"
-                            ) // Start slightly before name animation completes
+                                "-=0.1"
+                            )
                             // Animate paragraph text
                             .to(
                                 paragraphText,
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.6,
+                                    duration: 0.5,
                                     ease: "power2.out",
                                 },
-                                "+=0.1"
+                                "+=0.05"
                             )
                             // Animate location text with slight bounce
                             .to(
@@ -234,10 +234,10 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.5,
+                                    duration: 0.4,
                                     ease: "back.out(1.2)",
                                 },
-                                "-=0.3"
+                                "-=0.15"
                             );
                     });
                     mm.add("(min-width: 769px)", () => {
@@ -254,10 +254,10 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                     opacity: 1,
                                     scale: 1.1,
                                     color: "var(--color-primary, #4f46e5)",
-                                    stagger: 0.025,
-                                    duration: 0.5,
+                                    stagger: 0.015,
+                                    duration: 0.3,
                                     ease: "power3.inOut",
-                                    delay: 0.8,
+                                    delay: 0.4,
                                 }
                             )
                             // Animate intro text ("Hi, I'm")
@@ -266,21 +266,21 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.5,
+                                    duration: 0.3,
                                     ease: "power2.out",
                                 },
-                                "-=0.2"
-                            ) // Start slightly before name animation completes
+                                "-=0.1"
+                            )
                             // Animate paragraph text
                             .to(
                                 paragraphText,
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.6,
+                                    duration: 0.4,
                                     ease: "power2.out",
                                 },
-                                "+=0.1"
+                                "+=0.05"
                             )
                             // Animate location text with slight bounce
                             .to(
@@ -288,10 +288,10 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                                 {
                                     opacity: 1,
                                     y: 0,
-                                    duration: 0.5,
+                                    duration: 0.3,
                                     ease: "back.out(1.2)",
                                 },
-                                "-=0.3"
+                                "-=0.15"
                             );
                     });
                 }
