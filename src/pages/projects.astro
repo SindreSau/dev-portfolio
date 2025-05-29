@@ -1,5 +1,4 @@
 ---
-import { Picture } from "astro:assets";
 import { github } from "@/config/socials";
 import Layout from "@/layouts/Layout.astro";
 
@@ -23,10 +22,13 @@ import projects from "./projects/projects";
         </a>
     </p>
 
-    <ul class="grid grid-cols-1 md:grid-cols-2 xl:gap-24 md:gap-12 gap-6">
+    <ul
+        id="projects-container"
+        class="grid grid-cols-1 md:grid-cols-2 xl:gap-24 md:gap-12 gap-6"
+    >
         {
             projects.map(project => (
-                <li class="mb-4 w-full projects-project-card will-change-transform backface-hidden h-full ">
+                <li class="mb-4 w-full projects-project-card will-change-transform h-full">
                     <a
                         href={project.url}
                         class="text-foreground no-underline h-full"
@@ -88,50 +90,54 @@ import projects from "./projects/projects";
 
             gsap.registerPlugin(ScrollTrigger);
 
-            ctx = gsap.context(() => {
-                const projectCards: HTMLElement[] = gsap.utils.toArray(
-                    ".projects-project-card"
-                );
-                const projectsContainer = document.querySelector("ul");
+            requestAnimationFrame(() => {
+                ctx = gsap.context(() => {
+                    const projectCards: HTMLElement[] = gsap.utils.toArray(
+                        ".projects-project-card"
+                    );
+                    const projectsContainer = document.querySelector(
+                        "#projects-container"
+                    );
 
-                // Set initial state immediately when possible
-                gsap.set(projectCards, {
-                    opacity: 0,
-                    y: 20,
-                    force3D: true, // Enable hardware acceleration
-                });
-
-                // Create the stagger animation with optimized settings
-                gsap.to(projectCards, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    stagger: 0.15,
-                    delay: 0.35,
-                    ease: "power2.out",
-                    clearProps: "transform",
-                    scrollTrigger: {
-                        trigger: projectsContainer, // Use the container as trigger
-                        start: "top bottom-=100",
-                        toggleActions: "play none none none",
-                    },
-                });
-
-                // Add mouseover effect
-                projectCards.forEach(card => {
-                    card.addEventListener("mouseover", () => {
-                        gsap.to(card, {
-                            scale: 1.015,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
+                    gsap.set(projectCards, {
+                        force3D: true,
+                        y: 20,
+                        opacity: 0,
+                        visibility: "hidden",
                     });
 
-                    card.addEventListener("mouseout", () => {
-                        gsap.to(card, {
-                            scale: 1,
-                            duration: 0.3,
-                            ease: "power2.out",
+                    gsap.to(projectCards, {
+                        opacity: 1,
+                        y: 0,
+                        visibility: "visible",
+                        stagger: 0.15,
+                        duration: 0.6,
+                        delay: 0.35,
+                        ease: "power2.out",
+                        clearProps: "transform,visibility",
+                        scrollTrigger: {
+                            trigger: projectsContainer,
+                            start: "top bottom-=100",
+                            toggleActions: "play none none none",
+                        },
+                    });
+
+                    // Add mouseover scaling
+                    projectCards.forEach(card => {
+                        card.addEventListener("mouseover", () => {
+                            gsap.to(card, {
+                                scale: 1.015,
+                                duration: 0.3,
+                                ease: "power2.out",
+                            });
+                        });
+
+                        card.addEventListener("mouseout", () => {
+                            gsap.to(card, {
+                                scale: 1,
+                                duration: 0.3,
+                                ease: "power2.out",
+                            });
                         });
                     });
                 });
@@ -144,9 +150,3 @@ import projects from "./projects/projects";
         });
     </script>
 </Layout>
-
-<style>
-    .projects-project-card {
-        opacity: 0;
-    }
-</style>
