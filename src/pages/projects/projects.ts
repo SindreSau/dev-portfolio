@@ -1,4 +1,4 @@
-import bachelor from '@/assets/images/bachelor-admin.png';
+import bachelor from '@/assets/images/dashboard-application-table-view.png';
 import coding from '@/assets/images/coding-illustration.jpeg';
 import furekunst from '@/assets/images/furekunst.png';
 import gamenamegen from '@/assets/images/gamenamegen.png';
@@ -16,20 +16,6 @@ type Project = {
 
 const projects: Project[] = [
     {
-        name: 'Developer Portfolio',
-        transitionName: 'developer-portfolio',
-        description:
-            'My personal portfolio website. Built with Astro, Tailwind CSS, and TypeScript.',
-        longDescription: `
-        A modern, performant portfolio website showcasing my work
-                    and experience as a developer, built with cutting-edge web
-                    technologies.
-        `,
-        url: '/projects/developer-portfolio',
-        image: coding,
-        tech: ['TypeScript', 'Astro', 'Tailwind CSS', 'GSAP'],
-    },
-    {
         name: 'Furekunst',
         transitionName: 'furekunst',
         description:
@@ -44,6 +30,23 @@ const projects: Project[] = [
         tech: ['TypeScript', 'Next.js', 'React', 'Tailwind CSS'],
     },
     {
+        name: 'Bachelor Project - Accenture',
+        transitionName: 'bachelor-project-accenture',
+        description:
+            "Full-stack application management system transforming Accenture's bachelor thesis workflow. Features student portal with dynamic forms and admin dashboard with collaborative tools.",
+        url: '/projects/bachelor-project-accenture',
+        projectUrl: 'https://bachelorproject.sindresau.me',
+        image: bachelor,
+        tech: [
+            'Next.js',
+            'TypeScript',
+            'PostgreSQL',
+            'Prisma',
+            'Azure',
+            'Docker',
+        ],
+    },
+    {
         name: 'Game Character Name Generator',
         transitionName: 'game-character-name-generator',
         description:
@@ -54,17 +57,27 @@ const projects: Project[] = [
         url: '/projects/game-character-name-generator',
         projectUrl: 'https://gamenamegen.site',
         image: gamenamegen,
-        tech: ['Next.js', 'Cloudflare AI-workers'],
+        tech: [
+            'Next.js',
+            'Cloudflare AI-workers',
+            'Tailwind CSS',
+            'TypeScript',
+        ],
     },
+
     {
-        name: 'Bachelor Project - Accenture',
-        transitionName: 'bachelor-project-accenture',
+        name: 'Developer Portfolio',
+        transitionName: 'developer-portfolio',
         description:
-            'Development of a dashboard an an application portal for Accenture. Built with React, Next.js, and Tailwind CSS.',
-        url: '/projects/bachelor-project-accenture',
-        projectUrl: 'https://bachelorproject.sindresau.me',
-        image: bachelor,
-        tech: ['React', 'Next.js', 'Tailwind CSS'],
+            'My personal portfolio website. Built with Astro, Tailwind CSS, and TypeScript.',
+        longDescription: `
+        A modern, performant portfolio website showcasing my work
+                    and experience as a developer, built with cutting-edge web
+                    technologies.
+        `,
+        url: '/projects/developer-portfolio',
+        image: coding,
+        tech: ['TypeScript', 'Astro', 'Tailwind CSS', 'GSAP'],
     },
 ];
 
@@ -73,7 +86,7 @@ export type { Project };
 export { projects };
 
 // Export each entry as a project
-export const developerPortfolioProject = projects[0];
-export const furekunstProject = projects[1];
+export const developerPortfolioProject = projects[3];
+export const furekunstProject = projects[0];
 export const gameNameGenProject = projects[2];
-export const bachelorProjectAccenture = projects[3];
+export const bachelorProjectAccenture = projects[1];

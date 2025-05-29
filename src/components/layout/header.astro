@@ -24,12 +24,8 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
             format={"avif"}
             loading="eager"
         />
-        {
-            !isHomePage && isAvailableForWork && (
-                <AvailableBadge variant="header" />
-            )
-        }
     </a>
+    {!isHomePage && isAvailableForWork && <AvailableBadge variant="header" />}
 </div>
 
 <div class="flex items-center gap-3 mr-2 w-full justify-end">
@@ -168,6 +164,14 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
 
         if (!hamburgerBtn || !mobileMenu || !menuOverlay) return;
 
+        const mobileMenuLinks = mobileMenu.querySelectorAll("a");
+
+        function setMobileMenuLinksFocusable(isFocusable: boolean) {
+            mobileMenuLinks.forEach(link => {
+                link.setAttribute("tabindex", isFocusable ? "0" : "-1");
+            });
+        }
+
         const newBtn = hamburgerBtn.cloneNode(true) as HTMLElement;
         hamburgerBtn.parentNode!.replaceChild(newBtn, hamburgerBtn);
 
@@ -218,6 +222,7 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
             }, 10);
 
             document.body.style.overflow = "hidden";
+            setMobileMenuLinksFocusable(true);
 
             setTimeout(() => {
                 mobileMenu.classList.add("menu-active");
@@ -239,6 +244,7 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
             newOverlay.classList.add("hidden");
 
             document.body.style.overflow = "";
+            setMobileMenuLinksFocusable(false);
 
             setTimeout(() => {
                 newBtn.classList.remove("hamburger-active");
@@ -246,5 +252,8 @@ const isAvailableForWork = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
                 newOverlay.classList.remove("instant-fade");
             }, 100);
         }
+
+        // Initially set mobile menu links to not be focusable
+        setMobileMenuLinksFocusable(false);
     }
 </script>
