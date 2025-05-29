@@ -4,12 +4,12 @@
     <input
         type="checkbox"
         id="theme-toggle"
-        class="sr-only"
+        class="sr-only peer"
         aria-label="Toggle dark/light theme"
     />
     <label
         for="theme-toggle"
-        class="cursor-pointer flex items-center justify-center size-6 md:size-8 rounded-full px-2"
+        class="cursor-pointer flex items-center justify-center size-6 md:size-8 rounded-full px-2 peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-focus-ring)] peer-focus-visible:ring-offset-4 peer-focus-visible:ring-offset-background"
     >
         <span class="sr-only">Toggle dark/light theme</span>
         <svg
@@ -143,6 +143,7 @@
         const themeToggle = document.getElementById(
             "theme-toggle"
         ) as HTMLInputElement | null;
+
         if (themeToggle) {
             themeToggle.addEventListener("change", () => {
                 if (!sunToMoonAnim) return;
@@ -155,6 +156,13 @@
                     localStorage.setItem("theme", "light");
                     document.documentElement.classList.remove("dark");
                     sunToMoonAnim.play();
+                }
+            });
+
+            themeToggle.addEventListener("keydown", event => {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Prevent default Enter action (e.g., form submission)
+                    themeToggle.click(); // Simulate a click to trigger change and animation
                 }
             });
         }

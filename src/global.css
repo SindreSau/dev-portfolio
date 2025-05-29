@@ -68,6 +68,8 @@
     /* utils */
     --container-padding: 1rem;
     --scroll-thumb: hsl(223, 18%, 73%);
+    --color-focus-ring: hsl(209, 85%, 40%);
+    --color-date: hsl(125, 12%, 38%);
 }
 
 @layer base {
@@ -77,7 +79,7 @@
         --color-background-lighter: hsl(174, 11%, 6%);
         --color-background-gutter: hsl(48, 14%, 6%);
         --color-foreground: hsl(120, 10%, 95%);
-        --color-card: hsl(168, 10%, 10%);
+        --color-card: hsl(120, 5%, 8%);
 
         /* Primary: Deep Emerald */
         --color-primary: hsl(150, 85%, 42%);
@@ -120,6 +122,9 @@
         /* Dark Tech icons */
         --color-tech-icons: hsl(160, 40%, 60%);
         --color-scroll-thumb: hsl(123, 9%, 37%);
+
+        --color-focus-ring: hsl(150, 85%, 42%);
+        --color-date: hsl(194, 33%, 66%);
     }
 }
 
@@ -136,6 +141,10 @@
         scrollbar-base-color: var(--color-background);
         scrollbar-color: var(--color-scroll-thumb) var(--color-background);
         scrollbar-width: thin;
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-offset-4 ring-offset-background ring-focus-ring rounded-md;
     }
 
     main > a {
