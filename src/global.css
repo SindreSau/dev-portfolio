@@ -311,9 +311,4 @@
         ); /* Changed from --color-accent */
         /* transform: scale(1.2); Removed example style */
     }
-
-    .timeline-item.active .timeline-content {
-        /* Add any specific styling for active content if needed */
-        /* font-weight: bold; Example Removed */
-    }
 }
