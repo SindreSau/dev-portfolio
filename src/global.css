@@ -41,9 +41,10 @@
     --color-accent-foreground: hsl(142, 67%, 25%);
 
     --color-muted: hsl(120, 10%, 92%);
+    --color-timeline-muted: hsl(120, 10%, 85%);
     --color-muted-foreground: hsl(160, 23%, 35%);
 
-    --color-border: hsl(202, 23%, 91%);
+    --color-border: hsl(205, 18%, 81%);
     --color-link: hsl(246, 73%, 28%);
     --color-link-visited: hsl(246, 60%, 25%);
 
@@ -98,9 +99,10 @@
         --color-accent-foreground: hsl(0, 0%, 100%);
 
         --color-muted: hsl(174, 23%, 35%);
+        --color-timeline-muted: hsl(174, 23%, 16%);
         --color-muted-foreground: hsl(120, 7%, 71%);
 
-        --color-border: hsl(48, 14%, 12%);
+        --color-border: hsl(111, 10%, 14%);
         --color-link: hsl(160, 60%, 60%);
         --color-link-visited: hsl(160, 40%, 58%);
 
@@ -124,7 +126,7 @@
         --color-scroll-thumb: hsl(123, 9%, 37%);
 
         --color-focus-ring: hsl(150, 85%, 42%);
-        --color-date: hsl(194, 33%, 66%);
+        --color-date: hsl(165, 18%, 69%);
     }
 }
 
@@ -179,6 +181,10 @@
 
     code {
         @apply font-jetbrains;
+    }
+
+    time {
+        @apply text-date italic;
     }
 
     /* Added to hide elements before GSAP animation */
@@ -242,5 +248,72 @@
     .index-section > h2,
     .index-section > h3 {
         @apply text-primary;
+    }
+
+    /* Timeline specific styles */
+    .timeline {
+        position: relative;
+        margin-left: 8px; /* Adjust as needed */
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: -2px; /* Adjust to center the line on the dot */
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: var(
+            --color-timeline-muted
+        ); /* Or your preferred color */
+        z-index: 0; /* Ensure it's behind dots and content */
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px; /* Space between items */
+        padding-left: 20px; /* Space for the dot and line */
+        z-index: 2; /* Ensure items are above the progress bar */
+    }
+
+    .timeline-dot {
+        position: absolute;
+        left: -6px; /* Adjusted to align with -2px line and 10px dot width */
+        top: 8px; /* Adjust as needed for vertical alignment */
+        width: 10px;
+        height: 10px;
+        background-color: var(
+            --color-timeline-muted
+        ); /* Changed from --color-primary */
+        border-radius: 50%;
+        z-index: 1; /* Above the line */
+    }
+
+    .timeline-progress {
+        position: absolute;
+        left: -2px; /* Match timeline::before */
+        top: 0;
+        width: 2px; /* Match timeline::before */
+        background-color: var(--color-primary); /* Removed trailing comma */
+        height: 0; /* Initial height, animated by GSAP */
+        z-index: 1; /* Ensure it's above timeline::before and potentially at same level as dots */
+    }
+
+    .timeline-content {
+        position: relative;
+        z-index: 1; /* Ensure content is above the line */
+    }
+
+    /* Style for the active timeline section based on scroll */
+    .timeline-item.active .timeline-dot {
+        background-color: var(
+            --color-primary
+        ); /* Changed from --color-accent */
+        /* transform: scale(1.2); Removed example style */
+    }
+
+    .timeline-item.active .timeline-content {
+        /* Add any specific styling for active content if needed */
+        /* font-weight: bold; Example Removed */
     }
 }
