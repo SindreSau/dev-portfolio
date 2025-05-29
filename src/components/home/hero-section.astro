@@ -14,71 +14,76 @@ const AVAILABLE_FOR_WORK = import.meta.env.PUBLIC_AVAILABLE_FOR_WORK === "true";
     class="w-full h-[calc(100vh-4rem)] md:overflow-hidden pointer-events-none index-section"
 >
     <div
-        id="hero-text-section"
-        class="md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 text-left z-10 md:w-2/3 lg:w-1/2 max-w-4xl pointer-events-none"
+        id="hero-text-wrapper"
+        class="md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-10 md:w-2/3 lg:w-1/2 max-w-4xl pointer-events-none"
     >
-        <div class="md:hidden">
-            <div
-                class="translate-y-15 scale-75 translate-x-[210px] w-fit opacity-80"
-                id="hero-avilable-badge-mobile"
-            >
-                {AVAILABLE_FOR_WORK && <AvailableBadge />}
-            </div>
-        </div>
-
-        <div class="hidden md:block">
-            <div
-                class="md:-translate-x-5 md:translate-y-1 md:scale-100 translate-x-[210px] w-fit opacity-80"
-                id="hero-avilable-badge-desktop"
-            >
-                {AVAILABLE_FOR_WORK && <AvailableBadge />}
-            </div>
-        </div>
-
-        <h1 class="flex flex-col md:text-5xl text-3xl md:gap-0 gap-2">
-            <span class="text-foreground">Hi, I'm </span>
-            <span
-                id="animated-heading"
-                class="text-5xl md:text-6xl xl:text-7xl text-nowrap bg-gradient-to-r text-primary-muted dark:brightness-125 brightness-75 bg-clip-text tracking-wider font-caveat pointer-events-auto"
-                >Sindre Sauarlia</span
-            >
-        </h1>
-        <p class="mt-6 text-lg pointer-events-auto md:text-justify">
-            Am I your next full-stack developer, teammate, fishing buddy — or
-            maybe even the pianist at your Christmas party?
-
-            <span class="text-primary-muted flex gap-2 items-center mt-1">
-                <IconCity class="size-5" />
-                Oslo, Norway
-            </span>
-        </p>
-
-        <!-- CTA buttons -->
         <div
-            id="hero-cta-buttons"
-            class="flex flex-row text-xs md:text-base mt-6 md:mt-8 md:gap-2 gap-0.5 pointer-events-auto initially-hidden"
+            id="hero-text-section"
+            class="text-left w-full pointer-events-none"
         >
-            <LinkButton
-                href="/projects"
-                class="px-2 py-2 md:px-5 md:py-2 w-fit"
+            <div class="md:hidden">
+                <div
+                    class="translate-y-15 scale-75 translate-x-[210px] w-fit opacity-80"
+                    id="hero-avilable-badge-mobile"
+                >
+                    {AVAILABLE_FOR_WORK && <AvailableBadge />}
+                </div>
+            </div>
+
+            <div class="hidden md:block">
+                <div
+                    class="md:-translate-x-5 md:translate-y-1 md:scale-100 translate-x-[210px] w-fit opacity-80"
+                    id="hero-avilable-badge-desktop"
+                >
+                    {AVAILABLE_FOR_WORK && <AvailableBadge />}
+                </div>
+            </div>
+
+            <h1 class="flex flex-col md:text-5xl text-3xl md:gap-0 gap-2">
+                <span class="text-foreground">Hi, I'm </span>
+                <span
+                    id="animated-heading"
+                    class="text-5xl md:text-6xl xl:text-7xl text-nowrap bg-gradient-to-r text-primary-muted dark:brightness-125 brightness-75 bg-clip-text tracking-wider font-caveat pointer-events-auto"
+                    >Sindre Sauarlia</span
+                >
+            </h1>
+            <p class="mt-6 text-lg pointer-events-auto md:text-justify">
+                Am I your next full-stack developer, teammate, fishing buddy —
+                or maybe even the pianist at your Christmas party?
+
+                <span class="text-primary-muted flex gap-2 items-center mt-1">
+                    <IconCity class="size-5" />
+                    Oslo, Norway
+                </span>
+            </p>
+
+            <!-- CTA buttons -->
+            <div
+                id="hero-cta-buttons"
+                class="flex flex-row text-xs md:text-base mt-6 md:mt-8 md:gap-2 gap-0.5 pointer-events-auto initially-hidden"
             >
-                <Icon name="mdi:folder" />
-                Projects
-            </LinkButton>
-            <LinkButton
-                href="/experience-cv"
-                class="px-2 py-2 md:px-5 md:py-2 w-fit"
-            >
-                <Icon name="mdi:code-tags" />
-                Experience
-            </LinkButton>
-            <LinkButton
-                href={`mailto:${import.meta.env.PUBLIC_EMAIL}`}
-                class="px-2 py-2 md:px-5 md:py-2 w-fit"
-            >
-                <Icon name="mdi:email" />
-                Contact
-            </LinkButton>
+                <LinkButton
+                    href="/projects"
+                    class="px-2 py-2 md:px-5 md:py-2 w-fit"
+                >
+                    <Icon name="mdi:folder" />
+                    Projects
+                </LinkButton>
+                <LinkButton
+                    href="/experience-cv"
+                    class="px-2 py-2 md:px-5 md:py-2 w-fit"
+                >
+                    <Icon name="mdi:code-tags" />
+                    Experience
+                </LinkButton>
+                <LinkButton
+                    href={`mailto:${import.meta.env.PUBLIC_EMAIL}`}
+                    class="px-2 py-2 md:px-5 md:py-2 w-fit"
+                >
+                    <Icon name="mdi:email" />
+                    Contact
+                </LinkButton>
+            </div>
         </div>
     </div>
 
