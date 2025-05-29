@@ -3,8 +3,128 @@ import ProjectsLayout from "@/layouts/projects-layout.astro";
 
 import ProjectHero from "@/components/projects/project-hero.astro";
 import { bachelorProjectAccenture } from "./projects";
+
+import dashboardDetailsView from "@/assets/images/application-details-page.png";
+import dashboardThemes from "@/assets/images/admin-dashboard-themes.png";
+import applicationPortalForm from "@/assets/images/application-form.png";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 ---
 
 <ProjectsLayout>
     <ProjectHero project={bachelorProjectAccenture} />
+    <div
+        class="my-10 p-6 bg-card border border-border rounded-lg text-center shadow-sm"
+    >
+        <p class="text-lg mb-6 text-card-foreground/90">
+            For a more comprehensive and interactive showcase of our bachelor
+            project with Accenture, we invite you to visit our dedicated
+            portfolio page.
+        </p>
+        <a
+            href="https://bachelorproject.sindresau.me/"
+            class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium
+                   text-primary-foreground bg-primary rounded-md
+                   hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
+                   dark:focus:ring-offset-background transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Explore the Project Portfolio
+            <Icon
+                name="mdi:open-in-new"
+                class="ml-2 h-4 w-4"
+                aria-hidden="true"
+                aria-label="External link icon"
+            />
+        </a>
+    </div>
+
+    <section class="space-y-8">
+        <h2>Case</h2>
+        <p>
+            Accenture's Bachelor Application Challenge Accenture faced a
+            time-consuming manual process for managing bachelor thesis
+            applications. Staff manually extracted student information from
+            scattered emails, downloaded and re-uploaded CVs and transcripts to
+            shared folders, and managed communications individually. This
+            inefficient workflow created administrative burden and uncertainty
+            for applicants.
+        </p>
+        <p>
+            Our solution: a dual-application system featuring a student-facing
+            portal for streamlined applications and an admin dashboard for
+            centralized management. The platform automates document handling,
+            enables collaborative review processes, ensures GDPR compliance, and
+            provides immediate confirmation to students. Built with Next.js,
+            TypeScript, and secure cloud infrastructure, the system transforms
+            hundreds of manual email interactions into an efficient,
+            professional digital workflow.
+        </p>
+    </section>
+
+    <section class="space-y-8 mt-8">
+        <h2>Admin Dashboard</h2>
+
+        <p>
+            This project involved creating a comprehensive admin dashboard for
+            Accenture to streamline their bachelor application process. It
+            replaced a cumbersome email-based system with a secure,
+            collaborative platform.
+        </p>
+
+        <div class="grid grid-cols-1 gap-8 max-w-3xl mx-auto">
+            <div class="space-y-2">
+                <Image
+                    src={dashboardDetailsView}
+                    alt="Dashboard details view"
+                    class="rounded-lg border border-border"
+                    loading="lazy"
+                    quality={50}
+                />
+                <p class="text-sm text-muted-foreground text-center">
+                    Detailed application review screen.
+                </p>
+            </div>
+            <div class="space-y-2">
+                <Image
+                    src={dashboardThemes}
+                    alt="Dashboard themes"
+                    class="rounded-lg border border-border"
+                    loading="lazy"
+                    quality={50}
+                />
+                <p class="text-sm text-muted-foreground text-center">
+                    Multiple theme options, including dark mode.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-8 mt-8">
+        <h2>Application Portal</h2>
+        <p>
+            The student application portal replaces email-based submissions with
+            a professional, guided experience. Features include dynamic group
+            forms (1-5 students), drag-and-drop task prioritization, rich text
+            cover letters, and real-time validation. Built for performance and
+            accessibility, it achieves 100% Google PageSpeed scores while
+            providing instant confirmation and seamless mobile experience across
+            all devices.
+        </p>
+        <div class="grid grid-cols-1 gap-8 max-w-3xl mx-auto">
+            <div class="space-y-2">
+                <Image
+                    src={applicationPortalForm}
+                    alt="Application portal form"
+                    class="rounded-lg border border-border"
+                    loading="lazy"
+                    quality={50}
+                />
+                <p class="text-sm text-muted-foreground text-center">
+                    Student application portal form.
+                </p>
+            </div>
+        </div>
+    </section>
 </ProjectsLayout>
