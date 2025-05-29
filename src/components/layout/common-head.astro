@@ -24,7 +24,7 @@ const { title, description } = Astro.props;
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 
 <link rel="sitemap" href="/sitemap-index.xml" type="application/xml" />
 <meta name="generator" content={Astro.generator} />
@@ -79,8 +79,23 @@ const { title, description } = Astro.props;
 <SEO
     title={title}
     description={description}
-    titleTemplate="%s | Sindre Sauarlia Fullstack Developer"
-    titleDefault="Sindre Sauarlia Fullstack Developer"
+    titleTemplate="%s | Sindre Sauarlia - Fullstack Developer"
+    titleDefault="Sindre Sauarlia - Fullstack Developer"
+    openGraph={{
+        basic: {
+            title: title || "Sindre Sauarlia - Fullstack Developer",
+            type: "website",
+            image: "/og-image.png",
+        },
+    }}
+    twitter={{
+        card: "summary_large_image",
+        site: "@SindreSau",
+        creator: "@SindreSau",
+        title: title || "Sindre Sauarlia - Fullstack Developer",
+        description,
+        image: "/og-image.png",
+    }}
 />
 
 <script
