@@ -9,6 +9,8 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+    site: 'https://www.sindresau.me',
+
     vite: {
         plugins: [tailwindcss()],
     },
@@ -27,7 +29,15 @@ export default defineConfig({
         clientPrerender: true,
     },
 
-    integrations: [sitemap(), icon(), react()],
+    integrations: [
+        sitemap({
+            changefreq: 'monthly',
+            priority: 0.7,
+            lastmod: new Date(),
+        }),
+        icon(),
+        react(),
+    ],
 
     site: 'https://www.sindresau.me',
 
