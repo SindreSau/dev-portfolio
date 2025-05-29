@@ -89,7 +89,6 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
 
     // Initialize context variable with proper typing
     let ctx: gsap.Context | null = null;
-    // Store animation frame ID for cleanup
     let requestAnimationFrameId: number | null = null;
 
     document.addEventListener("astro:page-load", () => {
@@ -144,37 +143,36 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
             let scrollY2 = 0;
             let scrollY3 = 0;
 
-            // Add ScrollTrigger for parallax effect
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#planes-wrapper",
-                    start: "top top",
-                    end: "bottom 20%",
-                    scrub: 1,
-                    markers: false,
-                },
-            });
+            // Animation state
+            let isAnimating = false;
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            const easing = 0.08;
+            const speed = 0.05;
+            const threshold = 0.1; // Increased threshold for earlier stopping
 
-            tl.to(
-                {},
-                {
-                    duration: 1, // Added a dummy duration to make the onUpdate work
-                    onUpdate: () => {
-                        const progress = tl.scrollTrigger?.progress || 0;
-                        scrollY1 = progress * -800;
-                        scrollY2 = progress * -500;
-                        scrollY3 = progress * -300;
+            let heroCenterX = window.innerWidth / 2;
+            let heroCenterY = window.innerHeight / 2;
 
-                        gsap.set(plane1, { opacity: 0.95 - progress * 2.6 });
-                        gsap.set(plane2, { opacity: 0.6 - progress * 2.3 });
-                        gsap.set(plane3, { opacity: 0.5 - progress * 1.8 });
+            const updateCenter = () => {
+                heroCenterX = window.innerWidth / 2;
+                heroCenterY = window.innerHeight / 2;
+            };
 
-                        updatePlanePositions();
-                    },
-                }
-            );
+            window.addEventListener("resize", updateCenter);
 
+            const lerp = (start: number, target: number, amount: number) =>
+                start * (1 - amount) + target * amount;
+
+            // Optimized position update - batch all transforms
             const updatePlanePositions = () => {
+                // Use transform3d for hardware acceleration and batch updates
+                gsap.set([plane1, plane2, plane3], {
+                    force3D: true, // Force hardware acceleration
+                });
+
                 gsap.set(plane1, {
                     x: currentX,
                     y: currentY + scrollY1,
@@ -189,83 +187,100 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
                 });
             };
 
-            let targetX = 0;
-            let targetY = 0;
-            let currentX = 0;
-            let currentY = 0;
-            const easing = 0.08;
-            const speed = 0.05;
-            let heroCenterX = window.innerWidth / 2;
-            let heroCenterY = window.innerHeight / 2;
-
-            const updateCenter = () => {
-                heroCenterX = window.innerWidth / 2;
-                heroCenterY = window.innerHeight / 2;
-            };
-
-            window.addEventListener("resize", updateCenter);
-
-            const lerp = (start: number, target: number, amount: number) =>
-                start * (1 - amount) + target * amount;
-
+            // Optimized animation loop with better stopping conditions
             const animate = () => {
+                const deltaX = Math.abs(currentX - targetX);
+                const deltaY = Math.abs(currentY - targetY);
+
+                // Stop animation if we're close enough to target
+                if (deltaX < threshold && deltaY < threshold) {
+                    currentX = targetX;
+                    currentY = targetY;
+                    updatePlanePositions();
+                    isAnimating = false;
+                    requestAnimationFrameId = null;
+                    return;
+                }
+
                 currentX = lerp(currentX, targetX, easing);
                 currentY = lerp(currentY, targetY, easing);
 
                 updatePlanePositions();
-
-                if (
-                    Math.abs(currentX - targetX) < 0.01 &&
-                    Math.abs(currentY - targetY) < 0.01
-                ) {
-                    if (Math.abs(targetX) < 0.01 && Math.abs(targetY) < 0.01) {
-                        currentX = 0;
-                        currentY = 0;
-
-                        gsap.set(plane1, { x: 0, y: scrollY1 });
-                        gsap.set(plane2, { x: 0, y: scrollY2 });
-                        gsap.set(plane3, { x: 0, y: scrollY3 });
-
-                        if (requestAnimationFrameId) {
-                            cancelAnimationFrame(requestAnimationFrameId);
-                            requestAnimationFrameId = null;
-                        }
-                        return;
-                    }
-                }
                 requestAnimationFrameId = requestAnimationFrame(animate);
             };
 
+            // Start animation only when needed
+            const startMouseAnimation = () => {
+                if (!isAnimating) {
+                    isAnimating = true;
+                    requestAnimationFrameId = requestAnimationFrame(animate);
+                }
+            };
+
+            // Throttled mouse move handler for better performance
+            let mouseTimeout: ReturnType<typeof setTimeout> | null = null;
             const manageMouseMove = (e: MouseEvent) => {
                 const mouseX = e.clientX;
                 const mouseY = e.clientY;
                 targetX = (mouseX - heroCenterX) * speed;
                 targetY = (mouseY - heroCenterY) * speed;
 
-                if (requestAnimationFrameId === null) {
-                    requestAnimationFrameId = requestAnimationFrame(animate);
+                // Clear existing timeout
+                if (mouseTimeout) {
+                    clearTimeout(mouseTimeout);
                 }
+
+                startMouseAnimation();
+
+                // Debounce mouse movement to reduce updates
+                mouseTimeout = setTimeout(() => {
+                    mouseTimeout = null;
+                }, 16); // ~60fps
             };
 
             const handleMouseLeave = () => {
                 targetX = 0;
                 targetY = 0;
-                if (
-                    requestAnimationFrameId === null &&
-                    (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01)
-                ) {
-                    requestAnimationFrameId = requestAnimationFrame(animate);
-                }
+                startMouseAnimation();
             };
+
+            // Add ScrollTrigger for parallax effect (optimized)
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#planes-wrapper",
+                    start: "top top",
+                    end: "bottom 20%",
+                    scrub: 1,
+                    markers: false,
+                    onUpdate: self => {
+                        const progress = self.progress;
+                        scrollY1 = progress * -800;
+                        scrollY2 = progress * -500;
+                        scrollY3 = progress * -300;
+
+                        // Batch opacity updates
+                        gsap.set(plane1, { opacity: 0.95 - progress * 2.6 });
+                        gsap.set(plane2, { opacity: 0.6 - progress * 2.3 });
+                        gsap.set(plane3, { opacity: 0.5 - progress * 1.8 });
+
+                        // Only update positions if not currently mouse animating
+                        if (!isAnimating) {
+                            updatePlanePositions();
+                        }
+                    },
+                },
+            });
 
             const startAnimation = () => {
                 document.documentElement.addEventListener(
                     "mousemove",
-                    manageMouseMove
+                    manageMouseMove,
+                    { passive: true }
                 );
                 document.documentElement.addEventListener(
                     "mouseleave",
-                    handleMouseLeave
+                    handleMouseLeave,
+                    { passive: true }
                 );
                 updateCenter();
             };
@@ -279,19 +294,27 @@ const plane3Tech = techData.filter(tech => tech.plane === 3);
                     "mouseleave",
                     handleMouseLeave
                 );
+
                 if (requestAnimationFrameId) {
                     cancelAnimationFrame(requestAnimationFrameId);
                     requestAnimationFrameId = null;
                 }
+
+                if (mouseTimeout) {
+                    clearTimeout(mouseTimeout);
+                    mouseTimeout = null;
+                }
+
+                isAnimating = false;
                 targetX = 0;
                 targetY = 0;
+                currentX = 0;
+                currentY = 0;
 
+                // Reset positions
                 gsap.set(plane1, { x: 0, y: scrollY1 });
                 gsap.set(plane2, { x: 0, y: scrollY2 });
                 gsap.set(plane3, { x: 0, y: scrollY3 });
-
-                currentX = 0;
-                currentY = 0;
             };
 
             const observer = new IntersectionObserver(

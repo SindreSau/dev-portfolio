@@ -214,6 +214,25 @@
         @apply dark:brightness-75 z-0 opacity-0;
     }
 
+    .codelang-card {
+        will-change: transform;
+        transform: translateZ(0); /* Force hardware acceleration */
+        backface-visibility: hidden; /* Prevent flickering */
+    }
+
+    #plane-1,
+    #plane-2,
+    #plane-3 {
+        will-change: transform, opacity;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+
+    /* Reduce paint operations */
+    #planes-wrapper {
+        contain: layout style paint;
+    }
+
     #hero-section {
         @apply opacity-0;
     }
