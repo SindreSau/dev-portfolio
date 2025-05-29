@@ -7,5 +7,5 @@ import { twMerge } from 'tailwind-merge';
  * @returns Merged class names
  */
 export function cn(...args: (string | undefined | null | boolean)[]) {
-  return twMerge(clsx(args));
+    return twMerge(clsx(args));
 }
